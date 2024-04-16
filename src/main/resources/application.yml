@@ -1,0 +1,30 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+  application:
+    name: mugit
+
+  profiles:
+    include: swagger
+
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DB_DOMAIN}:${DB_PORT}/main
+    username: ${DB_ID}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
