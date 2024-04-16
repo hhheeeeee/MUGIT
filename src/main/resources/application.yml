@@ -10,8 +10,7 @@ spring:
 
   config:
     import:
-      - optional:file:.env[.properties]
-      - optional:file:/config/application.properties
+      - optional:file:/env/backend/.env[.properties]
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
