@@ -16,7 +16,7 @@ public class JwtTokenUtil {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${url.domain}")
+    @Value("${cookie.domain}")
     private String domainUrl;
 
     @Value("${jwt.period.access-token}")

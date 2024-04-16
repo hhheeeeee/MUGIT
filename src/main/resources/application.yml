@@ -10,11 +10,11 @@ spring:
 
   config:
     import:
-      - optional:file:/env/backend/.env[.properties]
+      - optional:file:env/backend/.env[.properties]
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${DB_DOMAIN}:${DB_PORT}/main
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_DOMAIN}:${DB_PORT}/${DB_NAME}
     username: ${DB_ID}
     password: ${DB_PASSWORD}
 
@@ -35,7 +35,7 @@ jwt:
     refresh-token: 2419200000 #4주
 
 cookie:
-  domain: ${DOMAIN_URL}
+  domain: localhost
   period:
     access-token: 86400 # 1일
     refresh-token: 2419200 # 4주
