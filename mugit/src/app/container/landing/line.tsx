@@ -1,4 +1,6 @@
-const Line = () => {
+'use client'
+
+export default function Line() {
   return (
     <div className="w-screen h-1 bg-[#121214]  border-animate">
       <style jsx>{`
@@ -25,5 +27,3 @@ const Line = () => {
     </div>
   );
 };
-
-export default Line;

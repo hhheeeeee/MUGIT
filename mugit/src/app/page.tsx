@@ -1,4 +1,3 @@
-"use client";
 import Line from "./container/landing/line";
 
 export default function Home() {
