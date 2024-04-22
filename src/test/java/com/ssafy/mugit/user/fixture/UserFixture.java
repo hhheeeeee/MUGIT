@@ -1,4 +1,4 @@
-package com.ssafy.mugit.user;
+package com.ssafy.mugit.user.fixture;
 
 import com.ssafy.mugit.user.entity.Profile;
 import com.ssafy.mugit.user.entity.User;

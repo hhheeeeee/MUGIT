@@ -1,4 +1,4 @@
-package com.ssafy.mugit.global.auth;
+package com.ssafy.mugit.user.util;
 
 import com.ssafy.mugit.user.entity.Profile;
 import com.ssafy.mugit.user.entity.User;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CookieService {
+public class CookieUtil {
 
     private final JwtTokenUtil tokenService;
 
@@ -35,7 +35,7 @@ public class CookieService {
         cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("isLogined", "true").toString());
         cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("nickName", profile.getNickName()).toString());
         cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("profileText", profile.getProfileText()).toString());
-        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("profileImage", profile.getProfileImage()).toString());
+        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("profileImage", profile.getProfileImagePath()).toString());
 
         return cookieHeaders;
     }
