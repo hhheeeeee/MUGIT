@@ -1,8 +1,7 @@
 "use client";
-import { useMemo, useState, useCallback, useRef } from "react";
+import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import Timeline from "wavesurfer.js/dist/plugins/timeline.esm.js";
-import "./audiosprites.module.css";
 
 const audioUrls = [
   "/example.mp3",
@@ -16,13 +15,24 @@ const formatTime = (seconds: number) =>
 
 export default function AudioSprites() {
   const containerRef = useRef(null);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>();
   // const [urlIndex, setUrlIndex] = useState(0);
+  console.log(audio?.currentTime);
+  useEffect(() => {
+    const _audio = new Audio();
+    _audio.controls = true;
+    _audio.src = audioUrls[0];
+    _audio.volume = 0;
+
+    setAudio(_audio);
+  }, []);
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
     height: 80,
-    url: audioUrls[0],
-    plugins: useMemo(() => [Timeline.create()], []),
+    // url: audioUrls[0],
+    media: audio!,
+    // plugins: useMemo(() => [Timeline.create()], []),
     waveColor: "#494950",
     progressColor: "#0011ff",
     cursorColor: "#eeff00",
@@ -50,7 +60,7 @@ export default function AudioSprites() {
 
   return (
     <>
-      <div className="flex w-full">
+      <div className="flex  w-full flex-col">
         <div
           onClick={onPlayPause}
           style={{ minWidth: "5em" }}
@@ -70,6 +80,11 @@ export default function AudioSprites() {
       {/* <div style={{ margin: "1em 0", display: "flex", gap: "1em" }}>
         <button onClick={onUrlChange}>Change audio</button>
       </div> */}
+      <audio
+        className="absolute bottom-0 left-0 w-full"
+        controls
+        src={audioUrls[0]}
+      ></audio>
     </>
   );
 }
