@@ -2,13 +2,20 @@ import Line from "./container/landing/line";
 
 export default function Home() {
   return (
-    <main className="w-screen h-screen flex flex-col items-center bg-[#121214]">
-      <p className="w-screen flex flex-col items-center justify-between text-[#f1f609] text-[14rem] italic font-extrabold bg-[#121214]">
+    <main
+      className="flex h-[90%] w-full flex-auto flex-col content-center items-center justify-center
+      bg-pointblack"
+    >
+      s
+      <p
+        className="flex w-full flex-col items-center justify-between bg-pointblack text-[14rem]
+          font-extrabold italic text-pointyellow"
+      >
         MUGIT
       </p>
-      <div className="w-screen items-center justify-between  bg-[#121214]">
+      <div className="w-full items-center justify-between bg-pointblack">
         <Line />
-        <p className="text-[#f1f609] text-[2rem] font-bold text-center p-2">
+        <p className="mt-5 text-center text-[2rem] font-bold text-pointyellow">
           Make your own Flow
         </p>
       </div>
