@@ -1,16 +1,16 @@
-import { theme } from "../styles/theme";
-
+import Trendslist from "../container/trends/trendslist";
 export default function TrendsPage() {
   return (
     <main
-      className={`box-border flex h-full w-full flex-auto flex-col items-center bg-[${theme.pointyellow}] px-10 py-8`}
-      // className={`w-screen flex flex-col flex-auto items-center bg-[${theme.pointyellow}]`}
+      //   className="py-10s flex min-h-[90%] w-full flex-auto flex-col content-center items-center
+      // justify-center bg-pointyellow"
+      className="py-10s flex min-h-[90%] w-full flex-auto flex-col content-center items-center
+    justify-center "
     >
-      <div className="flex h-full flex-auto flex-col items-center border-orange-700">
+      <div className="flex h-full w-7/12 flex-col border-2 border-solid">
         이거 트렌드 페이지임
-      </div>
-      <div className="flex h-full flex-auto flex-col items-center border-orange-700">
-        이거 트렌드 페이지임
+        <div>여기는 검색하는 데</div>
+        <Trendslist />
       </div>
     </main>
   );

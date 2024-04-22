@@ -3,5 +3,5 @@ export default function TrendsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return <>{children}</>;
 }
