@@ -40,3 +40,11 @@ cookie:
     access-token: 86400 # 1일
     refresh-token: 2419200 # 4주
 
+default:
+  profile:
+    text: 텍스트를 입력하세요.
+    image: DEFAULT_IMAGE_URL
+
+logging:
+  level:
+    root: info

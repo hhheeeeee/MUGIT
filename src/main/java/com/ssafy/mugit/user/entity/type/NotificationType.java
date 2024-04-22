@@ -1,4 +1,4 @@
-package com.ssafy.mugit.user.notification.entity;
+package com.ssafy.mugit.user.entity.type;
 
 public enum NotificationType {
     FOLLOW, LIKE, FLOW_RELEASE

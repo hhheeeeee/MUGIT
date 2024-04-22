@@ -1,16 +1,15 @@
 package com.ssafy.mugit.global.auth;
 
-import com.ssafy.mugit.global.exception.GlobalApiException;
-import com.ssafy.mugit.global.exception.UserApiException;
-import com.ssafy.mugit.global.exception.error.GlobalApiError;
-import com.ssafy.mugit.global.exception.error.UserApiError;
-import com.ssafy.mugit.user.main.entity.User;
+import com.ssafy.mugit.user.entity.Profile;
+import com.ssafy.mugit.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,21 +28,26 @@ public class CookieService {
     @Value("${cookie.period.refresh-token}")
     private long periodRefreshTokenCookie;
 
-    public HttpHeaders getLoginCookie(User user) {
+    public HttpHeaders getLoginCookieHeader(User user) {
         HttpHeaders cookieHeaders = new HttpHeaders();
+        Profile profile = user.getProfile();
 
-        List<String> cookies = new ArrayList<>();
-        cookies.add(getAccessTokenCookie(user.getId()).toString());
-        cookies.add(getRefreshTokenCookie(user.getId()).toString());
-        cookies.add(getUserInfoCookie("isLogined", "true").toString());
-        cookies.add(getUserInfoCookie("nickName", user.getProfile().getNickName()).toString());
-        cookies.add(getUserInfoCookie("profileText", user.getProfile().getProfileText()).toString());
-        cookies.add(getUserInfoCookie("profileImage", user.getProfile().getProfileImage()).toString());
-        cookies.add(getUserInfoCookie("notificationCount", Integer.toString(user.getNotifications().size())).toString());
-
-        cookies.forEach(cookie -> cookieHeaders.add(HttpHeaders.SET_COOKIE, cookie));
+        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("isLogined", "true").toString());
+        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("nickName", profile.getNickName()).toString());
+        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("profileText", profile.getProfileText()).toString());
+        cookieHeaders.add(HttpHeaders.SET_COOKIE, getUserInfoCookie("profileImage", profile.getProfileImage()).toString());
 
         return cookieHeaders;
+    }
+
+    public ResponseCookie getUserInfoCookie(String key, String value) {
+        return ResponseCookie.from(key, URLEncoder.encode(value, StandardCharsets.UTF_8))
+                .path("/")
+                .domain(domainUrl)
+                .sameSite("None")
+                .secure(true)
+                .maxAge(periodAccessTokenCookie)
+                .build();
     }
 
     public HttpHeaders getTokenCookie(User user) {
@@ -56,16 +60,6 @@ public class CookieService {
         cookies.forEach(cookie -> cookieHeaders.add(HttpHeaders.SET_COOKIE, cookie));
 
         return cookieHeaders;
-    }
-
-    private ResponseCookie getUserInfoCookie(String key, String value) {
-        return ResponseCookie.from(key, value)
-                .path("/")
-                .domain(domainUrl)
-                .sameSite("None")
-                .secure(true)
-                .maxAge(periodAccessTokenCookie)
-                .build();
     }
 
     private ResponseCookie getAccessTokenCookie(Long id) {

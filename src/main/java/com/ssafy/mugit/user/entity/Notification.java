@@ -1,6 +1,6 @@
-package com.ssafy.mugit.user.notification.entity;
+package com.ssafy.mugit.user.entity;
 
-import com.ssafy.mugit.user.main.entity.User;
+import com.ssafy.mugit.user.entity.type.NotificationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

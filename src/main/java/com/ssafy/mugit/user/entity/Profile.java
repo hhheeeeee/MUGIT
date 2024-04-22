@@ -1,13 +1,12 @@
-package com.ssafy.mugit.user.main.entity;
+package com.ssafy.mugit.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "profile")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Profile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
@@ -33,3 +32,4 @@ public class Profile {
         this.profileImage = profileImage;
     }
 }
+

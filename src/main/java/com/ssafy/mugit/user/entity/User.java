@@ -1,11 +1,8 @@
-package com.ssafy.mugit.user.main.entity;
+package com.ssafy.mugit.user.entity;
 
-import com.ssafy.mugit.user.main.entity.type.SnsType;
-import com.ssafy.mugit.user.notification.entity.Notification;
+import com.ssafy.mugit.user.entity.type.SnsType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -40,7 +38,7 @@ public class User {
         this.email = email;
     }
 
-    public void regist(String nickName, String profileText, String profileImage) {
-        this.profile = new Profile(nickName, profileText, profileImage);
+    public void regist(Profile profile) {
+        this.profile = profile;
     }
 }
