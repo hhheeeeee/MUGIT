@@ -1,7 +1,10 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import Demows from "@/components/demows";
+import dynamic from "next/dynamic";
+const Demows = dynamic(() => import("@/app/container/profile/demows"), {
+  ssr: false,
+});
 
 export default function UserFlow() {
   const Flows = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
@@ -10,14 +13,15 @@ export default function UserFlow() {
     "Valley_of_Spies.mp3",
     "Winner_Winner_Funky_Chicken_Dinner.mp3",
   ];
+
   return (
-    <div className="w-4/5 my-10 mx-auto">
+    <div className="mx-auto my-10 w-4/5">
       <Tab.Group>
         <Tab.List>
           <Tab
             className={({ selected }) =>
               (selected
-                ? "underline underline-offset-[6px] font-bold focus:outline-none "
+                ? "font-bold underline underline-offset-[6px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
@@ -26,7 +30,7 @@ export default function UserFlow() {
           <Tab
             className={({ selected }) =>
               (selected
-                ? "underline underline-offset-[6px] font-bold focus:outline-none "
+                ? "font-bold underline underline-offset-[6px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
@@ -35,7 +39,7 @@ export default function UserFlow() {
           <Tab
             className={({ selected }) =>
               (selected
-                ? "underline underline-offset-[6px] font-bold focus:outline-none "
+                ? "font-bold underline underline-offset-[6px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
