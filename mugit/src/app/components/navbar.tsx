@@ -5,7 +5,6 @@ import Link from "next/link";
 import Logo from "../assets/logo";
 import { usePathname } from "next/navigation";
 import { navbaritems } from "../constants/navbaritems";
-
 const Navbar = () => {
   const pathname = usePathname();
 

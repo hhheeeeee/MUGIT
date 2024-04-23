@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "./components/navbar";
 import "./globals.css";
+import { Provider, createStore, atom } from "jotai";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +16,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const myStore = createStore();
+  // const countAtom = atom(0);
+  // myStore.set(countAtom, 1);
+  // const unsub = myStore.sub(countAtom, () => {
+  //   console.log("countAtom value is changed to", myStore.get(countAtom));
+  // });
+  // unsub() to unsubscribe
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        {children}
-      </body>
+      {/* <Provider store={myStore}> */}
+      <Provider>
+        <body className={inter.className}>
+          <Navbar />
+          {children}
+        </body>
+      </Provider>
     </html>
   );
 }

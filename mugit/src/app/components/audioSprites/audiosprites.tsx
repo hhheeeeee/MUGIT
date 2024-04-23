@@ -1,4 +1,5 @@
 "use client";
+
 import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import Timeline from "wavesurfer.js/dist/plugins/timeline.esm.js";
