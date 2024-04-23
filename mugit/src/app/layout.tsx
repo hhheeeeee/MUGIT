@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Navbar from "./components/navbar";
 import "./globals.css";
 import { Provider, createStore, atom } from "jotai";
+import BottomPlaybar from "./components/bottomPlaybar/BottomPlaybar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,13 +24,15 @@ export default function RootLayout({
   //   console.log("countAtom value is changed to", myStore.get(countAtom));
   // });
   // unsub() to unsubscribe
+
   return (
     <html lang="en">
       {/* <Provider store={myStore}> */}
       <Provider>
-        <body className={inter.className}>
+        <body className={inter.className} suppressHydrationWarning={true}>
           <Navbar />
           {children}
+          <BottomPlaybar />
         </body>
       </Provider>
     </html>

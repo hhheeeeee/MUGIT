@@ -137,48 +137,45 @@
   }
 
   audio::-webkit-media-controls-play-button {
-    background-color: #a02727;
-    color: #ed3801;
+    background-color: #eeff00;
+    color: #eeff00;
   }
   audio::-webkit-media-controls-panel {
-    background-color: #8ea027;
-    color: #67a027;
+    background-color: #eeff00;
+    color: #eeff00;
   }
 
   audio::-webkit-media-controls-mute-button {
-    background-color: #a0276e;
-    color: #a0276e;
+    background-color: #eeff00;
+    color: #eeff00;
   }
 
   audio::-webkit-media-controls-play-button {
-    background-color: #a0276e;
-    color: #a0276e;
+    background-color: #eeff00;
+    color: #eeff00;
   }
 
   audio::-webkit-media-controls-timeline-container {
-    background-color: #a0276e;
-    color: #a0276e;
+    background-color: #eeff00;
+    color: #eeff00;
   }
 
   audio::-webkit-media-controls-current-time-display {
-    background-color: #a0276e;
-    color: #a0276e;
+    color: #0033ff;
   }
 
   audio::-webkit-media-controls-time-remaining-display {
-    background-color: #a0276e;
-    color: #a0276e;
-  }
-
-  audio::-webkit-media-controls-timeline {
-    background-color: #a0276e;
-    color: #a0276e;
+    color: #0033ff;
   }
 
   audio::-webkit-media-controls-volume-slider-container {
-    background-color: #a0276e;
+    color: #0033ff;
+  }
+  /* audio::-webkit-media-controls-timeline {
     color: #a0276e;
   }
+
+
 
   audio::-webkit-media-controls-volume-slider {
     background-color: #a0276e;
@@ -213,5 +210,6 @@
   audio::-webkit-media-controls-toggle-closed-captions-button {
     background-color: #a0276e;
     color: #a0276e;
-  }
+  } */
+  /* 호버 효과를 위한 추가 스타일 */
 }

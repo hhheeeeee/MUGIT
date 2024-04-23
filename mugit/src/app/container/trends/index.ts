@@ -1,2 +1,2 @@
-export * from "./trendslist";
-export * from "./searchbar";
+export * from "./Searchbar";
+export * from "./Trendslist";
