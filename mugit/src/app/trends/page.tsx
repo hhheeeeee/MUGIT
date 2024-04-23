@@ -1,5 +1,6 @@
-import Searchbar from "../container/trends/searchbar";
-import Trendslist from "../container/trends/trendslist";
+import Trendslist from "../container/trends/Trendslist";
+import Searchbar from "../container/trends/Searchbar";
+
 export default function TrendsPage() {
   return (
     <main
