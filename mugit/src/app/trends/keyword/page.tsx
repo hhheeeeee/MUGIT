@@ -1,17 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import { useSearchParams } from "next/navigation";
 import ResultTable from "@/app/container/trends/keyword/ResultTable";
-export default function Page({ params }: { params: { keyword: string } }) {
+
+export default function Page() {
   const [searchInput, setSearchInput] = useState<string>("");
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("search");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
-
-  useEffect(() => {
-    setSearchInput(params.keyword);
-  }, []);
 
   return (
     <div
@@ -23,7 +22,7 @@ export default function Page({ params }: { params: { keyword: string } }) {
           type="text"
           className=" h-full w-[70%] rounded-full bg-gray-200 p-0 pl-4 outline-none"
           onChange={(event) => handleInput(event)}
-          value={searchInput}
+          value={keyword || searchInput}
         />
         <button className="h-full w-[30%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white">
           Search

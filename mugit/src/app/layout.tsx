@@ -28,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* <Provider store={myStore}> */}
+      <link rel="icon" href="/icon.png" type="image/png" sizes="any" />
       <Provider>
         <body className={inter.className} suppressHydrationWarning={true}>
           <Navbar />

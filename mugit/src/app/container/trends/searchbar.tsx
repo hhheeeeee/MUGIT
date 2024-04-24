@@ -3,8 +3,10 @@
 import IconSearch from "@/app/assets/icon/IconSearch";
 import { genres } from "@/app/constants/genres";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Searchbar() {
+  const router = useRouter();
   const [showIcon, setShowIcon] = useState<boolean>(true);
   const [searchInput, setSearchInput] = useState<string>("");
 
@@ -27,7 +29,10 @@ export default function Searchbar() {
           onChange={(event) => handleInput(event)}
           value={searchInput}
         />
-        <button className="h-full w-[15%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white">
+        <button
+          onClick={() => router.push(`/trends/keyword?search=${searchInput}`)}
+          className="h-full w-[15%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white"
+        >
           Search
         </button>
 
@@ -45,6 +50,9 @@ export default function Searchbar() {
             return (
               <div
                 key={item.id}
+                onClick={() =>
+                  router.push(`/trends/keyword?search=${item.name}`)
+                }
                 className="my-1 mr-3 cursor-pointer rounded-lg border-2 border-solid p-2 text-gray-500
 								transition duration-300 hover:bg-pointblack hover:text-white"
               >
