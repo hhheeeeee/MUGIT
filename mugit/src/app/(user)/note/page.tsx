@@ -1,7 +1,7 @@
 import IconCamera from "@/app/assets/icon/IconCamera";
 import MyRadioGroup from "@/app/container/note/RadioGroup";
 import Description from "@/app/components/Description";
-
+import UploadContainer from "@/app/components/fileUpload/UploadContainer";
 export default function NotePage() {
   return (
     <main className="flex min-h-[90%] w-full flex-col px-52 py-10">
@@ -24,12 +24,7 @@ export default function NotePage() {
 
         {/* 파일 가져오는 부분임 */}
         <div className="w-9/12">
-          <div className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-solid border-gray-200 bg-pointyellow bg-opacity-25 p-10">
-            <p className="text-xl">Drag and drop your file here</p>
-            <button className="rounded-lg bg-pointblue  p-3 text-white hover:bg-[#052cc6] hover:shadow">
-              Or choose files to upload
-            </button>
-          </div>
+          <UploadContainer />
 
           <h2 className="mt-4 text-lg">Note Name</h2>
           <input
