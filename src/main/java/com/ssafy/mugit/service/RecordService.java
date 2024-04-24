@@ -1,0 +1,112 @@
+package com.ssafy.mugit.service;
+
+import com.ssafy.mugit.global.CustomRecordException;
+import com.ssafy.mugit.global.RecordError;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+
+@Service
+@RequiredArgsConstructor
+public class RecordService {
+
+    private final WebClient webClient;
+    @Value("${upload-path}")
+    private String uploadPath;
+
+    public String fileUpload(HttpServletRequest request, Long flowId, List<Long> sourceIds, List<MultipartFile> files) {
+
+        // 1. JSESSIONID 획득
+        Optional<String> jSessionId = getJSessionId(request);
+        if (jSessionId.isEmpty()) {
+            throw new CustomRecordException(RecordError.SESSIONID_NOT_EXISTED);
+        }
+
+        // 2. JSESSIONID로 flowId의 소유자인지 검사
+        getUserId(jSessionId.get(), flowId);
+
+        // 3. 추가된 파일 저장 처리
+        HashMap<String, String> filePaths = new HashMap<>();
+        filePaths = saveFiles(files);
+
+        // 4. 레코드 생성 요청
+        Map<String, Object> body = new HashMap<>();
+        body.put("sourceIds", sourceIds);
+        body.put("filePaths", filePaths);
+        return createRecord(jSessionId.get(), flowId, body);
+    }
+
+    private Optional<String> getJSessionId(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            return Arrays.stream(request.getCookies())
+                    .filter(cookie -> "JSESSIONID".equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue);
+        }
+        return Optional.empty();
+    }
+
+    private void getUserId(String jSessionId, Long flowId) {
+        webClient.get()
+                .uri("/users/validate/{flowId}", flowId)
+                .cookie("JSESSIONID", jSessionId)
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .onErrorMap(WebClientResponseException.class, e -> new CustomRecordException(RecordError.SESSIONID_ILLEGAL))
+                .block();
+    }
+
+    private HashMap<String, String> saveFiles(List<MultipartFile> files) {
+        if (files == null) {
+            return null;
+        }
+
+        try {
+            HashMap<String, String> map = new HashMap<>();
+
+            for (MultipartFile file : files) {
+
+                String originName = file.getOriginalFilename();
+                String extension = getExtension(originName);
+                String uuidName = UUID.randomUUID() + extension;
+                map.put(uuidName, originName);
+
+                Path path = Paths.get(uploadPath + uuidName);
+                Files.createDirectories(path.getParent());
+
+                file.transferTo(path);
+            }
+
+            return map;
+        } catch (IOException e) {
+            throw new RuntimeException("Directory Create Error");
+        }
+    }
+
+    private String getExtension(String filename) {
+        int lastDotIndex = filename.lastIndexOf(".");
+        return lastDotIndex != -1 ? filename.substring(lastDotIndex) : "";
+    }
+
+    private String createRecord(String jSessionId, Long flowId, Map<String, Object> body) {
+        return webClient.post()
+                .uri("/records/flows/{flowId}", flowId)
+                .cookie("JSESSIONID", jSessionId)
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(String.class)
+                .onErrorMap(WebClientResponseException.class, e -> new InternalError())
+                .block();
+    }
+}

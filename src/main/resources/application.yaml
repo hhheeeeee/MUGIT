@@ -1,0 +1,17 @@
+spring:
+  config:
+    import:
+      - optional:file:env/backend/.env[.properties]
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  web:
+    resources:
+      static-locations: file:///${UPLOAD_PATH}
+
+user-server: http://${USER_SERVER}/api
+upload-path: ${UPLOAD_PATH}
+
+server:
+  port: 8090
