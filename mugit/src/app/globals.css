@@ -171,11 +171,15 @@
   audio::-webkit-media-controls-volume-slider-container {
     color: #0033ff;
   }
+
+  * {
+    z-index: inherit;
+  }
   /* audio::-webkit-media-controls-timeline {
     color: #a0276e;
   }
 
-
+  
 
   audio::-webkit-media-controls-volume-slider {
     background-color: #a0276e;

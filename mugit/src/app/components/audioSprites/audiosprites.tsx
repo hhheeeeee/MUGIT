@@ -164,7 +164,7 @@ export default function AudioSprites() {
 
   const handleMouseMove = (e: any) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left; // 현재 마우스 위치
+    const x = e.clientX - rect.left;
     setWidth(x);
   };
 
@@ -188,7 +188,7 @@ export default function AudioSprites() {
           <div ref={containerRef} className="absolute left-0 top-0 w-full" />
           <div
             style={{ width: `${width}px` }}
-            className="absolute left-0 top-0 h-full bg-pointblue bg-opacity-40 transition-all duration-300"
+            className="absolute left-0 top-0 h-full bg-pointblue bg-opacity-40 transition-all duration-0"
           ></div>
         </div>
       </div>
