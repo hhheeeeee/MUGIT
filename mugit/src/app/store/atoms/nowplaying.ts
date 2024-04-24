@@ -2,23 +2,23 @@
 
 import { atom } from "jotai";
 
+// 현재 bottomNavbar에서 play되고 있는 노래가 있는지
 export const isplaying = atom(false);
 
-const initialValue = {
-  id: 0,
-  title: "Flow Name1",
-  name: "flow maker1",
-  soundurl: "musics/example.mp3",
+export const SonginitialValue = {
+  id: -1,
+  title: "no title",
+  name: "no name",
+  soundurl: "",
   imgurl:
     "https://plus.unsplash.com/premium_photo-1689247409711-f70c5cfa9254?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
-export const nowPlaying = atom(initialValue);
 
-export const playingButton = atom(false);
+// 현재 bottomNavbar에서 play되고 있는 노래가 있을 때 그 노래에 대한 정보
+export const nowPlaying = atom(SonginitialValue);
 
-export const nowPlayintTime = atom(0);
-
-export const nowPlayingDuration = atom("0:00");
+// 현재 bottomNavbar에서 play되고 있는 노래의 총 길이
+// export const nowPlayingDuration = atom("0:00");
 
 // export const orderer_mobile_tel_atom = atom("");
 // export const orderer_name_atom = atom("");

@@ -2,24 +2,18 @@
 
 import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
-import Timeline from "wavesurfer.js/dist/plugins/timeline.esm.js";
 import { formatTime } from "@/app/utils/formatTime";
 import { useAtomValue } from "jotai";
-import { nowPlaying, nowPlayingDuration } from "@/app/store/atoms";
-
-const audioUrls = [
-  "/musics/example.mp3",
-  // "https://file-examples.com/storage/fe61ecc6566626110a55ee3/2017/11/file_example_MP3_700KB.mp3",
-];
+import { nowPlaying, isplaying } from "@/app/store/atoms";
+import IconPlay from "@/app/assets/icon/IconPlay";
+import IconPause from "@/app/assets/icon/IconPause";
 
 export default function BottomController() {
   const containerRef = useRef(null);
   const song = useAtomValue(nowPlaying);
-  const duration = useAtomValue(nowPlayingDuration);
-  // const [urlIndex, setUrlIndex] = useState(0);
-  // console.log(audio?.currentTime);
+  const [duration, setDuration] = useState("");
 
-  const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
+  const { wavesurfer, isPlaying, currentTime, isReady } = useWavesurfer({
     container: containerRef,
     height: 10,
     width: 389,
@@ -35,7 +29,7 @@ export default function BottomController() {
     fillParent: true,
     url: song.soundurl,
     mediaControls: false,
-    autoplay: true,
+    // autoplay: true,
     interact: true,
     dragToSeek: false,
     hideScrollbar: true,
@@ -45,21 +39,17 @@ export default function BottomController() {
     sampleRate: 8000,
   });
 
-  // const onUrlChange = useCallback(() => {
-  //   setUrlIndex((index) => (index + 1) % audioUrls.length);
-  // }, []);
-
   const onPlayPause = useCallback(() => {
     wavesurfer && wavesurfer.playPause();
   }, [wavesurfer]);
 
-  const [width, setWidth] = useState(0);
-
-  const handleMouseMove = (e: any) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left; // 현재 마우스 위치
-    setWidth(x);
-  };
+  useEffect(() => {
+    let _duration = wavesurfer?.getDuration();
+    if (_duration && _duration > 0) {
+      setDuration(formatTime(_duration));
+      onPlayPause();
+    }
+  }, [isReady]);
 
   return (
     <>
@@ -69,18 +59,15 @@ export default function BottomController() {
           style={{ minWidth: "5em" }}
           className="flex w-[10%] items-center justify-center "
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-pointyellow">
-            {isPlaying ? "||" : ">"}
-          </span>
+          {/* <div className="text-pointyellow">{String(isPlaying)}</div> */}
+          {isPlaying ? (
+            <IconPause tailwindCSS="" color="#f1f609" size="50px" />
+          ) : (
+            <IconPlay tailwindCSS="" color="#f1f609" size="50px" />
+          )}
         </div>
         <div className="mx-2 text-pointyellow">{formatTime(currentTime)}</div>
-        <div
-          className="relative w-full"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => setWidth(0)}
-        >
-          <div ref={containerRef} className="" />
-        </div>
+        <div ref={containerRef} className="" />
         <div className="text-pointyellow">{duration}</div>
       </div>
     </>

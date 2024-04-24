@@ -1,17 +1,19 @@
 "use client";
 
 type IconProps = {
-  tailwindCSS: string;
-  onClick: () => void;
+  tailwindCSS?: string;
+  color?: string;
+  size?: string;
+  onClick?: () => void;
 };
 
-function IconPlay({ tailwindCSS, onClick }: IconProps) {
+function IconPlay({ tailwindCSS, color, size, onClick }: IconProps) {
   return (
     <svg
-      fill="#f1f609"
+      fill={color ? color : "#f1f609"}
       viewBox="0 0 16 16"
-      height="5em"
-      width="5em"
+      height={size ? size : "5em"}
+      width={size ? size : "5em"}
       className={tailwindCSS}
       onClick={onClick}
     >
