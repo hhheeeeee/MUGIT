@@ -1,10 +1,11 @@
 import FlowInfo from "@/app/container/flow/flowinfo";
-import FlowDetail from "../container/flow/flowdetail";
+import Review from "../container/flow/review";
 
 export default function Page() {
   return (
     <div>
       <FlowInfo />
+      <Review />
     </div>
   );
 }
