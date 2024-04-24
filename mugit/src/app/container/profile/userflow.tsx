@@ -16,7 +16,7 @@ export default function UserFlow() {
   ];
 
   return (
-    <div className="mx-auto my-10 w-4/5">
+    <div className="mx-auto my-10 w-2/3">
       <Tab.Group>
         <Tab.List>
           <Tab

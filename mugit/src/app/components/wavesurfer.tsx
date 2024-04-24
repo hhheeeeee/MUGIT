@@ -52,8 +52,8 @@ export default function WavesurferComp({ musicname }: { musicname: string }) {
       >
         {isPlaying ? "Pause" : "Play"}
       </button>
-      <div className="relative inline-block w-[88%]">
-        <div ref={containerRef} className="z-0" />
+      <div className="relative z-0 inline-block w-[88%]">
+        <div ref={containerRef} />
         <div className="absolute bottom-0 left-0 z-10 -mt-[1px] bg-pointblack p-0.5 text-[11px] text-white">
           {formatTime(currentTime)}
         </div>
