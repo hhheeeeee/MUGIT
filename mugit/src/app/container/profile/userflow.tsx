@@ -1,8 +1,9 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
-const Demows = dynamic(() => import("@/app/container/profile/demows"), {
+const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
 
@@ -21,7 +22,7 @@ export default function UserFlow() {
           <Tab
             className={({ selected }) =>
               (selected
-                ? "font-bold underline underline-offset-[6px] focus:outline-none "
+                ? "font-bold underline decoration-4 underline-offset-[7.3px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
@@ -30,7 +31,7 @@ export default function UserFlow() {
           <Tab
             className={({ selected }) =>
               (selected
-                ? "font-bold underline underline-offset-[6px] focus:outline-none "
+                ? "font-bold underline decoration-4 underline-offset-[7.3px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
@@ -39,28 +40,70 @@ export default function UserFlow() {
           <Tab
             className={({ selected }) =>
               (selected
-                ? "font-bold underline underline-offset-[6px] focus:outline-none "
+                ? "font-bold underline decoration-4 underline-offset-[7.3px] focus:outline-none "
                 : "") + "pr-5 text-2xl"
             }
           >
             Works
           </Tab>
         </Tab.List>
-        <hr />
+        <hr className="border-2" />
         <Tab.Panels>
           <Tab.Panel>
             {Flows.map((flow: string) => (
-              <Demows key={flow} musicname={flow} />
+              <div className="my-5 flex w-full">
+                <Image
+                  src="/Rectangle 35.png"
+                  alt=""
+                  width={150}
+                  height={150}
+                />
+                <div className="relative ml-5 w-full">
+                  <p className="text-xl font-semibold">{flow}</p>
+                  <p className="text-base">Any Nickname</p>
+                  <div className="absolute bottom-0 w-full">
+                    <WavesurferComp key={flow} musicname={flow} />
+                  </div>
+                </div>
+              </div>
             ))}
           </Tab.Panel>
           <Tab.Panel>
             {Likes.map((flow: string) => (
-              <Demows key={flow} musicname={flow} />
+              <div className="my-5 flex w-full">
+                <Image
+                  src="/Rectangle 35.png"
+                  alt=""
+                  width={150}
+                  height={150}
+                />
+                <div className="relative ml-5 w-full">
+                  <p className="text-xl font-semibold">{flow}</p>
+                  <p className="text-base">Any Nickname</p>
+                  <div className="absolute bottom-0 w-full">
+                    <WavesurferComp key={flow} musicname={flow} />
+                  </div>
+                </div>
+              </div>
             ))}
           </Tab.Panel>
           <Tab.Panel>
             {Works.map((flow: string) => (
-              <Demows key={flow} musicname={flow} />
+              <div className="my-5 flex w-full">
+                <Image
+                  src="/Rectangle 35.png"
+                  alt=""
+                  width={150}
+                  height={150}
+                />
+                <div className="relative ml-5 w-full">
+                  <p className="text-xl font-semibold">{flow}</p>
+                  <p className="text-base">Any Nickname</p>
+                  <div className="absolute bottom-0 w-full">
+                    <WavesurferComp key={flow} musicname={flow} />
+                  </div>
+                </div>
+              </div>
             ))}
           </Tab.Panel>
         </Tab.Panels>
