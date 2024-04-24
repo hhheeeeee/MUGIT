@@ -26,7 +26,7 @@ export default function Demows({ musicname }: { musicname: string }) {
     wavesurfer && wavesurfer.playPause();
   }, [wavesurfer]);
   return (
-    <div className="mx-auto my-10 p-1">
+    <div className="relative z-0 mx-auto my-10 p-1">
       <div ref={containerRef} />
 
       <p>Current audio: {audioUrl}</p>
