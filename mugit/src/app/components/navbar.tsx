@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import Logo from "../assets/logo";
 import { usePathname } from "next/navigation";
 import { navbaritems } from "../constants/navbaritems";
@@ -54,9 +54,14 @@ const Navbar = () => {
         <div>
           <Link
             href="#"
-            className="mt-4 inline-block rounded border border-white px-4 py-2 text-sm leading-none text-white hover:border-transparent hover:bg-white hover:text-teal-500 lg:mt-0"
+            className="mt-4 inline-block px-4 leading-none lg:mt-0"
           >
-            Download
+            <Image
+              src="/google/web_dark_sq_ctn@4x.png"
+              alt=""
+              width={150}
+              height={0}
+            />
           </Link>
         </div>
         {/* <Image

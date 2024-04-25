@@ -51,7 +51,7 @@ export default function UserFlow() {
         <Tab.Panels>
           <Tab.Panel>
             {Flows.map((flow: string) => (
-              <div className="my-5 flex w-full">
+              <div key={flow} className="my-5 flex w-full">
                 <Image
                   src="/Rectangle 35.png"
                   alt=""
@@ -70,7 +70,7 @@ export default function UserFlow() {
           </Tab.Panel>
           <Tab.Panel>
             {Likes.map((flow: string) => (
-              <div className="my-5 flex w-full">
+              <div key={flow} className="my-5 flex w-full">
                 <Image
                   src="/Rectangle 35.png"
                   alt=""
@@ -89,7 +89,7 @@ export default function UserFlow() {
           </Tab.Panel>
           <Tab.Panel>
             {Works.map((flow: string) => (
-              <div className="my-5 flex w-full">
+              <div key={flow} className="my-5 flex w-full">
                 <Image
                   src="/Rectangle 35.png"
                   alt=""
