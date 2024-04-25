@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react";
 import * as am5 from "@amcharts/amcharts5";
-import * as am5xy from "@amcharts/amcharts5/xy";
+import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
 export default function Tree() {
@@ -9,77 +9,119 @@ export default function Tree() {
 
     root.setThemes([am5themes_Animated.new(root)]);
 
-    let chart = root.container.children.push(
-      am5xy.XYChart.new(root, {
-        panY: false,
-        layout: root.verticalLayout,
+    var series = root.container.children.push(
+      am5hierarchy.ForceDirected.new(root, {
+        downDepth: 1,
+        initialDepth: 10,
+        topDepth: 0,
+        valueField: "value",
+        categoryField: "name",
+        childDataField: "children",
+        xField: "x",
+        yField: "y",
+        minRadius: 30,
+        manyBodyStrength: -40,
       })
     );
 
-    // Define data
-    let data = [
+    // Disable circles
+    // series.circles.template.set("forceHidden", true);
+    // series.outerCircles.template.set("forceHidden", true);
+
+    // Set up labels
+    series.labels.template.setAll({
+      fill: am5.color(0x000000),
+      y: 45,
+      //y: am5.percent(10),
+      oversizedBehavior: "none",
+    });
+
+    series.nodes.template.setup = function (target) {
+      target.events.on("dataitemchanged", function (ev) {
+        console.log("here");
+        console.log(ev.target.dataItem?.dataContext);
+
+        var container = target.children.push(
+          am5.Container.new(root, {
+            width: 80,
+            height: 80,
+            centerX: am5.percent(0),
+            centerY: am5.percent(0),
+          })
+        );
+
+        var circleMask = container.children.push(
+          am5.Circle.new(root, {
+            radius: 40,
+            centerX: am5.percent(50),
+            centerY: am5.percent(50),
+          })
+        );
+
+        container.set("mask", circleMask);
+
+        var icon = container.children.push(
+          am5.Picture.new(root, {
+            width: 80,
+            height: 80,
+            centerX: am5.percent(50),
+            centerY: am5.percent(50),
+            src: ev.target.dataItem.dataContext.image,
+            wheelable: true,
+          })
+        );
+      });
+    };
+
+    series.data.setAll([
       {
-        category: "Research",
-        value1: 1000,
-        value2: 588,
+        name: "Browsers",
+        image: "/person.jpg",
+        x: am5.percent(50),
+        y: am5.percent(50),
+        children: [
+          {
+            name: "Chrome",
+            value: 1,
+            image: "/Rectangle 35.png",
+          },
+          {
+            name: "Firefox",
+            value: 1,
+            image: "/Rectangle 35.png",
+          },
+          {
+            name: "Firefox",
+            value: 1,
+            image: "/Rectangle 35.png",
+          },
+          {
+            name: "Firefox",
+            value: 1,
+            image: "/Rectangle 35.png",
+          },
+          {
+            name: "HHHHHHHH",
+            value: 1,
+            image: "/Rectangle 35.png",
+            children: [
+              {
+                name: "Chrome",
+                value: 1,
+                image: "/Rectangle 35.png",
+              },
+              {
+                name: "Firefox",
+                value: 1,
+                image: "/Rectangle 35.png",
+              },
+            ],
+          },
+        ],
       },
-      {
-        category: "Marketing",
-        value1: 1200,
-        value2: 1800,
-      },
-      {
-        category: "Sales",
-        value1: 850,
-        value2: 1230,
-      },
-    ];
+    ]);
 
-    // Create Y-axis
-    let yAxis = chart.yAxes.push(
-      am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {}),
-      })
-    );
-
-    // Create X-Axis
-    let xAxis = chart.xAxes.push(
-      am5xy.CategoryAxis.new(root, {
-        renderer: am5xy.AxisRendererX.new(root, {}),
-        categoryField: "category",
-      })
-    );
-    xAxis.data.setAll(data);
-
-    // Create series
-    let series1 = chart.series.push(
-      am5xy.ColumnSeries.new(root, {
-        name: "Series",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value1",
-        categoryXField: "category",
-      })
-    );
-    series1.data.setAll(data);
-
-    let series2 = chart.series.push(
-      am5xy.ColumnSeries.new(root, {
-        name: "Series",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "value2",
-        categoryXField: "category",
-      })
-    );
-    series2.data.setAll(data);
-
-    // Add legend
-    let legend = chart.children.push(am5.Legend.new(root, {}));
-    legend.data.setAll(chart.series.values);
-
-    // Add cursor
-    chart.set("cursor", am5xy.XYCursor.new(root, {}));
+    series.set("selectedDataItem", series.dataItems[0]);
 
     return () => {
       root.dispose();
