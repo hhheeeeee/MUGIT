@@ -9,8 +9,8 @@ export default function UploadContainer() {
 
   // 구현할 InputDragDrop에서 파일이 선택될 때 상태를 업데이트 한다.
   const handleFileSelect = (file: File | null) => {
+    console.log("fileeeeeeeeeee", file);
     setFile(file);
-    console.log(file);
   };
 
   // 파일 업로드를 처리하는 로직
@@ -36,7 +36,7 @@ export default function UploadContainer() {
         <DragDrop
           onChangeFile={handleFileSelect}
           description="Drag and drop your file here"
-          validExtensions={["mp3", "wav", "pcm", "wma"]} // 확장자 정보 추가
+          validExtensions={["mp3"]} // 확장자 정보 추가
         ></DragDrop>
       )}
     </>

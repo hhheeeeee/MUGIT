@@ -36,6 +36,14 @@ const DragDrop = ({
     e.stopPropagation();
   };
 
+  const isValidExtension = (file: File) => {
+    const fileName = file.name;
+    const fileNameSplit = fileName.split(".");
+    const fileExtension = fileNameSplit[fileNameSplit.length - 1];
+    console.log("valid", validExtensions, fileExtension);
+    return validExtensions.includes(fileExtension);
+  };
+
   // 드래그 중인 요소가 목표 지점에서 드롭될때
   const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
@@ -45,21 +53,23 @@ const DragDrop = ({
     // 드래그되는 데이터 정보와 메서드를 제공하는 dataTransfer 객체 사용
     if (e.dataTransfer) {
       const file = e.dataTransfer.files[0];
-      onChangeFile(file);
+      if (isValidExtension(file)) {
+        onChangeFile(file);
+      } else {
+        useToast({
+          type: "경고",
+          title: "잘못된 파일 형식",
+          text: "mp3, 어쩌고 한 파일들을 올려주세요",
+        });
+      }
     }
-  };
-
-  const isValidExtension = (file: File) => {
-    const fileName = file.name;
-    const fileNameSplit = fileName.split(".");
-    const fileExtension = fileNameSplit[fileNameSplit.length - 1];
-    return validExtensions.includes(fileExtension);
   };
 
   // Drag & Drop이 아닌 클릭 이벤트로 업로드되는 기능도 추가
   // 허용된 확장자라면 업로드, 아니라면 사용자에게 알림
   const handleChange = (e: any) => {
     const file = e.target.files ? e.target.files[0] : null;
+
     if (file && isValidExtension(file)) {
       onChangeFile(file);
     } else {
@@ -68,10 +78,12 @@ const DragDrop = ({
         title: "잘못된 파일 형식",
         text: "mp3, 어쩌고 한 파일들을 올려주세요",
       });
-
-      // input 요소의 값 초기화
       e.target.value = "";
+      onChangeFile(null);
     }
+
+    // input 요소의 값 초기화
+    e.target.value = "";
   };
 
   // 허용된 확장자라면 업로드, 아니라면 사용자에게 알림
