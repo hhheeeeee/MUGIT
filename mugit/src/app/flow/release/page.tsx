@@ -1,6 +1,7 @@
 import Description from "@/app/components/Description";
 import IconCamera from "@/app/assets/icon/IconCamera";
 import MyRadioGroup from "@/app/container/note/RadioGroup";
+import RecordMessage from "@/app/container/flow/release/recordMessage";
 
 import dynamic from "next/dynamic";
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
@@ -50,7 +51,7 @@ export default function NotePage() {
           <WavesurferComp musicname="Burkinelectric.mp3" />
 
           <h2 className="mt-6 text-lg">Record Messages</h2>
-          <div className="my-2 min-h-56 w-full rounded-lg border-2 border-solid border-gray-300"></div>
+          <RecordMessage />
 
           <h2 className="mt-4 text-lg">Description</h2>
           <textarea
