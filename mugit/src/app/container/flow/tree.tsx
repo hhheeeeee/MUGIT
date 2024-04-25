@@ -38,9 +38,6 @@ export default function Tree() {
 
     series.nodes.template.setup = function (target) {
       target.events.on("dataitemchanged", function (ev) {
-        console.log("here");
-        console.log(ev.target.dataItem?.dataContext);
-
         var container = target.children.push(
           am5.Container.new(root, {
             width: 80,
@@ -59,17 +56,20 @@ export default function Tree() {
         );
 
         container.set("mask", circleMask);
+        let imageSrc = (ev.target.dataItem?.dataContext as any)?.image;
 
-        var icon = container.children.push(
-          am5.Picture.new(root, {
-            width: 80,
-            height: 80,
-            centerX: am5.percent(50),
-            centerY: am5.percent(50),
-            src: ev.target.dataItem.dataContext.image,
-            wheelable: true,
-          })
-        );
+        if (imageSrc) {
+          var icon = container.children.push(
+            am5.Picture.new(root, {
+              width: 80,
+              height: 80,
+              centerX: am5.percent(50),
+              centerY: am5.percent(50),
+              src: imageSrc,
+              wheelable: true,
+            })
+          );
+        }
       });
     };
 
