@@ -16,6 +16,8 @@ export default function UserInfo() {
   function clickModal() {
     setIsOpen(!isOpen);
   }
+  const [newNickName, setNewNickName] = useState(tempInfo.nickName);
+  const [newProfileText, setNewProfileText] = useState(tempInfo.profileText);
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
       <div className="flex w-2/3 justify-evenly">
@@ -98,12 +100,16 @@ export default function UserInfo() {
                       <input
                         type="text"
                         className="mb-3 w-48 rounded border-2 border-solid border-slate-500 p-1 text-lg focus:outline-none"
-                        value={tempInfo.nickName}
+                        defaultValue={tempInfo.nickName}
+                        onChange={(event) => setNewNickName(event.target.value)}
                       />
                       <p className="pb-3">Description</p>
                       <textarea
                         className="h-32 rounded border-2 border-solid border-slate-500 p-1 text-lg focus:outline-none"
-                        value={tempInfo.profileText}
+                        defaultValue={tempInfo.profileText}
+                        onChange={(event) =>
+                          setNewProfileText(event.target.value)
+                        }
                       />
                     </div>
                   </div>

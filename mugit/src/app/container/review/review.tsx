@@ -1,4 +1,4 @@
-import CreateReview from "./createreview";
+import ReviewList from "./reviewList";
 
 export default function Review() {
   return (
@@ -7,7 +7,7 @@ export default function Review() {
         Comments
       </p>
       <hr className="border-2" />
-      <CreateReview />
+      <ReviewList />
     </div>
   );
 }
