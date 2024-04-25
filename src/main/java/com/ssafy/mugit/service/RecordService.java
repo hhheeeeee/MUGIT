@@ -25,7 +25,7 @@ public class RecordService {
     @Value("${upload-path}")
     private String uploadPath;
 
-    public String fileUpload(HttpServletRequest request, Long flowId, List<Long> sourceIds, List<MultipartFile> files) {
+    public String fileUpload(HttpServletRequest request, Long flowId, String message, List<Long> sourceIds, List<MultipartFile> files) {
 
         // 1. JSESSIONID 획득
         Optional<String> jSessionId = getJSessionId(request);
@@ -37,11 +37,11 @@ public class RecordService {
         getUserId(jSessionId.get(), flowId);
 
         // 3. 추가된 파일 저장 처리
-        HashMap<String, String> filePaths = new HashMap<>();
-        filePaths = saveFiles(files);
+        Map<String, String> filePaths = saveFiles(files);
 
         // 4. 레코드 생성 요청
         Map<String, Object> body = new HashMap<>();
+        body.put("message", message);
         body.put("sourceIds", sourceIds);
         body.put("filePaths", filePaths);
         return createRecord(jSessionId.get(), flowId, body);
@@ -68,26 +68,22 @@ public class RecordService {
     }
 
     private HashMap<String, String> saveFiles(List<MultipartFile> files) {
-        if (files == null) {
-            return null;
-        }
-
         try {
-            HashMap<String, String> map = new HashMap<>();
+            HashMap<String, String> map = null;
+            if(files != null && !files.isEmpty()) {
+                map = new HashMap<>();
+                for (MultipartFile file : files) {
+                    String originName = file.getOriginalFilename();
+                    String extension = originName != null ? getExtension(originName) : "";
+                    String uuidName = UUID.randomUUID() + extension;
+                    map.put(uuidName, originName);
 
-            for (MultipartFile file : files) {
+                    Path path = Paths.get(uploadPath + uuidName);
+                    Files.createDirectories(path.getParent());
 
-                String originName = file.getOriginalFilename();
-                String extension = getExtension(originName);
-                String uuidName = UUID.randomUUID() + extension;
-                map.put(uuidName, originName);
-
-                Path path = Paths.get(uploadPath + uuidName);
-                Files.createDirectories(path.getParent());
-
-                file.transferTo(path);
+                    file.transferTo(path);
+                }
             }
-
             return map;
         } catch (IOException e) {
             throw new RuntimeException("Directory Create Error");

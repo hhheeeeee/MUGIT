@@ -22,11 +22,12 @@ public class RecordController {
     @PostMapping("/{flowId}")
     public ResponseEntity<?> createRecord(HttpServletRequest request,
                                           @PathVariable Long flowId,
+                                          @RequestParam("message") String message,
                                           @RequestParam("sourceIds") List<Long> sourceIds,
                                           @RequestParam(value = "files", required = false) List<MultipartFile> files) {
 
-        String message = recordService.fileUpload(request, flowId, sourceIds, files);
+        String response = recordService.fileUpload(request, flowId, message, sourceIds, files);
 
-        return new ResponseEntity<>(new MessageDto(message), HttpStatus.OK);
+        return new ResponseEntity<>(new MessageDto(response), HttpStatus.OK);
     }
 }
