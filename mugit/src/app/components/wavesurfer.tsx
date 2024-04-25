@@ -3,8 +3,9 @@
 import { useMemo, useCallback, useRef, useState } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import Timeline from "wavesurfer.js/dist/plugins/timeline.esm.js";
-import IconPlay from "@/app/assets/icon/IconPlay";
 import { format } from "path";
+import IconPlay from "@/app/assets/icon/IconPlay";
+import IconPause from "@/app/assets/icon/IconPause";
 
 const formatTime = (seconds: number) =>
   [seconds / 60, seconds % 60]
@@ -45,12 +46,24 @@ export default function WavesurferComp({ musicname }: { musicname: string }) {
     wavesurfer.on("decode", (duration) => setDuration(formatTime(duration)));
   }
   return (
-    <div className="flex justify-between">
+    <div className="relative flex justify-between">
       <button
         onClick={onPlayPause}
         className="h-[75px] w-[75px] rounded-full bg-pointyellow"
       >
-        {isPlaying ? "Pause" : "Play"}
+        {isPlaying ? (
+          <IconPause
+            color="#0033ff"
+            size="3rem"
+            tailwindCSS="absolute top-4 left-3.5"
+          />
+        ) : (
+          <IconPlay
+            color="#0033ff"
+            size="3.2rem"
+            tailwindCSS="absolute top-4 left-3.5"
+          />
+        )}
       </button>
       <div className="relative z-0 inline-block w-[88%]">
         <div ref={containerRef} />

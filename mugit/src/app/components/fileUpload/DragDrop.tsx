@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import useToast from "@/app/hooks/useToast";
 
 interface DragDropProps {
   onChangeFile: (file: File | null) => void;
@@ -48,15 +49,6 @@ const DragDrop = ({
     }
   };
 
-  // Drag & Drop이 아닌 클릭 이벤트로 업로드되는 기능도 추가
-  const handleChange = (e: any) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    onChangeFile(file);
-
-    // input 요소의 값 초기화
-    e.target.value = "";
-  };
-
   const isValidExtension = (file: File) => {
     const fileName = file.name;
     const fileNameSplit = fileName.split(".");
@@ -64,52 +56,69 @@ const DragDrop = ({
     return validExtensions.includes(fileExtension);
   };
 
+  // Drag & Drop이 아닌 클릭 이벤트로 업로드되는 기능도 추가
   // 허용된 확장자라면 업로드, 아니라면 사용자에게 알림
-  const handleFileChange = (file: File | null) => {
+  const handleChange = (e: any) => {
+    const file = e.target.files ? e.target.files[0] : null;
     if (file && isValidExtension(file)) {
       onChangeFile(file);
     } else {
-      window.alert("잘못된 파일 형식");
-      // toast({
-      //   title: "잘못된 파일 형식",
-      //   description: `지원하지 않는 파일 형식입니다. (${validExtensions.join(
-      //     ", "
-      //   )})로 등록해주세요.`,
-      //   className: "bg-red-500 text-white",
-      // });
-      onChangeFile(null);
+      useToast({
+        type: "경고",
+        title: "잘못된 파일 형식",
+        text: "mp3, 어쩌고 한 파일들을 올려주세요",
+      });
+
+      // input 요소의 값 초기화
+      e.target.value = "";
     }
   };
 
+  // 허용된 확장자라면 업로드, 아니라면 사용자에게 알림
+  // const handleFileChange = (file: File | null) => {
+  //   if (file && isValidExtension(file)) {
+  //     onChangeFile(file);
+  //   } else {
+  //     window.alert("잘못된 파일 형식");
+
+  //     // toast({
+  //     //   title: "잘못된 파일 형식",
+  //     //   description: `지원하지 않는 파일 형식입니다. (${validExtensions.join(
+  //     //     ", "
+  //     //   )})로 등록해주세요.`,
+  //     //   className: "bg-red-500 text-white",
+  //     // });
+  //     onChangeFile(null);
+  //   }
+  // };
+
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-xl border-2 border-solid border-gray-200 bg-pointyellow bg-opacity-25 py-6">
-      <div className="w-3/4">
-        <label
-          className={`h-32 w-full flex-col gap-3 border-2 text-lg ${
-            dragOver
-              ? "border-blue-500 bg-blue-100 font-semibold text-blue-500"
-              : "border-gray-300"
-          } flex cursor-pointer items-center justify-center rounded-md`}
-          htmlFor="fileUpload"
-          // Label에 드래그 앤 드랍 이벤트 추가
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          {description}
-          <div className="pointer-events-none rounded-lg bg-pointblue  px-3 py-2 text-sm text-white hover:bg-[#052cc6] hover:shadow">
-            Or choose files to upload
-          </div>
-        </label>
-        <input
-          id="fileUpload"
-          type="file"
-          className="hidden"
-          onChange={handleChange}
-        ></input>
-      </div>
-    </div>
+    <>
+      <label
+        className={`flex w-full flex-col items-center justify-center rounded-xl border-2 border-solid py-8 text-lg ${
+          dragOver
+            ? "border-blue-500 bg-blue-100 font-semibold text-blue-500"
+            : "border-gray-300 bg-pointyellow bg-opacity-25"
+        } flex cursor-pointer items-center justify-center rounded-md`}
+        htmlFor="fileUpload"
+        // Label에 드래그 앤 드랍 이벤트 추가
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        {description}
+        <div className="pointer-events-none mt-2 rounded-lg bg-pointblue  px-3 py-2 text-sm text-white hover:bg-[#052cc6] hover:shadow">
+          Or choose files to upload
+        </div>
+      </label>
+      <input
+        id="fileUpload"
+        type="file"
+        className="hidden"
+        onChange={handleChange}
+      ></input>
+    </>
   );
 };
 

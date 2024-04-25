@@ -6,34 +6,38 @@ import { descriptionScript } from "@/app/constants/description-script";
 
 type propType = {
   target: string;
+  positionLeft?: string;
 };
 
-function Description({ target }: propType) {
-  const [open, setOpen] = useState<boolean>(true);
+function Description({ target, positionLeft = "45" }: propType) {
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const tailwind = `cursor-pointer absolute top-10 left-[13%]`;
+  const descriptionClass = `top-16 left-[2%] ml-5 absolute top-0 rounded-lg border-solid border-2 border-gray-300 p-2 text-sm font-normal not-italic shadow-xl bg-white text-xs w-48 z-30`;
+
   return (
     <>
       {open ? (
-        <IconInfo
-          tailwindCSS="cursor-pointer absolute top-0 left-[25%]"
-          size="1.5rem"
-          onClick={handleClick}
-        />
-      ) : (
         <>
           <IconInfo
-            tailwindCSS="cursor-pointer absolute top-0 left-[25%]"
-            size="1.5rem"
+            tailwindCSS={tailwind}
+            size="1.3rem"
             color="#0033ff"
             onClick={handleClick}
           />
-
-          <div className="absolute left-[27%] top-2 rounded-lg bg-gray-400 p-4 text-sm font-normal not-italic text-white shadow-lg">
-            {descriptionScript[target]}
-          </div>
+          <div className={descriptionClass}>{descriptionScript[target]}</div>
+        </>
+      ) : (
+        <>
+          <IconInfo
+            tailwindCSS={tailwind}
+            size="1.3rem"
+            onClick={handleClick}
+          />
         </>
       )}
     </>

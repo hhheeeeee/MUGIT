@@ -3,6 +3,9 @@
 import { Tab } from "@headlessui/react";
 import Image from "next/image";
 import FlowDetail from "./flowdetail";
+import dynamic from "next/dynamic";
+
+const Tree = dynamic(() => import("./tree"), { ssr: false });
 
 const tempInfo = {
   coverPath: "/Rectangle 35.png",
@@ -101,7 +104,9 @@ export default function FlowInfo() {
                 sources={tempInfo.sources}
               />
             </Tab.Panel>
-            <Tab.Panel>Tree tab</Tab.Panel>
+            <Tab.Panel>
+              <Tree />
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
