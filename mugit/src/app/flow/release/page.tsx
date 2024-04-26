@@ -1,6 +1,5 @@
 import Description from "@/app/components/Description";
-import IconCamera from "@/app/assets/icon/IconCamera";
-import MyRadioGroup from "@/app/container/note/RadioGroup";
+import UploadPicture from "@/app/components/fileUpload/UploadPicture";
 import RecordMessage from "@/app/container/flow/release/recordMessage";
 
 import dynamic from "next/dynamic";
@@ -18,17 +17,8 @@ export default function NotePage() {
 
       <div className="mt-4 flex w-full">
         {/* 사진 올리는 부분임 */}
-        <div className="flex w-3/12 flex-col items-center ">
-          <div className="relative h-60 w-60 bg-purple-100">
-            사진임
-            <div className="absolute bottom-2 left-6 flex h-8 w-48 items-center justify-center gap-2 rounded-lg bg-gray-300 hover:bg-[#c8cace] hover:shadow">
-              <IconCamera />
-              Upload Image
-            </div>
-          </div>
-        </div>
+        <UploadPicture />
 
-        {/* 파일 가져오는 부분임 */}
         <div className="flex w-9/12 flex-col">
           <h2 className=" text-lg">Note Name</h2>
           <input
@@ -36,7 +26,7 @@ export default function NotePage() {
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
           />
 
-          <h2 className="mt-4 text-lg">Flow Name</h2>
+          <h2 className="mt-4 text-lg">Flow Name </h2>
           <input
             type="text"
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
