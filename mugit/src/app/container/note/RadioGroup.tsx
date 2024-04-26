@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 
-function MyRadioGroup() {
-  let [plan, setPlan] = useState("Public");
+type PrivacyRadioPropType = {
+  privacy: string;
+  setPrivacy: React.Dispatch<React.SetStateAction<string>>;
+};
 
+function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
   return (
     <>
-      <RadioGroup value={plan} onChange={setPlan}>
+      <RadioGroup value={privacy} onChange={setPrivacy}>
         <RadioGroup.Label className="mt-4 text-lg">Privacy</RadioGroup.Label>
         <div className="my-4 flex gap-x-6">
           <RadioGroup.Option value="Public">

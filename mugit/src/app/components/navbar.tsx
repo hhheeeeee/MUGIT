@@ -9,7 +9,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-[10%] w-full flex-wrap items-center justify-between bg-pointblack p-5">
+    <nav className="flex h-[10%] w-full items-center justify-between bg-pointblack p-5">
       <Link
         href="/"
         className="mr-6 flex flex-shrink-0 items-center text-white"
@@ -31,8 +31,8 @@ const Navbar = () => {
           </svg>
         </button>
       </div> */}
-      <div className="block w-full flex-grow lg:flex lg:w-auto lg:items-center">
-        <div className="text-sm lg:flex-grow">
+      <div className="block flex w-full flex-grow items-center">
+        <div className="flex-grow text-sm">
           {navbaritems.map((item) => {
             let activefonts;
             if (pathname.includes(item.to)) {
