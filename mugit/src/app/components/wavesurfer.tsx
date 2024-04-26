@@ -45,6 +45,7 @@ export default function WavesurferComp({ musicname }: { musicname: string }) {
   if (wavesurfer) {
     wavesurfer.on("decode", (duration) => setDuration(formatTime(duration)));
   }
+
   return (
     <div className="relative flex justify-between">
       <button
