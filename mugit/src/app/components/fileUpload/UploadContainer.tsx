@@ -3,9 +3,16 @@ import { useState } from "react";
 import DragDrop from "./DragDrop";
 import AudioSprites from "../audioSprites/audiosprites";
 
-export default function UploadContainer() {
+type UploadContainerPropsType = {
+  file: File | null;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+};
+
+export default function UploadContainer({
+  file,
+  setFile,
+}: UploadContainerPropsType) {
   // 선택된 파일을 관리한다.
-  const [file, setFile] = useState<File | null>(null);
 
   // 구현할 InputDragDrop에서 파일이 선택될 때 상태를 업데이트 한다.
   const handleFileSelect = (file: File | null) => {

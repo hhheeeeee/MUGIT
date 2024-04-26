@@ -4,11 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
-function UploadPicture() {
-  const [imageSrc, setImageSrc] = useState<string | StaticImport>(
-    "/person.jpg"
-  );
+type UpoladPicturePropsType = {
+  imageSrc: string | StaticImport;
+  setImageSrc: React.Dispatch<React.SetStateAction<string | StaticImport>>;
+};
 
+function UploadPicture({ imageSrc, setImageSrc }: UpoladPicturePropsType) {
   const onUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
