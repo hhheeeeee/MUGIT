@@ -1,4 +1,4 @@
-import IconCamera from "@/app/assets/icon/IconCamera";
+import UploadPicture from "@/app/components/fileUpload/UploadPicture";
 import MyRadioGroup from "@/app/container/note/RadioGroup";
 import Description from "@/app/components/Description";
 import UploadContainer from "@/app/components/fileUpload/UploadContainer";
@@ -13,15 +13,7 @@ export default function NotePage() {
 
       <div className="mt-4 flex w-full">
         {/* 사진 올리는 부분임 */}
-        <div className="flex w-3/12 flex-col items-center ">
-          <div className="relative h-60 w-60 bg-purple-100">
-            사진임
-            <div className="absolute bottom-2 left-6 flex h-8 w-48 items-center justify-center gap-2 rounded-lg bg-gray-300 hover:bg-[#c8cace] hover:shadow">
-              <IconCamera />
-              Upload Image
-            </div>
-          </div>
-        </div>
+        <UploadPicture />
 
         {/* 파일 가져오는 부분임 */}
         <div className="flex w-9/12 flex-col">
