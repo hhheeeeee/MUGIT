@@ -1,6 +1,7 @@
 import { dummytrends } from "./dummy";
 import Image from "next/image";
 import PlayHover from "./PlayHover";
+import TrendsItem from "./trendsitem";
 
 export default function Trendslist() {
   return (
@@ -22,8 +23,7 @@ export default function Trendslist() {
                 />
                 <PlayHover item={item} />
               </div>
-              <p className="text-xl">{item.title}</p>
-              <p className="mb-4 text-base">{item.name}</p>
+              <TrendsItem item={item} />
             </div>
           );
         })}
