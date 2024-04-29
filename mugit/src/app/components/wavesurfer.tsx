@@ -1,11 +1,9 @@
 "use client";
 
-import { useMemo, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
-import Timeline from "wavesurfer.js/dist/plugins/timeline.esm.js";
-import { format } from "path";
-import IconPlay from "@/app/assets/icon/IconPlay";
 import IconPause from "@/app/assets/icon/IconPause";
+import IconPlay from "../assets/icon/IconPlay";
 
 const formatTime = (seconds: number) =>
   [seconds / 60, seconds % 60]

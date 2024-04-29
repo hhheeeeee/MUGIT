@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import DragDrop from "./DragDrop";
 import AudioSprites from "../audioSprites/audiosprites";
 
@@ -21,11 +20,11 @@ export default function UploadContainer({
   };
 
   // 파일 업로드를 처리하는 로직
-  const handleUpload = () => {
-    if (file) {
-      // Drag & Drop으로 가져온 파일 처리 로직 (API 호출 등)
-    }
-  };
+  // const handleUpload = () => {
+  //   if (file) {
+  //     // Drag & Drop으로 가져온 파일 처리 로직 (API 호출 등)
+  //   }
+  // };
 
   return (
     <>

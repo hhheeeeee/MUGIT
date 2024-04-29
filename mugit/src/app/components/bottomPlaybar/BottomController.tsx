@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import { formatTime } from "@/app/utils/formatTime";
 import { useAtomValue } from "jotai";
-import { nowPlaying, isplaying } from "@/app/store/atoms";
+import { nowPlaying } from "@/app/store/atoms";
 import IconPlay from "@/app/assets/icon/IconPlay";
 import IconPause from "@/app/assets/icon/IconPause";
 
@@ -13,7 +13,7 @@ export default function BottomController() {
   const song = useAtomValue(nowPlaying);
   const [duration, setDuration] = useState("");
 
-  const { wavesurfer, isPlaying, currentTime, isReady } = useWavesurfer({
+  const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
     height: 10,
     width: 389,
@@ -49,7 +49,7 @@ export default function BottomController() {
       setDuration(formatTime(_duration));
       onPlayPause();
     }
-  }, [isReady]);
+  }, []);
 
   return (
     <>
