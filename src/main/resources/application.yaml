@@ -2,6 +2,8 @@ spring:
   config:
     import:
       - optional:file:env/backend/.env[.properties]
+      - optional:file:/mugit/yaml/config/application.properties
+
   servlet:
     multipart:
       max-file-size: 20MB
