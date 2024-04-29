@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ResultTable from "@/app/container/trends/keyword/ResultTable";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState<string>("");
   const searchParams = useSearchParams();
   const keyword = searchParams.get("search");
@@ -11,6 +13,12 @@ export default function Page() {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
+
+  useEffect(() => {
+    if (keyword) {
+      setSearchInput(keyword);
+    }
+  }, []);
 
   return (
     <div
@@ -22,9 +30,12 @@ export default function Page() {
           type="text"
           className=" h-full w-[70%] rounded-full bg-gray-200 p-0 pl-4 outline-none"
           onChange={(event) => handleInput(event)}
-          value={keyword || searchInput}
+          value={searchInput}
         />
-        <button className="h-full w-[30%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white">
+        <button
+          onClick={() => router.push(`/trends/keyword?search=${searchInput}`)}
+          className="h-full w-[30%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white"
+        >
           Search
         </button>
       </div>

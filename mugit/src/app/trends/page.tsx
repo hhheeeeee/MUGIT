@@ -1,6 +1,5 @@
 import Searchbar from "../container/trends/searchbar";
 import Trendslist from "../container/trends/trendslist";
-import Image from "next/image";
 
 export default function TrendsPage() {
   return (
@@ -13,13 +12,6 @@ export default function TrendsPage() {
       <div className="flex h-full w-7/12 flex-col ">
         <Searchbar />
         <Trendslist />
-        <Image
-          width={900}
-          height={254}
-          alt="cover image"
-          src="/help/example.png"
-          priority
-        />
       </div>
     </main>
   );

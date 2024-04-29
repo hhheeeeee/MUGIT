@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useSetAtom } from "jotai";
+import { playTime } from "@/app/store/atoms";
 
 const tempUserInfo = {
   profileImage: "/150.jpg",
@@ -38,8 +40,24 @@ const tempReviewInfo = [
   },
 ];
 
+const parseTimeToSeconds = (timeString: string) => {
+  const [minutes, seconds] = timeString.split(":").map((v) => parseInt(v, 10));
+  return minutes * 60 + seconds;
+};
+
 export default function ReviewList() {
   const [content, setContent] = useState("");
+
+  const [time, setTime] = useState<string>("");
+  const setplayTime = useSetAtom(playTime);
+
+  const handleClickTime = (time: string) => {
+    setTime(time);
+    const timenumber = parseTimeToSeconds(time);
+    setplayTime(timenumber);
+    console.log(time);
+    console.log(timenumber);
+  };
   return (
     <div>
       <div className="my-5 flex justify-evenly">
@@ -87,9 +105,12 @@ export default function ReviewList() {
           />
           <div className="relative w-5/6">
             <span className="mr-3 font-semibold">{review.user}</span>
-            <a href="#" className="text-pointblue">
+            <span
+              className="cursor-pointer text-pointblue"
+              onClick={() => handleClickTime(review.time)}
+            >
               {review.time}
-            </a>
+            </span>
             <p className="absolute top-1/2">{review.content}</p>
           </div>
         </div>

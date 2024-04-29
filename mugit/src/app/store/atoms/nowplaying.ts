@@ -17,8 +17,5 @@ export const SonginitialValue = {
 // 현재 bottomNavbar에서 play되고 있는 노래가 있을 때 그 노래에 대한 정보
 export const nowPlaying = atom(SonginitialValue);
 
-// 현재 bottomNavbar에서 play되고 있는 노래의 총 길이
-// export const nowPlayingDuration = atom("0:00");
-
-// export const orderer_mobile_tel_atom = atom("");
-// export const orderer_name_atom = atom("");
+// 댓글에서 시간을 클릭했는지
+export const playTime = atom(0);

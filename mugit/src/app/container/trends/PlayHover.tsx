@@ -1,6 +1,7 @@
 "use client";
 
 import IconPlay from "@/app/assets/icon/IconPlay";
+import { formatTime } from "@/app/utils/formatTime";
 
 type item = {
   id: number;
@@ -15,12 +16,12 @@ type PlayHoverPropsType = {
   css?: string;
 };
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { isplaying, nowPlaying } from "@/app/store/atoms";
-import { useSetAtom, useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 
 export default function PlayHover({ item, css }: PlayHoverPropsType) {
-  const [play, setPlay] = useAtom(isplaying);
+  const setPlay = useSetAtom(isplaying);
   const setSong = useSetAtom(nowPlaying);
   const [duration, setDuration] = useState(0);
 
