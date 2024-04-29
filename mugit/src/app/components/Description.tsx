@@ -9,7 +9,7 @@ type propType = {
   positionLeft?: string;
 };
 
-function Description({ target, positionLeft = "45" }: propType) {
+function Description({ target }: propType) {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {

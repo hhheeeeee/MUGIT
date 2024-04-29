@@ -1,9 +1,9 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import BottomController from "./BottomController";
-import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
+// import { useRef, useState, useEffect } from "react";
+// import Image from "next/image";
 import { isplaying, nowPlaying, SonginitialValue } from "@/app/store/atoms";
 
 const BottomPlaybar = () => {
