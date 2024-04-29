@@ -5,6 +5,7 @@ import Image from "next/image";
 import Logo from "../assets/logo";
 import { usePathname } from "next/navigation";
 import { navbaritems } from "../constants/navbaritems";
+import GoogleButton from "../container/google/googlebutton";
 const Navbar = () => {
   const pathname = usePathname();
 
@@ -31,7 +32,7 @@ const Navbar = () => {
           </svg>
         </button>
       </div> */}
-      <div className="block flex w-full flex-grow items-center">
+      <div className="flex w-full flex-grow items-center">
         <div className="flex-grow text-sm">
           {navbaritems.map((item) => {
             let activefonts;
@@ -51,18 +52,8 @@ const Navbar = () => {
             );
           })}
         </div>
-        <div>
-          <Link
-            href="#"
-            className="mt-4 inline-block px-4 leading-none lg:mt-0"
-          >
-            <Image
-              src="/google/web_dark_sq_ctn@4x.png"
-              alt=""
-              width={150}
-              height={0}
-            />
-          </Link>
+        <div className="mt-1">
+          <GoogleButton />
         </div>
         {/* <Image
           src={person}
