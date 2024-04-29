@@ -2,7 +2,7 @@
 
 export default function Line() {
   return (
-    <div className="border-animate h-1 w-screen  bg-[#121214]">
+    <div className="border-animate h-1 w-full bg-[#121214]">
       <style jsx>{`
         @keyframes borderSlide {
           from {
