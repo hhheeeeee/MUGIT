@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 export default function GoogleButton() {
+  console.log(process.env.GOOGLE_CLIENT_ID);
   return (
     <button className="pr-4 lg:mt-0">
       <Image
