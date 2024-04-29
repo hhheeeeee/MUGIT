@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import useToast from "@/app/hooks/useToast";
+import fireToast from "@/app/utils/fireToast";
 
 interface DragDropProps {
   onChangeFile: (file: File | null) => void;
@@ -56,7 +56,7 @@ const DragDrop = ({
       if (isValidExtension(file)) {
         onChangeFile(file);
       } else {
-        useToast({
+        fireToast({
           type: "경고",
           title: "잘못된 파일 형식",
           text: "mp3, 어쩌고 한 파일들을 올려주세요",
@@ -73,7 +73,7 @@ const DragDrop = ({
     if (file && isValidExtension(file)) {
       onChangeFile(file);
     } else {
-      useToast({
+      fireToast({
         type: "경고",
         title: "잘못된 파일 형식",
         text: "mp3, 어쩌고 한 파일들을 올려주세요",

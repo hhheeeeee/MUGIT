@@ -38,7 +38,7 @@ export default function Tree() {
 
     series.nodes.template.setup = function (target) {
       target.events.on("dataitemchanged", function (ev) {
-        var container = target.children.push(
+        const container = target.children.push(
           am5.Container.new(root, {
             width: 80,
             height: 80,
@@ -47,7 +47,7 @@ export default function Tree() {
           })
         );
 
-        var circleMask = container.children.push(
+        const circleMask = container.children.push(
           am5.Circle.new(root, {
             radius: 40,
             centerX: am5.percent(50),

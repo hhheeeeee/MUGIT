@@ -16,7 +16,7 @@ type ToastProps = {
   text?: string;
 };
 
-export default function useToast({ type, title, text }: ToastProps) {
+export default function fireToast({ type, title, text }: ToastProps) {
   if (type === "성공") {
     Toast.fire({
       icon: "success",

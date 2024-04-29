@@ -1,6 +1,6 @@
 import WavesurferComp from "@/app/components/wavesurfer";
 import { Disclosure } from "@headlessui/react";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function FlowDetail({
   musicPath,
