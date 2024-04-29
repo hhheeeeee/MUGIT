@@ -11,7 +11,7 @@ export const navbaritems = [
   },
   {
     id: 3,
-    name: "Help",
-    to: "/help",
+    name: "Support",
+    to: "/support",
   },
 ];

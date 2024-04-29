@@ -44,7 +44,7 @@ export default function BottomController() {
   }, [wavesurfer]);
 
   useEffect(() => {
-    let _duration = wavesurfer?.getDuration();
+    const _duration = wavesurfer?.getDuration();
     if (_duration && _duration > 0) {
       setDuration(formatTime(_duration));
       onPlayPause();
