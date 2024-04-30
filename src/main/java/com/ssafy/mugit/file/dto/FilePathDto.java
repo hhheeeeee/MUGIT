@@ -1,13 +1,11 @@
-package com.ssafy.mugit.image.dto;
+package com.ssafy.mugit.file.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Map;
-
 @Data
 @AllArgsConstructor
-public class ImagePathResponseDto {
+public class FilePathDto {
     private String originName;
     private String uuidName;
 }
