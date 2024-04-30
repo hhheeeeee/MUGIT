@@ -47,7 +47,6 @@ const parseTimeToSeconds = (timeString: string) => {
 
 export default function ReviewList() {
   const [content, setContent] = useState("");
-
   const [time, setTime] = useState<string>("");
   const setplayTime = useSetAtom(playTime);
 
@@ -55,9 +54,8 @@ export default function ReviewList() {
     setTime(time);
     const timenumber = parseTimeToSeconds(time);
     setplayTime(timenumber);
-    console.log(time);
-    console.log(timenumber);
   };
+
   return (
     <div>
       <div className="my-5 flex justify-evenly">

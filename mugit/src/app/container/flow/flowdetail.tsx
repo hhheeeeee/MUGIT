@@ -13,7 +13,7 @@ export default function FlowDetail({
     <div className="">
       <div className="mb-5">
         <p className="mb-2 text-xl font-medium">{musicPath}</p>
-        <WavesurferComp musicname={musicPath} />
+        <WavesurferComp musicname={musicPath} type="main" />
       </div>
       <Disclosure>
         {({ open }) => (
@@ -43,7 +43,7 @@ export default function FlowDetail({
               {sources.map((source) => (
                 <div key={source} className="mb-5">
                   <p className="mb-2 text-xl font-medium">{source}</p>
-                  <WavesurferComp musicname={source} />
+                  <WavesurferComp musicname={source} type="source" />
                 </div>
               ))}
             </Disclosure.Panel>

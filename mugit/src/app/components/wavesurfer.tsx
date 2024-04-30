@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import IconPause from "@/app/assets/icon/IconPause";
 import IconPlay from "../assets/icon/IconPlay";
+import { useAtom, useAtomValue } from "jotai";
+import { playTime } from "../store/atoms";
 
 const formatTime = (seconds: number) =>
   [seconds / 60, seconds % 60]
@@ -22,7 +24,16 @@ const parseTimeToSeconds = (timeString: string) => {
   return minutes * 60 + seconds;
 };
 
-export default function WavesurferComp({ musicname }: { musicname: string }) {
+interface WavesurferCompPropType {
+  musicname: string;
+  type: string;
+}
+
+export default function WavesurferComp({
+  musicname,
+  type,
+}: WavesurferCompPropType) {
+  const time = useAtomValue(playTime);
   const audioUrl = `/musics/${musicname}`;
   const containerRef = useRef(null);
   const [duration, setDuration] = useState("0:00");
@@ -30,13 +41,13 @@ export default function WavesurferComp({ musicname }: { musicname: string }) {
   const handleInput = (e: any) => {
     setEx(e.target.value);
   };
-  const handleClick = (e: any) => {
-    const exx = parseTimeToSeconds(ex);
-    console.log(exx);
-    if (wavesurfer) {
-      wavesurfer.setTime(exx);
+
+  useEffect(() => {
+    if (wavesurfer && type === "main") {
+      console.log(time);
+      wavesurfer.setTime(time);
     }
-  };
+  }, [time]);
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
@@ -91,13 +102,6 @@ export default function WavesurferComp({ musicname }: { musicname: string }) {
           </div>
         </div>
       </div>
-      <input
-        type="text"
-        value={ex}
-        onChange={handleInput}
-        className="border-2 border-solid bg-red-200"
-      />
-      <button onClick={handleClick}>바꾸기</button>
     </>
   );
 }
