@@ -12,7 +12,7 @@ spring:
     resources:
       static-locations: file:///${UPLOAD_PATH}
 
-user-server: http://${USER_SERVER}/api
+user-server: ${USER_SERVER}
 upload-path: ${UPLOAD_PATH}
 
 server:

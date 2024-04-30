@@ -1,10 +1,12 @@
 package com.ssafy.mugit.service;
 
+import com.ssafy.mugit.dto.RecordRequestDto;
 import com.ssafy.mugit.global.CustomRecordException;
 import com.ssafy.mugit.global.RecordError;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecordService {
 
     private final WebClient webClient;
@@ -40,11 +43,8 @@ public class RecordService {
         Map<String, String> filePaths = saveFiles(files);
 
         // 4. 레코드 생성 요청
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", message);
-        body.put("sourceIds", sourceIds);
-        body.put("filePaths", filePaths);
-        return createRecord(jSessionId.get(), flowId, body);
+        RecordRequestDto recordRequestDto = new RecordRequestDto(message, sourceIds, filePaths);
+        return createRecord(jSessionId.get(), flowId, recordRequestDto);
     }
 
     private Optional<String> getJSessionId(HttpServletRequest request) {
@@ -58,13 +58,14 @@ public class RecordService {
     }
 
     private void getUserId(String jSessionId, Long flowId) {
-        webClient.get()
-                .uri("/users/validate/{flowId}", flowId)
+        String message = webClient.get()
+                .uri("/records/validate/{flowId}", flowId)
                 .cookie("JSESSIONID", jSessionId)
                 .retrieve()
-                .bodyToMono(Boolean.class)
+                .bodyToMono(String.class)
                 .onErrorMap(WebClientResponseException.class, e -> new CustomRecordException(RecordError.SESSIONID_ILLEGAL))
                 .block();
+        log.info("Response Message : {}", message);
     }
 
     private HashMap<String, String> saveFiles(List<MultipartFile> files) {
@@ -95,14 +96,14 @@ public class RecordService {
         return lastDotIndex != -1 ? filename.substring(lastDotIndex) : "";
     }
 
-    private String createRecord(String jSessionId, Long flowId, Map<String, Object> body) {
+    private String createRecord(String jSessionId, Long flowId, RecordRequestDto recordRequestDto) {
         return webClient.post()
                 .uri("/records/flows/{flowId}", flowId)
                 .cookie("JSESSIONID", jSessionId)
-                .bodyValue(body)
+                .bodyValue(recordRequestDto)
                 .retrieve()
                 .bodyToMono(String.class)
-                .onErrorMap(WebClientResponseException.class, e -> new InternalError())
+                .onErrorMap(WebClientResponseException.class, e -> new InternalError("record create error."))
                 .block();
     }
 }
