@@ -23,11 +23,11 @@
         }).then((response) => {
             switch (response.status) {
                 case 200: {
-                    location.href="/"
+                    location.href="/admin"
                     break
                 }
                 case 302: {
-                    location.href="/sns-regist"
+                    location.href="/admin/sns-regist"
                     break
                 }
                 default: console.log(response)

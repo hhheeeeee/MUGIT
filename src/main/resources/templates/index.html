@@ -69,7 +69,7 @@
         <li> <a href="#"> <i class="icon-dashboard"></i> My Dashboard </a> </li>
         <li> <a href="javascript:goSnsPage()"> <i class="icon-shopping-bag"></i> SNS Login Test</a> </li>
         <li> <a href="/swagger"> <i class="icon-web"></i> Swagger API Docs </a> </li>
-        <li> <a href="/manage-user"> <i class="icon-people"></i> Manage Users </a> </li>
+        <li> <a href="/admin/manage-user"> <i class="icon-people"></i> Manage Users </a> </li>
         <li> <a href="#"> <i class="icon-calendar"></i> Manage Events </a> </li>
       </ul>
     </div>
@@ -334,7 +334,7 @@
 <script type="text/javascript">
   // To Test Google API
   const GOOGLE_CLIENT_ID = '1030973932319-sloqb8tnddt8e4p0gjk3vs585dlc9cgd.apps.googleusercontent.com';
-  const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:8080/sns-login';
+  const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:8080/admin/sns-login';
   const GOOGLE_OAUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_LOGIN_REDIRECT_URI}&response_type=token&scope=email profile`
 
   const goSnsPage = () => window.location.replace(GOOGLE_OAUTH_URL)

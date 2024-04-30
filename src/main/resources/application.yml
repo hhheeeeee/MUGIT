@@ -2,27 +2,25 @@ spring:
   application:
     name: mugit
 
-  profiles:
-    include: swagger
-
+  # env config
   config:
     import:
       - optional:file:env/backend/.env[.properties]
       - optional:file:/mugit/yaml/config/application.properties
 
+  # swagger config
+  profiles:
+    include: swagger
 
-  main:
-    web-application-type: servlet
-
+  # datasource(mysql) config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_DOMAIN}:${DB_PORT}/${DB_NAME}
     username: ${DB_ID}
     password: ${DB_PASSWORD}
-
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         jdbc:
@@ -34,45 +32,43 @@ spring:
         default_batch_fetch_size: 1000
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  security:
-    user:
-      password: ${SPRING_USER_PASSWORD}
-      name: ${SPRING_USER_NAME}
-
+  # session(redis) config
   session:
     redis:
       flush-mode: on_save
-      namespace: spring:session
-
+      namespace: mugit
   data:
     redis:
       host: ${SESSION_REDIS_HOST}
       password: ${SESSION_REDIS_PASSWORD}
       port: ${SESSION_REDIS_PORT}
 
+  # admin config
+  security:
+    user:
+      password: ${SPRING_USER_PASSWORD}
+      name: ${SPRING_USER_NAME}
   web:
     resources:
       static-locations: file:src/main/resources/templates/
-
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
+#  mvc:
+#    static-path-pattern: "/admin/**"
 
+# authorization config
 cookie:
   domain: ${COOKIE_DOMAIN}
-
 oauth:
   google:
     userinfo:
       url: https://www.googleapis.com/oauth2/v2/userinfo
 
+# server config
 server:
-  error:
-    include-exception: true
-    include-stacktrace: always
-    whitelabel:
-      enabled: true
-  port: 8080
+
+  # session config
   servlet:
     session:
       timeout: ${SESSION_TIMEOUT}
@@ -85,6 +81,17 @@ server:
         max-age: ${SESSION_TIMEOUT}
         same-site: none
 
+  # custom error config
+  error:
+    include-exception: true
+    include-stacktrace: always
+    whitelabel:
+      enabled: true
+
+  # port config
+  port: 8080
+
+# log config
 logging:
   level:
     root: ${ROOT_LOGGING_LEVEL}

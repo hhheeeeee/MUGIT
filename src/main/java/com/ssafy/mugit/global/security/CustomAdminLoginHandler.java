@@ -6,6 +6,7 @@ import com.ssafy.mugit.user.dto.UserSessionDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -18,19 +19,10 @@ import static com.ssafy.mugit.auth.SessionKeys.LOGIN_USER_KEY;
 import static com.ssafy.mugit.user.entity.type.RoleType.ROLE_ADMIN;
 
 @Component
+@RequiredArgsConstructor
 public class CustomAdminLoginHandler implements AuthenticationSuccessHandler {
 
-    private final String userId;
-    private final String userPassword;
     private final ObjectMapper objectMapper;
-
-    public CustomAdminLoginHandler( @Value("${spring.security.user.name}") String userId,
-                                    @Value("${spring.security.user.password}")String userPassword,
-                                    @Autowired ObjectMapper objectMapper) {
-        this.userId = userId;
-        this.userPassword = userPassword;
-        this.objectMapper = objectMapper;
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
