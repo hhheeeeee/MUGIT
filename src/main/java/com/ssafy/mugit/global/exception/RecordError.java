@@ -1,4 +1,4 @@
-package com.ssafy.mugit.global;
+package com.ssafy.mugit.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

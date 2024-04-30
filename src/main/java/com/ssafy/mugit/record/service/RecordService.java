@@ -1,8 +1,8 @@
-package com.ssafy.mugit.service;
+package com.ssafy.mugit.record.service;
 
-import com.ssafy.mugit.dto.RecordRequestDto;
-import com.ssafy.mugit.global.CustomRecordException;
-import com.ssafy.mugit.global.RecordError;
+import com.ssafy.mugit.record.dto.RecordRequestDto;
+import com.ssafy.mugit.global.exception.CustomRecordException;
+import com.ssafy.mugit.global.exception.RecordError;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

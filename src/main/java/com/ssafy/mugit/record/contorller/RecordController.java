@@ -1,7 +1,7 @@
-package com.ssafy.mugit.contorller;
+package com.ssafy.mugit.record.contorller;
 
-import com.ssafy.mugit.dto.MessageDto;
-import com.ssafy.mugit.service.RecordService;
+import com.ssafy.mugit.global.dto.MessageDto;
+import com.ssafy.mugit.record.service.RecordService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/records/file")
+@RequestMapping("/file/records")
 @Slf4j
 public class RecordController {
 

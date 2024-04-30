@@ -1,4 +1,4 @@
-package com.ssafy.mugit.dto;
+package com.ssafy.mugit.record.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
