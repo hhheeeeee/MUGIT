@@ -46,7 +46,7 @@ export default function NotePage() {
 
           <SelectTags />
 
-          <WavesurferComp musicname="Burkinelectric.mp3" />
+          <WavesurferComp musicname="Burkinelectric.mp3" type="source" />
 
           <h2 className="mt-6 text-lg">Record Messages</h2>
           <RecordMessage />
