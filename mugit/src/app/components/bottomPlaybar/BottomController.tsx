@@ -13,6 +13,7 @@ export default function BottomController() {
   const containerRef = useRef(null);
   const song = useAtomValue(nowPlaying);
   const [duration, setDuration] = useState("");
+  const [_isPlaying, setisPlaying] = useState(false);
 
   const { wavesurfer, isPlaying, currentTime, isReady } = useWavesurfer({
     container: containerRef,
@@ -42,20 +43,17 @@ export default function BottomController() {
 
   const onPlayPause = useCallback(() => {
     wavesurfer && wavesurfer.playPause();
+    setisPlaying(!_isPlaying);
   }, [wavesurfer]);
 
-  // useEffect(() => {
-  //   const _duration = wavesurfer?.getDuration();
-  //   if (_duration && _duration > 0) {
-  //     setDuration(formatTime(_duration));
-  //     onPlayPause();
-  //   }
-  // }, []);
   if (wavesurfer) {
     wavesurfer.on("decode", (duration) => setDuration(formatTime(duration)));
   }
 
-  console.log(String(isReady));
+  useEffect(() => {
+    wavesurfer && wavesurfer.play();
+    setisPlaying(true);
+  }, [song.id, wavesurfer]);
 
   return (
     <>
@@ -65,8 +63,7 @@ export default function BottomController() {
           style={{ minWidth: "5em" }}
           className="flex w-[10%] items-center justify-center "
         >
-          {/* <div className="text-pointyellow">{String(isPlaying)}</div> */}
-          {isPlaying ? (
+          {_isPlaying ? (
             <IconPause tailwindCSS="" color="#f1f609" size="50px" />
           ) : (
             <IconPlay tailwindCSS="" color="#f1f609" size="55px" />
@@ -75,12 +72,7 @@ export default function BottomController() {
         <div className="mr-2 text-pointyellow">{formatTime(currentTime)}</div>
         <div>
           <div ref={containerRef} className="" />
-          {String(isReady) === "true" ? (
-            <></>
-          ) : (
-            <ReadyLine />
-            // <div className="mb-2 h-[4px] w-[590px] bg-pointyellow"></div>
-          )}
+          {!isReady && <ReadyLine />}
         </div>
         <div className="text-pointyellow">{duration}</div>
       </div>

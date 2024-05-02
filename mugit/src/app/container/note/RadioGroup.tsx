@@ -42,15 +42,12 @@ function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
           </RadioGroup.Option>
           <RadioGroup.Option value="Protected">
             {({ checked }) => (
-              <span
-                className={
-                  checked
-                    ? "rounded-md bg-gray-500 px-4 py-2 text-white"
-                    : "rounded-md border-2 border-solid border-gray-300 bg-gray-100 px-4 py-2 "
-                }
-              >
-                Protected
-              </span>
+              <div className="flex justify-center gap-x-3">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
+                  <div className="h-4 w-4 rounded-full bg-pointblue"></div>
+                </div>
+                <p className="flex items-center">Protected</p>
+              </div>
             )}
           </RadioGroup.Option>
         </div>

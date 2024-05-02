@@ -47,8 +47,8 @@ export const genres = [
     id: 12,
     name: "Reggaeton",
   },
-  {
-    id: 14,
-    name: "Explor All",
-  },
+  // {
+  //   id: 14,
+  //   name: "Explor All",
+  // },
 ];
