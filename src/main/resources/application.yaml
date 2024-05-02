@@ -11,7 +11,7 @@ spring:
 
   web:
     resources:
-      static-locations: file://${UPLOAD_PATH}
+      static-locations: "file:${UPLOAD_PATH}"
 
 upload-path: ${UPLOAD_PATH}
 
