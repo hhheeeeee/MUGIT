@@ -36,7 +36,7 @@ public class FileService {
                     Files.createDirectories(path.getParent());
                     file.transferTo(path);
 
-                    String url = "https://mugit.site/file/";
+                    String url = "https://mugit.site/files/";
                     paths.add(new FilePathDto(originName, url + uuidName));
                 }
             }
