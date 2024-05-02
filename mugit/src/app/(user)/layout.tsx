@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 export default function HelpLayout({
   children,
@@ -7,11 +7,11 @@ export default function HelpLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = cookies();
-  const name = cookieStore.get("name");
-  console.log("name", name);
+  const isLogined = cookieStore.get("isLogined");
+  console.log("isLogined", isLogined);
 
-  if (!name) {
-    redirect(`/`);
-  }
+  // if (isLogined === "undefined") {
+  //   redirect(`/note`);
+  // }
   return <>{children}</>;
 }
