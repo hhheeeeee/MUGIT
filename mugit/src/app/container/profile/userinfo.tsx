@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import IconCamera from "@/app/assets/icon/IconCamera";
+import { apiUrl, blocalUrl } from "@/app/store/atoms";
 
 const tempInfo = {
   isLogined: true,
@@ -16,8 +18,30 @@ export default function UserInfo() {
   function clickModal() {
     setIsOpen(!isOpen);
   }
+
+  const [newImage, setNewImage] = useState(tempInfo.profileImage);
   const [newNickName, setNewNickName] = useState(tempInfo.nickName);
   const [newProfileText, setNewProfileText] = useState(tempInfo.profileText);
+
+  const onUpload = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Promise<void>((resolve) => {
+      reader.onload = () => {
+        const file = reader.result as string;
+        setNewImage(file); // 파일의 컨텐츠
+        resolve();
+      };
+    });
+  };
+
+  const onClick = () => {
+    fetch(blocalUrl + "/users/profiles", {
+      method: "patch",
+    });
+  };
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
       <div className="flex w-2/3 justify-evenly">
@@ -90,9 +114,23 @@ export default function UserInfo() {
                         width={150}
                         height={150}
                         alt="profile image"
-                        src={tempInfo.profileImage}
+                        src={newImage}
                         className="h-48 w-48 rounded-full"
                         priority
+                      />
+                      <label
+                        htmlFor="uploadimg"
+                        className="mt-2 flex h-8 items-center justify-center gap-2 rounded-md bg-gray-300 text-sm hover:bg-[#c8cace] hover:shadow"
+                      >
+                        <IconCamera />
+                        Upload Image
+                      </label>
+                      <input
+                        id="uploadimg"
+                        className="hidden"
+                        accept="image/*"
+                        type="file"
+                        onChange={(e) => onUpload(e)}
                       />
                     </div>
                     <div>
