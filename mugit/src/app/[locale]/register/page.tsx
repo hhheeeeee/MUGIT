@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { apiUrl, blocalUrl } from "../store/atoms";
+import { apiUrl, blocalUrl } from "@/app/store/atoms";
 
 export default function Page() {
   const [nickname, setNickname] = useState<string>("");

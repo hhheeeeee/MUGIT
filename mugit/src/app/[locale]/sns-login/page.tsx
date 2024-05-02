@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { apiUrl, blocalUrl } from "../store/atoms";
+import { apiUrl, blocalUrl } from "@/app/store/atoms";
 // import { cookies } from "next/headers";
 // import cookie from "cookie";
 
