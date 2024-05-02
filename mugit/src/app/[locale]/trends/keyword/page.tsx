@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ResultTable from "@/app/container/trends/keyword/ResultTable";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 
 export default function Page() {
   const router = useRouter();

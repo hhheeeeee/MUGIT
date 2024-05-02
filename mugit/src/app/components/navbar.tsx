@@ -1,13 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/navigation";
+import { usePathname } from "@/navigation";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 import Logo from "../assets/logo";
-import { usePathname } from "next/navigation";
 import { navbaritems } from "../constants/navbaritems";
 import GoogleButton from "../container/google/googlebutton";
+
 const Navbar = () => {
   const pathname = usePathname();
+  const locale = useLocale();
 
   return (
     <nav className="flex h-[10%] w-full items-center justify-between bg-pointblack p-5">
@@ -52,9 +55,35 @@ const Navbar = () => {
             );
           })}
         </div>
+        <div className="mx-3">
+          {locale === "en" ? (
+            <Link locale="ko" href={pathname} className="text-2xl text-white">
+              <Image
+                width={50}
+                height={50}
+                alt="English"
+                className="h-8 w-8"
+                priority
+                src="/en.png"
+              />
+            </Link>
+          ) : (
+            <Link locale="en" href={pathname} className="text-2xl text-white">
+              <Image
+                width={50}
+                height={50}
+                alt="Korea"
+                className="h-8 w-8"
+                priority
+                src="/ko.png"
+              />
+            </Link>
+          )}
+        </div>
         <div className="mt-1">
           <GoogleButton />
         </div>
+
         {/* <Image
           src={person}
           className="w- rounded-full"

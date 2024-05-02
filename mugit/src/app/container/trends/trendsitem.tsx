@@ -1,5 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
+
 type item = {
   id: number;
   title: string;
