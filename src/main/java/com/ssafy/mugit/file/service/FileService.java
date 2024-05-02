@@ -1,6 +1,7 @@
 package com.ssafy.mugit.file.service;
 
 import com.ssafy.mugit.file.dto.FilePathDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class FileService {
 
     @Value("${upload-path}")
@@ -33,6 +35,8 @@ public class FileService {
                     String uuidName = UUID.randomUUID() + extension;
 
                     Path path = Paths.get(uploadPath + uuidName);
+                    log.info("[파일] 업로드 경로 : {}", uploadPath);
+                    log.info("[파일] 풀 경로 : {}", uploadPath + uuidName);
                     Files.createDirectories(path.getParent());
                     file.transferTo(path);
 
