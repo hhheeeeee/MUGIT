@@ -34,9 +34,7 @@ public class FileService {
                     String extension = originName != null ? getExtension(originName) : "";
                     String uuidName = UUID.randomUUID() + extension;
 
-                    Path path = Paths.get(uploadPath + uuidName);
-                    log.info("[파일] 업로드 경로 : {}", uploadPath);
-                    log.info("[파일] 풀 경로 : {}", uploadPath + uuidName);
+                    Path path = Paths.get(uploadPath + "/" + uuidName);
                     Files.createDirectories(path.getParent());
                     file.transferTo(path);
 
