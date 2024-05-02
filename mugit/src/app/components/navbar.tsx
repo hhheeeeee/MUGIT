@@ -52,7 +52,7 @@ const Navbar = () => {
             );
           })}
         </div>
-        <div className="mt-1">
+        <div className="mt-4">
           <GoogleButton />
         </div>
         {/* <Image
