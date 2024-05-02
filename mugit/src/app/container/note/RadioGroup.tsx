@@ -16,35 +16,35 @@ function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
         <div className="my-4 flex gap-x-6">
           <RadioGroup.Option value="Public">
             {({ checked }) => (
-              <span
-                className={
-                  checked
-                    ? "rounded-md bg-gray-500 px-4 py-2 text-white"
-                    : "rounded-md border-2 border-solid border-gray-300 bg-gray-100 px-4 py-2 "
-                }
-              >
-                Public
-              </span>
+              <div className="flex cursor-pointer justify-center gap-x-3">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
+                  {checked && (
+                    <div className="fadeIn h-4 w-4 rounded-full bg-pointblue transition-opacity duration-500"></div>
+                  )}
+                </div>
+                <p className="flex items-center">Public</p>
+              </div>
             )}
           </RadioGroup.Option>
           <RadioGroup.Option value="Private">
             {({ checked }) => (
-              <span
-                className={
-                  checked
-                    ? "rounded-md bg-gray-500 px-4 py-2 text-white"
-                    : "rounded-md border-2 border-solid border-gray-300 bg-gray-100 px-4 py-2 "
-                }
-              >
-                Private
-              </span>
+              <div className="flex cursor-pointer justify-center gap-x-3">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
+                  {checked && (
+                    <div className="fadeIn h-4 w-4 rounded-full bg-pointblue transition-opacity duration-500"></div>
+                  )}
+                </div>
+                <p className="flex items-center">Private</p>
+              </div>
             )}
           </RadioGroup.Option>
           <RadioGroup.Option value="Protected">
             {({ checked }) => (
-              <div className="flex justify-center gap-x-3">
+              <div className="flex cursor-pointer justify-center gap-x-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
-                  <div className="h-4 w-4 rounded-full bg-pointblue"></div>
+                  {checked && (
+                    <div className="fadeIn h-4 w-4 rounded-full bg-pointblue transition-opacity duration-500"></div>
+                  )}
                 </div>
                 <p className="flex items-center">Protected</p>
               </div>
