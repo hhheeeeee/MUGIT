@@ -24,10 +24,10 @@ public class FileService {
             List<FilePathDto> paths = null;
 //            List<MultipartFile> files = fileRequestDto.getFiles();
 
-            if(files != null && !files.isEmpty()) {
+            if (files != null && !files.isEmpty()) {
                 paths = new ArrayList<>();
 
-                for(MultipartFile file : files) {
+                for (MultipartFile file : files) {
                     String originName = file.getOriginalFilename();
                     String extension = originName != null ? getExtension(originName) : "";
                     String uuidName = UUID.randomUUID() + extension;
@@ -36,12 +36,13 @@ public class FileService {
                     Files.createDirectories(path.getParent());
                     file.transferTo(path);
 
-                    paths.add(new FilePathDto(originName, uuidName));
+                    String url = "https://mugit.site/file/";
+                    paths.add(new FilePathDto(originName, url + uuidName));
                 }
             }
 
             return paths;
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Directory Create Error");
         }
     }
