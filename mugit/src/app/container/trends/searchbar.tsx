@@ -3,7 +3,8 @@
 import IconSearch from "@/app/assets/icon/IconSearch";
 import { genres } from "@/app/constants/genres";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 
 export default function Searchbar() {
   const router = useRouter();

@@ -1,14 +1,27 @@
-import Line from "./container/landing/line";
-import Footer from "./components/footer";
-import TextAnimation from "./components/text-animation";
+import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
+import Line from "../container/landing/line";
+import Footer from "../components/footer";
+import TextAnimation from "../components/text-animation";
 
-export default function Home() {
+export default function IndexPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
+
+  // Once the request locale is set, you
+  // can call hooks from `next-intl`
+  const t = useTranslations("Index");
+
   return (
     <>
       <main
         className="flex h-[90%] w-full flex-auto flex-col content-center items-center justify-center
       bg-pointblack"
       >
+        {/* <h1>{t("title")}</h1> */}
         <div
           className="flex items-center justify-between bg-pointblack text-[14rem]
     font-extrabold italic text-pointyellow"
