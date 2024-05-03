@@ -5,8 +5,10 @@ import { genres } from "@/app/constants/genres";
 import { useState } from "react";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "@/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Searchbar() {
+  const t = useTranslations("Trends");
   const router = useRouter();
   const [showIcon, setShowIcon] = useState<boolean>(true);
   const [searchInput, setSearchInput] = useState<string>("");
@@ -25,7 +27,7 @@ export default function Searchbar() {
       <div className="relative h-12 w-full rounded-full border-2 border-solid bg-white p-0">
         <input
           type="text"
-          placeholder="      Search any sound"
+          placeholder={t("searchSound")}
           className=" h-full w-[85%] rounded-full p-0 pl-4 outline-none"
           onChange={(event) => handleInput(event)}
           value={searchInput}
@@ -34,7 +36,7 @@ export default function Searchbar() {
           onClick={() => router.push(`/trends/keyword?search=${searchInput}`)}
           className="h-full w-[15%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white"
         >
-          Search
+          {t("search")}
         </button>
 
         {showIcon ? (
@@ -45,7 +47,7 @@ export default function Searchbar() {
       </div>
 
       <div className="my-6 flex w-full flex-col">
-        <p className="mb-3 text-xl font-bold">Browse genres</p>
+        <p className="mb-3 text-xl font-bold"> {t("browseGenres")}</p>
         <div className="flex w-full flex-wrap">
           {genres.map((item) => {
             return (

@@ -71,7 +71,7 @@ export default function BottomController() {
         </div>
         <div className="mr-2 text-pointyellow">{formatTime(currentTime)}</div>
         <div>
-          <div ref={containerRef} className="" />
+          <div ref={containerRef} className="fadeIn" />
           {!isReady && <ReadyLine />}
         </div>
         <div className="text-pointyellow">{duration}</div>

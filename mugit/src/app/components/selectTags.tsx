@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
 import { genres } from "../constants/genres";
+import { useTranslations } from "next-intl";
 
 function SelectTags() {
+  const t = useTranslations("Form");
+
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggleTag = (e: any) => {
@@ -18,7 +21,7 @@ function SelectTags() {
 
   return (
     <>
-      <h2 className="mt-4 text-lg">Tags</h2>
+      <h2 className="mt-4 text-lg">{t("tags")}</h2>
       <div className="flex min-h-10 w-full flex-wrap rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-2">
         {selected &&
           selected.map((item) => {

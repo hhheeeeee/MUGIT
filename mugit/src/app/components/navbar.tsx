@@ -10,8 +10,10 @@ import GoogleButton from "../container/google/googlebutton";
 import { useAtom } from "jotai";
 import { userAtom } from "../store/atoms/user";
 import { apiUrl } from "../store/atoms";
+import { useTranslations } from "next-intl";
 
 const Navbar = () => {
+  const t = useTranslations("Navbar");
   const pathname = usePathname();
   const locale = useLocale();
 
@@ -76,7 +78,7 @@ const Navbar = () => {
                 href={item.to}
                 className={`mr-4 mt-4 block hover:text-white lg:mt-0 lg:inline-block ${activefonts}`}
               >
-                {item.name}
+                {t(item.name)}
               </Link>
             );
           })}

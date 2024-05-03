@@ -4,8 +4,11 @@ import { useSearchParams } from "next/navigation";
 import ResultTable from "@/app/container/trends/keyword/ResultTable";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "@/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
+  const t = useTranslations("Trends");
+
   const router = useRouter();
   const [searchInput, setSearchInput] = useState<string>("");
   const searchParams = useSearchParams();
@@ -37,7 +40,7 @@ export default function Page() {
           onClick={() => router.push(`/trends/keyword?search=${searchInput}`)}
           className="h-full w-[30%] rounded-full border-2 border-solid bg-pointblue px-4 py-2 text-white"
         >
-          Search
+          {t("search")}
         </button>
       </div>
       <ResultTable />

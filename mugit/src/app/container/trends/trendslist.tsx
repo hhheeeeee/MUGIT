@@ -2,11 +2,14 @@ import { dummytrends } from "./dummy";
 import Image from "next/image";
 import PlayHover from "./PlayHover";
 import TrendsItem from "./trendsitem";
+import { useTranslations } from "next-intl";
 
 export default function Trendslist() {
+  const t = useTranslations("Trends");
+
   return (
     <div className="flex h-full w-full flex-col">
-      <p className="text-4xl font-bold">Trends</p>
+      <p className="text-4xl font-bold">{t("title")}</p>
       <div className="grid w-full grid-cols-3 gap-x-6">
         {dummytrends.map((item) => {
           return (

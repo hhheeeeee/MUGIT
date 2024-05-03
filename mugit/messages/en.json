@@ -1,5 +1,64 @@
 {
-  "Index": {
-    "title": "Hello world!"
+  "Landing": {
+    "title": "Make your own Flow"
+  },
+  "Trends": {
+    "search": "Search",
+    "browseGenres": "Browse Genres",
+    "title": "Trends",
+    "searchSound": "        Search any Sound"
+  },
+  "Support": {
+    "title": "What is Mugit?"
+  },
+  "SupportDescription": {
+    "Royalty": {
+      "title": "100% royalty free",
+      "value": "Use your sounds everywhere, they're cleared for commercial use"
+    },
+    "Edit": {
+      "title": "Edit your Music",
+      "value": "The World's most easiest Music Editor"
+    },
+    "Share": {
+      "title": "Share",
+      "value": "Share your Sounds with Other people"
+    }
+  },
+  "Flow": {
+    "newFlow": "New Flow",
+    "details": "Details",
+    "tree": "Tree",
+    "comments": "comments",
+    "writeComments": "Write a comment"
+  },
+  "Form": {
+    "note": "Note Name",
+    "flow": "Flow Name",
+    "tags": "Tags",
+    "privacy": "Privacy",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your Note",
+    "recordMessages": "Record Messages",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "Information": {
+    "note": "Short Explanations about Note and How it works!",
+    "flow": "Short Explanations about Flow and How it works!",
+    "release": "What is Release?????"
+  },
+  "Navbar": {
+    "trends": "Trends",
+    "profile": "Profile",
+    "support": "Support"
+  },
+  "Profile": {
+    "followers": "Followers",
+    "followings": "Followings",
+    "follow": "Follow",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }

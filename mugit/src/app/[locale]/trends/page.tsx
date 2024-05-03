@@ -1,7 +1,13 @@
 import Searchbar from "@/app/container/trends/searchbar";
 import Trendslist from "@/app/container/trends/trendslist";
+import { unstable_setRequestLocale } from "next-intl/server";
 
-export default function TrendsPage() {
+export default function TrendsPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
   return (
     <main
       //   className="py-10s flex min-h-[90%] w-full flex-auto flex-col content-center items-center
