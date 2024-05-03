@@ -108,7 +108,7 @@ const Navbar = () => {
             </Link>
           )}
         </div>
-        {user.isLogined == "false" ? (
+        {user.isLogined == "true" ? (
           <div className="flex w-[72px] justify-between">
             <Image
               src={
