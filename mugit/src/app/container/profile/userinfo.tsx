@@ -11,7 +11,7 @@ const tempInfo = {
   isLogined: true,
   nickName: "Lil Nas X",
   profileText: "when the light returns",
-  profileImage: "/lil nas x.png",
+  profileImage: "/lilnasx.png",
 };
 
 export default function UserInfo() {
@@ -163,7 +163,7 @@ export default function UserInfo() {
                     </button>
                     <button
                       className="rounded border-2 border-pointblue bg-pointblue px-2 py-1 text-white"
-                      onClick={clickModal}
+                      onClick={onClick}
                     >
                       {t("save")}
                     </button>
