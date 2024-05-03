@@ -6,3 +6,11 @@
 	path = backend
 	url = https://lab.ssafy.com/s10-final/S10P31A502.git
 	branch = backend
+[submodule "sse-server"]
+	path = sse-server
+	url = https://lab.ssafy.com/s10-final/S10P31A502.git
+	branch = sse-server
+[submodule "file-server"]
+	path = file-server
+	url = https://lab.ssafy.com/s10-final/S10P31A502.git
+	branch = file-server
