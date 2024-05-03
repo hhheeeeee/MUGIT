@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class FilePathDto {
     private String type;
-    private String originName;
-    private String uuidName;
+    private String name;
+    private String path;
 }
