@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import IconInfo from "@/app/assets/icon/IconInfo";
-import { descriptionScript } from "@/app/constants/description-script";
+import { useTranslations } from "next-intl";
 
 type propType = {
   target: string;
@@ -10,6 +10,7 @@ type propType = {
 };
 
 function Description({ target }: propType) {
+  const t = useTranslations("Information");
   const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -29,7 +30,7 @@ function Description({ target }: propType) {
             color="#0033ff"
             onClick={handleClick}
           />
-          <div className={descriptionClass}>{descriptionScript[target]}</div>
+          <div className={descriptionClass}>{t(target)}</div>
         </>
       ) : (
         <>

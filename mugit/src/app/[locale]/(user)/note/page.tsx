@@ -8,8 +8,11 @@ import SelectTags from "@/app/components/selectTags";
 import { useInput } from "@/app/hooks/useInput";
 import { useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { useTranslations } from "next-intl";
 
 export default function NotePage() {
+  const t = useTranslations("Form");
+
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
   const [privacy, setPrivacy] = useState<string>("Public");
@@ -33,7 +36,7 @@ export default function NotePage() {
         <div className="flex w-9/12 flex-col">
           <UploadContainer file={file} setFile={setFile} />
 
-          <h2 className="mt-4 text-lg">Note Name</h2>
+          <h2 className="mt-4 text-lg">{t("note")}</h2>
           <input
             value={name}
             onChange={handleChangeName}
@@ -47,20 +50,20 @@ export default function NotePage() {
             <MyRadioGroup privacy={privacy} setPrivacy={setPrivacy} />
           </div>
 
-          <h2 className="mt-4 text-lg">Description</h2>
+          <h2 className="mt-4 text-lg">{t("description")}</h2>
           <textarea
             value={description}
             onChange={handleChangeDescription}
-            placeholder="Describe your Note"
+            placeholder={t("descriptionPlaceholder")}
             className="h-52 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 p-4"
           />
 
           <div className="mt-5 flex w-full justify-end gap-x-3">
             <button className="rounded-lg border-2 border-solid bg-gray-100 px-10 py-3 text-gray-600">
-              Cancel
+              {t("cancel")}
             </button>
             <button className="rounded-lg bg-pointblue px-10 py-3 text-white">
-              Save
+              {t("save")}
             </button>
           </div>
         </div>

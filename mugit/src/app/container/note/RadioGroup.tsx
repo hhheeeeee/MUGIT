@@ -2,6 +2,7 @@
 
 // import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
+import { useTranslations } from "next-intl";
 
 type PrivacyRadioPropType = {
   privacy: string;
@@ -9,10 +10,14 @@ type PrivacyRadioPropType = {
 };
 
 function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
+  const t = useTranslations("Form");
+
   return (
     <>
       <RadioGroup value={privacy} onChange={setPrivacy}>
-        <RadioGroup.Label className="mt-4 text-lg">Privacy</RadioGroup.Label>
+        <RadioGroup.Label className="mt-4 text-lg">
+          {t("privacy")}
+        </RadioGroup.Label>
         <div className="my-4 flex gap-x-6">
           <RadioGroup.Option value="Public">
             {({ checked }) => (

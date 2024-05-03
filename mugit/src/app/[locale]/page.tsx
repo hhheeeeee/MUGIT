@@ -13,7 +13,7 @@ export default function IndexPage({
 
   // Once the request locale is set, you
   // can call hooks from `next-intl`
-  const t = useTranslations("Index");
+  const t = useTranslations("Landing");
 
   return (
     <>
@@ -21,7 +21,6 @@ export default function IndexPage({
         className="flex h-[90%] w-full flex-auto flex-col content-center items-center justify-center
       bg-pointblack"
       >
-        {/* <h1>{t("title")}</h1> */}
         <div
           className="flex items-center justify-between bg-pointblack text-[14rem]
     font-extrabold italic text-pointyellow"
@@ -32,7 +31,7 @@ export default function IndexPage({
         <div className="w-full items-center justify-between bg-pointblack">
           <Line />
           <p className="mt-5 text-center text-[2rem] font-bold text-pointyellow">
-            Make your own Flow
+            {t("title")}
           </p>
         </div>
       </main>

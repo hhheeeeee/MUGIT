@@ -5,6 +5,7 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import IconCamera from "@/app/assets/icon/IconCamera";
 import { apiUrl, blocalUrl } from "@/app/store/atoms";
+import { useTranslations } from "next-intl";
 
 const tempInfo = {
   isLogined: true,
@@ -14,6 +15,7 @@ const tempInfo = {
 };
 
 export default function UserInfo() {
+  const t = useTranslations("Profile");
   const [isOpen, setIsOpen] = useState(false);
   function clickModal() {
     setIsOpen(!isOpen);
@@ -58,23 +60,23 @@ export default function UserInfo() {
           <p className="pb-3 text-xl">{tempInfo.profileText}</p>
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5">
-              <p>Followers</p>
+              <p>{t("followers")}</p>
               <p className="text-2xl">10</p>
             </div>
             <div className="pl-5">
-              <p>Followings</p>
+              <p>{t("followings")}</p>
               <p className="text-2xl">20</p>
             </div>
           </div>
           <div>
             <button className="mr-3 rounded border-2 border-black px-2 py-1">
-              Follow
+              {t("follow")}
             </button>
             <button
               className="rounded border-2 border-black px-2 py-1"
               onClick={clickModal}
             >
-              Edit
+              {t("edit")}
             </button>
           </div>
         </div>
@@ -157,13 +159,13 @@ export default function UserInfo() {
                       className="mx-3 rounded border-2 border-slate-500 px-2 py-1"
                       onClick={clickModal}
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       className="rounded border-2 border-pointblue bg-pointblue px-2 py-1 text-white"
                       onClick={clickModal}
                     >
-                      Save
+                      {t("save")}
                     </button>
                   </div>
                 </Dialog.Panel>

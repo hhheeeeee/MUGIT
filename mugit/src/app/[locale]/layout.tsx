@@ -1,3 +1,4 @@
+import { NextIntlClientProvider, useMessages } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { Provider } from "jotai";
 import { Inter } from "next/font/google";
@@ -27,15 +28,18 @@ export default function LocaleLayout({
   params: { locale: string };
 }) {
   unstable_setRequestLocale(locale);
+  const messages = useMessages();
 
   return (
     <html lang={locale}>
       <link rel="icon" href="/icon.png" type="image/png" sizes="any" />
       <Provider>
         <body className={inter.className} suppressHydrationWarning={true}>
-          <Navbar />
-          {children}
-          <BottomPlaybar />
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Navbar />
+            {children}
+            <BottomPlaybar />
+          </NextIntlClientProvider>
         </body>
       </Provider>
     </html>
