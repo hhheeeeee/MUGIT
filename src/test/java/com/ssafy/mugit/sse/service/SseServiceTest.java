@@ -39,6 +39,6 @@ class SseServiceTest {
 
         // then
         assertThat(emitter).isNotNull();
-        assertThat(emitter.getTimeout()).isEqualTo(6000L);
+        assertThat(emitter.getTimeout()).isEqualTo(10000L);
     }
 }

@@ -29,6 +29,8 @@ public class SecurityConfig {
                 // disable form login
                 .formLogin((AbstractHttpConfigurer::disable))
 
+                .csrf(AbstractHttpConfigurer::disable)
+
                 .build();
     }
 

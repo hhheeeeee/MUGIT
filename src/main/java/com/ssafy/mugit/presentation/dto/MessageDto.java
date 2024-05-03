@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BasicMessageDto {
+public class MessageDto {
     private String message;
 }

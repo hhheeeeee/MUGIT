@@ -1,7 +1,7 @@
 package com.ssafy.mugit.domain.message.fixture;
 
 import com.ssafy.mugit.domain.message.dto.NotificationDto;
-import com.ssafy.mugit.domain.message.dto.MessageDto;
+import com.ssafy.mugit.domain.message.dto.SseMessageDto;
 import com.ssafy.mugit.domain.sse.service.SseEvent;
 import lombok.AllArgsConstructor;
 
@@ -15,7 +15,7 @@ public enum MessageDtoFixture {
     private SseEvent event;
     private Object message;
 
-    public MessageDto<NotificationDto> getFixture() {
-        return new MessageDto<NotificationDto>(userId, event, (NotificationDto)message);
+    public SseMessageDto<NotificationDto> getFixture() {
+        return new SseMessageDto<NotificationDto>(userId, event, (NotificationDto)message);
     }
 }
