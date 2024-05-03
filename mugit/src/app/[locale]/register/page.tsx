@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { useState } from "react";
 import { apiUrl, blocalUrl } from "@/app/store/atoms";
+import { useLocale } from "next-intl";
 
 export default function Page() {
+  const locale = useLocale();
   const [nickname, setNickname] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   function register() {
@@ -20,11 +22,10 @@ export default function Page() {
       }),
     })
       .then((response) => {
-        console.log(response);
-        console.log(JSON.stringify(response));
         switch (response.status) {
           case 201: {
             alert("회원가입 완료");
+            location.href = `/${locale}/`;
             break;
           }
           case 400: {
