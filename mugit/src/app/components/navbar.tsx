@@ -7,10 +7,36 @@ import Image from "next/image";
 import Logo from "../assets/logo";
 import { navbaritems } from "../constants/navbaritems";
 import GoogleButton from "../container/google/googlebutton";
+import { useAtom } from "jotai";
+import { userAtom } from "../store/atoms/user";
+import { apiUrl } from "../store/atoms";
 
 const Navbar = () => {
   const pathname = usePathname();
   const locale = useLocale();
+
+  const [user, setUser] = useAtom(userAtom);
+  const signOut = () => {
+    fetch(apiUrl + "/users/logout").then((response) => {
+      switch (response.status) {
+        case 200: {
+          setUser({
+            isLogined: "false",
+            nickName: "",
+            profileImage: "DEFAULT_IMAGE_URL",
+            profileText: "",
+            followers: "",
+            followings: "",
+          });
+          break;
+        }
+        case 401: {
+          alert("로그인 정보가 없습니다.");
+          break;
+        }
+      }
+    });
+  };
 
   return (
     <nav className="flex h-[10%] w-full items-center justify-between bg-pointblack p-5">
@@ -80,17 +106,44 @@ const Navbar = () => {
             </Link>
           )}
         </div>
-        <div className="mt-1">
-          <GoogleButton />
-        </div>
-
-        {/* <Image
-          src={person}
-          className="w- rounded-full"
-          alt="Avatar"
-          width={40}
-          style={{ objectFit: "cover" }}
-        /> */}
+        {user.isLogined == "false" ? (
+          <div className="flex w-[72px] justify-between">
+            <Image
+              src={
+                user.profileImage == "DEFAULT_IMAGE_URL"
+                  ? "/150.jpg"
+                  : user.profileImage
+              }
+              className="rounded-full"
+              alt="Avatar"
+              width={32}
+              height={32}
+            />
+            <button
+              onClick={signOut}
+              className="p h-8 w-8 rounded-full border-2 border-slate-500 pl-[3px]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="rgb(100 116 139)"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <div className="mt-4">
+            <GoogleButton />
+          </div>
+        )}
       </div>
     </nav>
   );

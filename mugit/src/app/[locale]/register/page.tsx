@@ -24,7 +24,6 @@ export default function Page() {
       .then((response) => {
         switch (response.status) {
           case 201: {
-            alert("회원가입 완료");
             location.href = `/${locale}/`;
             break;
           }
