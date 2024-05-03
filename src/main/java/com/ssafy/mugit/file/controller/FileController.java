@@ -20,9 +20,10 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping
-    public ResponseEntity<?> uploadImage(@RequestParam("files") List<MultipartFile> files) {
+    public ResponseEntity<?> uploadImage(@RequestParam(value = "image", required = false) MultipartFile image,
+                                         @RequestParam(value = "source", required = false) List<MultipartFile> source) {
 
-        return new ResponseEntity<>(new ListDto(fileService.uploadImage(files)), HttpStatus.OK);
+        return new ResponseEntity<>(new ListDto(fileService.uploadImage(image, source)), HttpStatus.OK);
 
     }
 }

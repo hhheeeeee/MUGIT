@@ -21,32 +21,37 @@ public class FileService {
     @Value("${upload-path}")
     private String uploadPath;
 
-    public List<FilePathDto> uploadImage(List<MultipartFile> files) {
+    public List<FilePathDto> uploadImage(MultipartFile image, List<MultipartFile> sources) {
         try {
-            List<FilePathDto> paths = null;
-//            List<MultipartFile> files = fileRequestDto.getFiles();
+            List<FilePathDto> paths = new ArrayList<>();
 
-            if (files != null && !files.isEmpty()) {
-                paths = new ArrayList<>();
-
-                for (MultipartFile file : files) {
-                    String originName = file.getOriginalFilename();
-                    String extension = originName != null ? getExtension(originName) : "";
-                    String uuidName = UUID.randomUUID() + extension;
-
-                    Path path = Paths.get(uploadPath + uuidName);
-                    Files.createDirectories(path.getParent());
-                    file.transferTo(path);
-
-                    String url = "https://mugit.site/files/";
-                    paths.add(new FilePathDto(originName, url + uuidName));
+            if (sources != null && !sources.isEmpty()) {
+                for (MultipartFile file : sources) {
+                    paths.add(saveFile("source", file));
                 }
+            }
+
+            if (image != null) {
+                paths.add(saveFile("image", image));
             }
 
             return paths;
         } catch (IOException e) {
             throw new RuntimeException("Directory Create Error");
         }
+    }
+
+    private FilePathDto saveFile(String type, MultipartFile file) throws IOException {
+        String originName = file.getOriginalFilename();
+        String extension = originName != null ? getExtension(originName) : "";
+        String uuidName = UUID.randomUUID() + extension;
+
+        Path path = Paths.get(uploadPath + uuidName);
+        Files.createDirectories(path.getParent());
+        file.transferTo(path);
+
+        String url = "https://mugit.site/files/";
+        return new FilePathDto(type, originName, url + uuidName);
     }
 
     private String getExtension(String filename) {
