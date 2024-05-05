@@ -1,4 +1,4 @@
-package com.ssafy.mugit.config;
+package com.ssafy.mugit.global.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

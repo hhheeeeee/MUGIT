@@ -1,7 +1,7 @@
-package com.ssafy.mugit.config;
+package com.ssafy.mugit.global.config;
 
-import com.ssafy.mugit.infrastructure.security.CustomAuthorizeHttpRequestsFilter;
-import com.ssafy.mugit.infrastructure.security.CustomOncePerRequestFilter;
+import com.ssafy.mugit.global.security.CustomAuthorizeHttpRequestsFilter;
+import com.ssafy.mugit.global.security.CustomOncePerRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

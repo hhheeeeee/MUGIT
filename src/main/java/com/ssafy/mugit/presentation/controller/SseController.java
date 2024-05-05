@@ -1,8 +1,8 @@
 package com.ssafy.mugit.presentation.controller;
 
 import com.ssafy.mugit.domain.sse.service.SseService;
-import com.ssafy.mugit.infrastructure.dto.UserSessionDto;
-import com.ssafy.mugit.infrastructure.security.UserSession;
+import com.ssafy.mugit.global.dto.UserSessionDto;
+import com.ssafy.mugit.global.security.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

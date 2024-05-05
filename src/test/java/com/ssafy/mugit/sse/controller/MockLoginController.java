@@ -1,5 +1,6 @@
 package com.ssafy.mugit.sse.controller;
 
+import com.ssafy.mugit.global.dto.UserSessionDto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ public class MockLoginController {
 
     @GetMapping("/mock/login")
     public ResponseEntity login(HttpSession session) {
-        session.setAttribute(LOGIN_USER_KEY.getKey(), USER_SESSION_DTO_01.getFixture());
+        session.setAttribute(LOGIN_USER_KEY.getKey(), (UserSessionDto) USER_SESSION_DTO_01.getFixture());
         return ResponseEntity.ok().build();
     }
 }

@@ -1,8 +1,8 @@
-package com.ssafy.mugit.infrastructure.security;
+package com.ssafy.mugit.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.mugit.infrastructure.DataKeys;
-import com.ssafy.mugit.infrastructure.dto.UserSessionDto;
+import com.ssafy.mugit.global.dto.UserSessionDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

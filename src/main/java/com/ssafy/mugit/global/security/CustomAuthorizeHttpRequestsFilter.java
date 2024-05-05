@@ -1,4 +1,4 @@
-package com.ssafy.mugit.infrastructure.security;
+package com.ssafy.mugit.global.security;
 
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
