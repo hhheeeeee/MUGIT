@@ -5,8 +5,7 @@ import com.ssafy.mugit.domain.message.fixture.MessageDtoFixture;
 import jakarta.servlet.http.Cookie;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,11 +23,13 @@ import static com.ssafy.mugit.domain.message.fixture.MessageDtoFixture.MESSAGE_D
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MessageApiControllerTest {
 
     @Autowired
@@ -39,13 +40,14 @@ class MessageApiControllerTest {
 
     @Test
     @DisplayName("api 전송 테스트 : 로그인 안되어있을때(404)")
+    @Order(1)
     void testApi404() throws Exception {
         // given
         long userId = 1L;
         String content = objectMapper.writeValueAsString(MESSAGE_DTO_01.getFixture());
 
         // when
-        ResultActions perform = mvc.perform(get("/message")
+        ResultActions perform = mvc.perform(post("/message")
                 .contentType(APPLICATION_JSON)
                 .content(content));
 
@@ -57,6 +59,7 @@ class MessageApiControllerTest {
 
     @Test
     @DisplayName("api 전송 테스트")
+    @Order(2)
     void testApi200() throws Exception {
         // given
         Cookie[] cookies = mvc.perform(get("/mock/login")).andReturn().getResponse().getCookies();
@@ -64,7 +67,7 @@ class MessageApiControllerTest {
         String content = objectMapper.writeValueAsString(MESSAGE_DTO_01.getFixture());
 
         // when
-        ResultActions perform = mvc.perform(get("/message")
+        ResultActions perform = mvc.perform(post("/message")
                 .contentType("application/json")
                 .content(content));
 

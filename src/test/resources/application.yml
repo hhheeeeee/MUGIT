@@ -22,9 +22,9 @@ spring:
 
   data:
     redis:
-      host: ${SESSION_REDIS_HOST}
-      password: ${SESSION_REDIS_PASSWORD}
-      port: ${SESSION_REDIS_PORT}
+      host: ${TEST_SESSION_REDIS_HOST}
+      password: ${TEST_SESSION_REDIS_PASSWORD}
+      port: ${TEST_SESSION_REDIS_PORT}
       repositories:
         enabled: false
 
