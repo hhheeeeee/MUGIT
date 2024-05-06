@@ -1,6 +1,7 @@
 package com.ssafy.mugit.global.config;
 
 import com.ssafy.mugit.global.security.CustomAuthorizeHttpRequestsFilter;
+import com.ssafy.mugit.global.security.CustomCorsConfiguration;
 import com.ssafy.mugit.global.security.CustomOncePerRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,8 @@ public class SecurityConfig {
 
     private final CustomAuthorizeHttpRequestsFilter customAuthorizeHttpRequestsFilter;
     private final CustomOncePerRequestFilter customOncePerRequestFilter;
+    private final CustomCorsConfiguration customCorsConfiguration;
+
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,6 +31,9 @@ public class SecurityConfig {
 
                 // disable form login
                 .formLogin((AbstractHttpConfigurer::disable))
+
+                //cors
+                .cors((corsConfig) -> corsConfig.configurationSource(customCorsConfiguration.getSource()))
 
                 .csrf(AbstractHttpConfigurer::disable)
 
