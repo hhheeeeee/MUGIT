@@ -1,10 +1,10 @@
 "use client";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "@/navigation";
-import { flowType } from "@/app/types/flow-type";
+import { FlowType } from "@/app/types/flow-type";
 
 interface itemProp {
-  item: flowType;
+  item: FlowType;
 }
 
 export default function TrendsItem({ item }: itemProp) {
