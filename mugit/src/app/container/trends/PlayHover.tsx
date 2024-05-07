@@ -1,7 +1,7 @@
 "use client";
 
 import IconPlay from "@/app/assets/icon/IconPlay";
-import { FlowType } from "@/app/types/flow-type";
+import { FlowType } from "@/app/types/flowtype";
 import { SonginitialValue } from "@/app/store/atoms";
 
 type PlayHoverPropsType = {

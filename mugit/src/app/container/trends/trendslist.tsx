@@ -3,10 +3,10 @@ import Image from "next/image";
 import PlayHover from "./PlayHover";
 import TrendsItem from "./trendsitem";
 import { useTranslations } from "next-intl";
-import { flowType } from "@/app/types/flow-type";
+import { FlowType } from "@/app/types/flowtype";
 
 interface PropType {
-  flows: flowType[];
+  flows: FlowType[];
 }
 
 export default function Trendslist({ flows }: PropType) {

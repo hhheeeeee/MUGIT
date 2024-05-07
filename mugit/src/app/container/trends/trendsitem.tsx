@@ -1,7 +1,7 @@
 "use client";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "@/navigation";
-import { FlowType } from "@/app/types/flow-type";
+import { FlowType } from "@/app/types/flowtype";
 
 interface itemProp {
   item: FlowType;
