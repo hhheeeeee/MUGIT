@@ -1,17 +1,10 @@
 "use client";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "@/navigation";
-
-type item = {
-  id: number;
-  title: string;
-  name: string;
-  soundurl: string;
-  imgurl: string;
-};
+import { flowType } from "@/app/types/flow-type";
 
 interface itemProp {
-  item: item;
+  item: flowType;
 }
 
 export default function TrendsItem({ item }: itemProp) {
@@ -29,7 +22,7 @@ export default function TrendsItem({ item }: itemProp) {
         className="mb-4 cursor-pointer text-base hover:font-bold"
         onClick={() => router.push("/profile")}
       >
-        {item.name}
+        {item.user.nickName}
       </p>
     </>
   );

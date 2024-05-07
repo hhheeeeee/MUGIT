@@ -1,11 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
 
-export default function ReadyLine() {
+type PropsType = {
+  key: number;
+};
+
+export default function ReadyLine({ key }: PropsType) {
   return (
     <motion.div
       initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
+      animate={{ scaleX: 1 }}
       transition={{
         duration: 0.4,
       }}

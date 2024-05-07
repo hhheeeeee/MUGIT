@@ -10,6 +10,7 @@ import IconPause from "@/app/assets/icon/IconPause";
 import ReadyLine from "./readyLine";
 
 export default function BottomController() {
+  const media = useRef(null);
   const containerRef = useRef(null);
   const song = useAtomValue(nowPlaying);
   const [duration, setDuration] = useState("");
@@ -29,7 +30,8 @@ export default function BottomController() {
     barHeight: 0.6,
     minPxPerSec: 1,
     fillParent: true,
-    url: song.soundurl,
+    // url: "/musics/example.mp3",
+    url: song.musicPath,
     mediaControls: false,
     // autoplay: true,
     interact: true,
@@ -72,7 +74,7 @@ export default function BottomController() {
         <div className="mr-2 text-pointyellow">{formatTime(currentTime)}</div>
         <div>
           <div ref={containerRef} className="fadeIn" />
-          {!isReady && <ReadyLine />}
+          {!isReady && <ReadyLine key={song.id} />}
         </div>
         <div className="text-pointyellow">{duration}</div>
       </div>

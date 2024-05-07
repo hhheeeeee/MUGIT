@@ -1,31 +1,23 @@
 "use client";
 
 import IconPlay from "@/app/assets/icon/IconPlay";
-import { formatTime } from "@/app/utils/formatTime";
-
-type item = {
-  id: number;
-  title: string;
-  name: string;
-  soundurl: string;
-  imgurl: string;
-};
+import { flowType } from "@/app/types/flow-type";
+import { SonginitialValue } from "@/app/store/atoms";
 
 type PlayHoverPropsType = {
-  item: item;
+  item: flowType;
   css?: string;
 };
 
-import { useState } from "react";
 import { isplaying, nowPlaying } from "@/app/store/atoms";
 import { useSetAtom } from "jotai";
 
 export default function PlayHover({ item, css }: PlayHoverPropsType) {
   const setPlay = useSetAtom(isplaying);
   const setSong = useSetAtom(nowPlaying);
-  const [duration, setDuration] = useState(0);
 
   const setLocalStorage = () => {
+    setSong(SonginitialValue);
     setPlay(false);
     setPlay(true);
     setSong(item);

@@ -3,22 +3,27 @@ import Image from "next/image";
 import PlayHover from "./PlayHover";
 import TrendsItem from "./trendsitem";
 import { useTranslations } from "next-intl";
+import { flowType } from "@/app/types/flow-type";
 
-export default function Trendslist() {
+interface PropType {
+  flows: flowType[];
+}
+
+export default function Trendslist({ flows }: PropType) {
   const t = useTranslations("Trends");
 
   return (
     <div className="flex h-full w-full flex-col">
       <p className="text-4xl font-bold">{t("title")}</p>
       <div className="grid w-full grid-cols-3 gap-x-6">
-        {dummytrends.map((item) => {
+        {flows.map((item) => {
           return (
             <div key={item.id}>
               <div className="relative h-[180px] rounded-lg">
                 <Image
                   className="rounded-lg "
-                  src={item.imgurl}
-                  alt={item.name}
+                  src={item.coverPath}
+                  alt={item.title}
                   fill
                   priority
                   style={{ objectFit: "cover" }}
