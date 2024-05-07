@@ -39,7 +39,6 @@ server:
     include-stacktrace: always
     whitelabel:
       enabled: true
-  port: 8082
   servlet:
     session:
       timeout: ${SESSION_TIMEOUT}

@@ -12,7 +12,7 @@ java {
 
 bootJar {
 	archiveBaseName = 'mugit'
-	archiveFileName = 'sse.jar'
+	archiveFileName = 'sse-server.jar'
 	archiveVersion = '0.0.1'
 }
 
