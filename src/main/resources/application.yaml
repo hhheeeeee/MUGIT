@@ -9,6 +9,19 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
 
+  data:
+    redis:
+      host: ${SESSION_REDIS_HOST}
+      password: ${SESSION_REDIS_PASSWORD}
+      port: ${SESSION_REDIS_PORT}
+      repositories:
+        enabled: false
+
+  session:
+    redis:
+      flush-mode: on_save
+      namespace: mugit
+
 upload-path: ${UPLOAD_PATH}
 
 server:

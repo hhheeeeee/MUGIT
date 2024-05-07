@@ -14,8 +14,8 @@ import java.io.IOException;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomRecordException.class)
-    public ResponseEntity<?> handlerRecordException(CustomRecordException e) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handlerRecordException(CustomException e) {
         log.error("[Error] 커스텀 오류 발생 !!!");
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
     }
