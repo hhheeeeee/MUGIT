@@ -62,7 +62,11 @@ export default function UserFlow() {
                   <p className="text-xl font-semibold">{flow}</p>
                   <p className="text-base">Any Nickname</p>
                   <div className="absolute bottom-0 w-full">
-                    <WavesurferComp key={flow} musicname={flow} type="source" />
+                    <WavesurferComp
+                      musicPath=""
+                      musicname={flow}
+                      type="source"
+                    />
                   </div>
                 </div>
               </div>
@@ -81,7 +85,11 @@ export default function UserFlow() {
                   <p className="text-xl font-semibold">{flow}</p>
                   <p className="text-base">Any Nickname</p>
                   <div className="absolute bottom-0 w-full">
-                    <WavesurferComp key={flow} musicname={flow} type="source" />
+                    <WavesurferComp
+                      musicPath=""
+                      musicname={flow}
+                      type="source"
+                    />
                   </div>
                 </div>
               </div>
@@ -100,7 +108,11 @@ export default function UserFlow() {
                   <p className="text-xl font-semibold">{flow}</p>
                   <p className="text-base">Any Nickname</p>
                   <div className="absolute bottom-0 w-full">
-                    <WavesurferComp key={flow} musicname={flow} type="source" />
+                    <WavesurferComp
+                      musicPath=""
+                      musicname={flow}
+                      type="source"
+                    />
                   </div>
                 </div>
               </div>
