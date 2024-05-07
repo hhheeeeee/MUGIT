@@ -24,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://mugit.site", "http://localhost") // 이 출발지에서 오는 요청 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메소드
                 .allowedHeaders("*") // 모든 헤더 허용
-                .allowCredentials(true); // 쿠키를 포함한 요청 허용
+                .allowCredentials(true)
+                .exposedHeaders("*"); // 쿠키를 포함한 요청 허용
     }
 }
