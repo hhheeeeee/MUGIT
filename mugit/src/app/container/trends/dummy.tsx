@@ -1,30 +1,50 @@
 export const dummytrends = [
   {
-    id: 0,
-    title: "Flow Name1",
-    name: "flow maker1",
-    soundurl: "/musics/Valley_of_Spies.mp3",
-    imgurl:
-      "https://plus.unsplash.com/premium_photo-1689247409711-f70c5cfa9254?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tags: ["Drums", "trap", "R&B", "Pop"],
-  },
-
-  {
     id: 1,
-    title: "Flow Name2222",
-    name: "flow maker22222",
-    soundurl: "/musics/Burkinelectric.mp3",
-    imgurl:
-      "https://plus.unsplash.com/premium_photo-1689247409711-f70c5cfa9254?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tags: ["Drums", "trap", "R&B", "Pop"],
+    user: {
+      id: 0,
+      nickName: "test",
+      profileImagePath:
+        "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    },
+    title: "string",
+    authority: "PUBLIC",
+    musicPath:
+      "https://mugit.site/files/e8a04f56-e101-40e9-b5e7-c2f67d899f32.mp3",
+    coverPath:
+      "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    createdAt: "string",
   },
   {
     id: 2,
-    title: "Flow Name3333",
-    name: "flow maker333",
-    soundurl: "musics/example.mp3",
-    imgurl:
-      "https://plus.unsplash.com/premium_photo-1689247409711-f70c5cfa9254?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    tags: ["Drums", "trap", "R&B", "Pop"],
+    user: {
+      id: 0,
+      nickName: "test",
+      profileImagePath:
+        "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    },
+    title: "string",
+    authority: "PUBLIC",
+    musicPath:
+      "https://mugit.site/files/e8a04f56-e101-40e9-b5e7-c2f67d899f32.mp3",
+    coverPath:
+      "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    createdAt: "string",
+  },
+  {
+    id: 3,
+    user: {
+      id: 0,
+      nickName: "test",
+      profileImagePath:
+        "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    },
+    title: "string",
+    authority: "PUBLIC",
+    musicPath:
+      "https://mugit.site/files/e8a04f56-e101-40e9-b5e7-c2f67d899f32.mp3",
+    coverPath:
+      "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
+    createdAt: "string",
   },
 ];

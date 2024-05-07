@@ -31,8 +31,8 @@ export default function ResultTable() {
                 <Image
                   width={200}
                   height={200}
-                  alt={item.name}
-                  src={item.imgurl}
+                  alt={item.title}
+                  src={item.coverPath}
                   className="h-28 w-28 rounded border-2"
                   priority
                 />
@@ -46,9 +46,9 @@ export default function ResultTable() {
               {item.title}
             </div>
             <div className="flex h-32 w-3/12 items-center justify-center">
-              {item.name}
+              {item.user.nickName}
             </div>
-            <div className="flex h-32 w-4/12 items-center justify-center">
+            {/* <div className="flex h-32 w-4/12 items-center justify-center">
               {item.tags.map((item) => {
                 return (
                   <span
@@ -59,7 +59,7 @@ export default function ResultTable() {
                   </span>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         );
       })}
