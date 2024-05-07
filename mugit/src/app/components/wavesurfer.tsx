@@ -26,15 +26,16 @@ const parseTimeToSeconds = (timeString: string) => {
 
 interface WavesurferCompPropType {
   musicname: string;
+  musicPath: string;
   type: string;
 }
 
 export default function WavesurferComp({
   musicname,
+  musicPath,
   type,
 }: WavesurferCompPropType) {
   const time = useAtomValue(playTime);
-  const audioUrl = `/musics/${musicname}`;
   const containerRef = useRef(null);
   const [duration, setDuration] = useState("0:00");
   const [ex, setEx] = useState<string>("");
@@ -54,7 +55,7 @@ export default function WavesurferComp({
     height: 75,
     waveColor: "#f1f609",
     progressColor: "#0033ff",
-    url: audioUrl,
+    url: musicPath,
     // plugins: useMemo(() => [Timeline.create()], []),
     barWidth: 2,
     dragToSeek: true,

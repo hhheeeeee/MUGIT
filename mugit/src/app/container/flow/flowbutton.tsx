@@ -3,14 +3,20 @@
 import { useRouter } from "@/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FlowDetailType } from "@/app/types/flowtype";
 
 interface PropType {
+  item: FlowDetailType;
   page: string;
 }
 
-export default function ButtonGroup({ page }: PropType) {
+export default function ButtonGroup({ item, page }: PropType) {
   const router = useRouter();
   const [hasClicked, setHasClicked] = useState(false);
+  const [likes, setLikes] = useState(item.likes);
+  if (item.likePressed) {
+    setHasClicked(true);
+  }
 
   return (
     <div className="absolute bottom-0 right-0 flex">
@@ -74,9 +80,9 @@ export default function ButtonGroup({ page }: PropType) {
               </svg>
             </motion.div>
             {hasClicked ? (
-              <span className="text-xs text-red-400">200</span>
+              <span className="text-xs text-red-400">{likes}</span>
             ) : (
-              <span className="text-xs">200</span>
+              <span className="text-xs">{likes}</span>
             )}
           </div>
         </>

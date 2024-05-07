@@ -14,7 +14,7 @@ export default function BottomController() {
   const containerRef = useRef(null);
   const song = useAtomValue(nowPlaying);
   const [duration, setDuration] = useState("");
-  const [_isPlaying, setisPlaying] = useState(false);
+  const [_isplaying, setIsPlaying] = useState(false);
 
   const { wavesurfer, isPlaying, currentTime, isReady } = useWavesurfer({
     container: containerRef,
@@ -30,10 +30,9 @@ export default function BottomController() {
     barHeight: 0.6,
     minPxPerSec: 1,
     fillParent: true,
-    // url: "/musics/example.mp3",
-    url: song.musicPath,
+    url: "/musics/example.mp3",
+    // url: song.musicPath,
     mediaControls: false,
-    // autoplay: true,
     interact: true,
     dragToSeek: false,
     hideScrollbar: true,
@@ -43,36 +42,40 @@ export default function BottomController() {
     sampleRate: 8000,
   });
 
-  const onPlayPause = useCallback(() => {
+  // const onPlayPause = useCallback(() => {
+  //   wavesurfer && wavesurfer.playPause();
+  // }, [wavesurfer]);
+
+  const onPlayPause = () => {
+    setIsPlaying(!_isplaying);
     wavesurfer && wavesurfer.playPause();
-    setisPlaying(!_isPlaying);
-  }, [wavesurfer]);
+  };
 
   if (wavesurfer) {
     wavesurfer.on("decode", (duration) => setDuration(formatTime(duration)));
   }
 
   useEffect(() => {
+    setIsPlaying(true);
     wavesurfer && wavesurfer.play();
-    setisPlaying(true);
   }, [song.id, wavesurfer]);
 
   return (
     <>
-      <div className="flex items-center justify-center">
+      <div className="flex w-[60%] items-center justify-center">
         <div
           onClick={onPlayPause}
           style={{ minWidth: "5em" }}
           className="flex w-[10%] items-center justify-center "
         >
-          {_isPlaying ? (
+          {_isplaying ? (
             <IconPause tailwindCSS="" color="#f1f609" size="50px" />
           ) : (
             <IconPlay tailwindCSS="" color="#f1f609" size="55px" />
           )}
         </div>
         <div className="mr-2 text-pointyellow">{formatTime(currentTime)}</div>
-        <div>
+        <div className="">
           <div ref={containerRef} className="fadeIn" />
           {!isReady && <ReadyLine key={song.id} />}
         </div>
