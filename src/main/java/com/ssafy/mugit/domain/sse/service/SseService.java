@@ -40,6 +40,7 @@ public class SseService {
     }
 
     public void send(SseEmitter emitter, long userId, SseEvent event, Object message) {
+        log.info("message 전송완료 : {}", message);
         try {
             emitter.send(SseEmitter.event()
                     .id(String.valueOf(userId))

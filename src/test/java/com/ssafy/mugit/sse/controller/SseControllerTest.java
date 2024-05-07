@@ -49,6 +49,5 @@ class SseControllerTest {
         perform.andExpect(status().isOk())
                 .andExpect(header().stringValues(CONTENT_TYPE, "text/event-stream; charset=UTF-8"));
         assertThat(emitter).isNotNull();
-        assertThat(true).isFalse();
     }
 }

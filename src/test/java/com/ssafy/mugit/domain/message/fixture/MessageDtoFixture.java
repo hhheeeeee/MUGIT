@@ -9,7 +9,7 @@ import static com.ssafy.mugit.domain.message.NotificationType.FOLLOW;
 
 @AllArgsConstructor
 public enum MessageDtoFixture {
-    MESSAGE_DTO_01(1L, SseEvent.FOLLOW, new NotificationDto(1L, 1L, 2L, FOLLOW, FOLLOW.getMessage()));
+    MESSAGE_DTO_01(1L, SseEvent.FOLLOW, new NotificationDto(1L, 1L, 2L, 2L, Object.class, FOLLOW, FOLLOW.getMessage()));
 
     private Long userId;
     private SseEvent event;
