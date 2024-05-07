@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/files")
-@CrossOrigin("*")
 @Slf4j
 public class FileController {
 
