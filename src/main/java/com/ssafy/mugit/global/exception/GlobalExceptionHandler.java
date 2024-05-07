@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestControllerAdvice
 @Slf4j
@@ -23,6 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?> handlerIOException(IOException e) {
         log.error("[Error] IO 오류 발생 !!!");
+        log.error(Arrays.toString(e.getStackTrace()));
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
