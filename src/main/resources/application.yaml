@@ -22,6 +22,12 @@ spring:
       flush-mode: on_save
       namespace: mugit
 
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
 upload-path: ${UPLOAD_PATH}
 
 server:
