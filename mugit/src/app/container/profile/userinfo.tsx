@@ -30,6 +30,8 @@ export default function UserInfo() {
     profileImagePath:
       "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
     profileText: "Loading",
+    isFollower: false,
+    isFollowing: false,
     followerCount: "0",
     followingCount: "0",
   });
@@ -81,6 +83,7 @@ export default function UserInfo() {
       method: "patch",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       credentials: "include",
       body: JSON.stringify({
@@ -101,6 +104,10 @@ export default function UserInfo() {
         followingCount: String(Cookies.get("followings")),
       });
     });
+  }
+
+  function follow() {
+    fetch(apiUrl + `/users/${params.id}/follows`);
   }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
