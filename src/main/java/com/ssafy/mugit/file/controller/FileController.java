@@ -1,14 +1,15 @@
 package com.ssafy.mugit.file.controller;
 
-import com.ssafy.mugit.global.dto.ListDto;
 import com.ssafy.mugit.file.service.FileService;
-import com.ssafy.mugit.global.exception.CustomException;
-import com.ssafy.mugit.global.exception.FileError;
+import com.ssafy.mugit.global.dto.ListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,11 +24,7 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity<?> uploadFile(@RequestParam(value = "image", required = false) MultipartFile image,
-                                        @RequestParam(value = "source", required = false) List<MultipartFile> source,
-                                        @CookieValue(value = "JSESSIONID", defaultValue = "Not Found") String sessionId) {
-
-        if(sessionId.equals("Not Found")) throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
-        return new ResponseEntity<>(new ListDto(fileService.uploadFile(sessionId, image, source)), HttpStatus.OK);
-
+                                        @RequestParam(value = "source", required = false) List<MultipartFile> source) {
+        return new ResponseEntity<>(new ListDto(fileService.uploadFile(image, source)), HttpStatus.OK);
     }
 }

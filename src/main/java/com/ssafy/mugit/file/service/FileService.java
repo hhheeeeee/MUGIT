@@ -1,8 +1,6 @@
 package com.ssafy.mugit.file.service;
 
 import com.ssafy.mugit.file.dto.FilePathDto;
-import com.ssafy.mugit.global.exception.CustomException;
-import com.ssafy.mugit.global.exception.FileError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +24,8 @@ public class FileService {
     private final RedisTemplate<String, Object> redisTemplate;
     @Value("${upload-path}")
     private String uploadPath;
-    @Value("${spring.session.redis.namespace}")
-    private String NAMESPACE;
 
-    public List<FilePathDto> uploadFile(String sessionId, MultipartFile image, List<MultipartFile> sources) {
-        validate(sessionId);
-
+    public List<FilePathDto> uploadFile(MultipartFile image, List<MultipartFile> sources) {
         try {
             List<FilePathDto> paths = new ArrayList<>();
 
@@ -49,13 +42,6 @@ public class FileService {
             return paths;
         } catch (IOException e) {
             throw new RuntimeException("Directory Create Error");
-        }
-    }
-
-    private void validate(String sessionId) {
-        String decodedId = new String(Base64.getDecoder().decode(sessionId));
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(NAMESPACE + ":sessions:" + decodedId))) {
-            throw new CustomException(FileError.SESSIONID_ILLEGAL);
         }
     }
 
