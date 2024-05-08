@@ -23,7 +23,7 @@ function patchLike(id: number) {
 }
 
 export default function LikeButton({ item, isLogined }: PropType) {
-  const [hasClicked, setHasClicked] = useState(false);
+  const [hasClicked, setHasClicked] = useState(item.likePressed);
   const [likes, setLikes] = useState(item.likes);
 
   if (item.likePressed) {
