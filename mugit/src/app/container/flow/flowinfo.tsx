@@ -5,37 +5,28 @@ import FlowDetail from "./flowdetail";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import ButtonGroup from "./flowbutton";
-import { apiUrl } from "@/app/store/atoms";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 import useAsync from "@/app/hooks/useAsync";
-import { FlowDetailType } from "@/app/types/flowtype";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/app/store/atoms/user";
+import { getFlowDetail } from "@/app/libs/flowReadApi";
+import Loading from "@/app/components/loading";
+import Error from "@/app/components/error";
 
 const Tree = dynamic(() => import("./tree"), { ssr: false });
 interface PropType {
   page: string;
 }
 
-async function getFlowDetail(id: string): Promise<FlowDetailType> {
-  const response = await fetch("https://mugit.site/api" + "/flows/" + id, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error("Data fetch failed");
-  }
-  return response.json();
-}
-
 export default function FlowInfo({ page }: PropType) {
   const params = useParams<{ id: string }>();
   const [state, refetch] = useAsync(() => getFlowDetail(params.id), []);
+  const userInfo = useAtomValue(userAtom);
 
   const { loading, data: flowDetail, error } = state;
 
-  if (loading) return <div>로딩중..</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   return (
     <>
@@ -64,7 +55,12 @@ export default function FlowInfo({ page }: PropType) {
 
               <p className="text-5xl font-semibold">{flowDetail.title}</p>
               <p className="text-2xl">{flowDetail.user.nickName}</p>
-              <ButtonGroup item={flowDetail} page={page} />
+              <ButtonGroup
+                item={flowDetail}
+                page={page}
+                // isLogined={isLogined}
+                isLogined={userInfo.isLogined}
+              />
             </div>
           </div>
           <hr className="border-2" />

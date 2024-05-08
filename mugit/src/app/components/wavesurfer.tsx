@@ -45,7 +45,6 @@ export default function WavesurferComp({
 
   useEffect(() => {
     if (wavesurfer && type === "main") {
-      console.log(time);
       wavesurfer.setTime(time);
     }
   }, [time]);
