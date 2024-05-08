@@ -19,7 +19,7 @@ function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
           {t("privacy")}
         </RadioGroup.Label>
         <div className="my-4 flex gap-x-6">
-          <RadioGroup.Option value="Public">
+          <RadioGroup.Option value="PUBLIC">
             {({ checked }) => (
               <div className="flex cursor-pointer justify-center gap-x-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
@@ -31,7 +31,7 @@ function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
               </div>
             )}
           </RadioGroup.Option>
-          <RadioGroup.Option value="Private">
+          <RadioGroup.Option value="PRIVATE">
             {({ checked }) => (
               <div className="flex cursor-pointer justify-center gap-x-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
@@ -43,7 +43,7 @@ function MyRadioGroup({ privacy, setPrivacy }: PrivacyRadioPropType) {
               </div>
             )}
           </RadioGroup.Option>
-          <RadioGroup.Option value="Protected">
+          <RadioGroup.Option value="PROTECTED">
             {({ checked }) => (
               <div className="flex cursor-pointer justify-center gap-x-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full border-[2.5px] border-solid border-gray-600">
