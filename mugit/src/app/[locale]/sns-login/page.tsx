@@ -25,12 +25,13 @@ export default function Page() {
         switch (response.status) {
           case 200: {
             setUser({
+              id: String(Cookies.get("userID")),
               isLogined: String(Cookies.get("isLogined")),
               nickName: String(Cookies.get("nickName")),
               profileImagePath: String(Cookies.get("profileImage")),
               profileText: String(Cookies.get("profileText")),
-              followersCount: String(Cookies.get("followers")),
-              followingsCount: String(Cookies.get("followings")),
+              followerCount: String(Cookies.get("followers")),
+              followingCount: String(Cookies.get("followings")),
             });
             if (prevpath) {
               location.href = prevpath;

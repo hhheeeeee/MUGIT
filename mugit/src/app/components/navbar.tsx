@@ -25,13 +25,14 @@ const Navbar = () => {
       switch (response.status) {
         case 200: {
           setUser({
+            id: "",
             isLogined: "false",
             nickName: "",
             profileImagePath:
               "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
             profileText: "",
-            followersCount: "",
-            followingsCount: "",
+            followerCount: "",
+            followingCount: "",
           });
           router.refresh();
           break;
@@ -114,17 +115,19 @@ const Navbar = () => {
         </div>
         {user.isLogined == "true" ? (
           <div className="flex w-[72px] justify-between">
-            <Image
-              src={
-                user.profileImagePath == "DEFAULT_IMAGE_URL"
-                  ? "/150.jpg"
-                  : user.profileImagePath
-              }
-              className="rounded-full"
-              alt="Avatar"
-              width={32}
-              height={32}
-            />
+            <Link href={`/profile/${user.id}`}>
+              <Image
+                src={
+                  user.profileImagePath == "DEFAULT_IMAGE_URL"
+                    ? "/150.jpg"
+                    : user.profileImagePath
+                }
+                className="rounded-full"
+                alt="Avatar"
+                width={32}
+                height={32}
+              />
+            </Link>
             <button
               onClick={signOut}
               className="p h-8 w-8 rounded-full border-2 border-slate-500 pl-[3px]"

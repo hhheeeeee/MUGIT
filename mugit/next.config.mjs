@@ -24,6 +24,11 @@ const nextConfig = {
         destination: "https://mugit.site/api/users/mocks/login?pk=1", // 배포된 백엔드 서버의 URL로 변경하세요.
         locale: false,
       },
+      {
+        source: "/patchprofile",
+        destination: "https://mugit.site/api/users/profiles", // 배포된 백엔드 서버의 URL로 변경하세요.
+        locale: false,
+      },
     ];
   },
   // trailingSlash: true,
