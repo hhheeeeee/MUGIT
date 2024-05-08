@@ -11,5 +11,5 @@ public enum SseEvent {
     @JsonProperty("follow")
     FOLLOW("follow");
 
-    private final String event;
+    private final String eventName;
 }

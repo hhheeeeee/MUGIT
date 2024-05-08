@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
+
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @RestController
@@ -20,7 +22,7 @@ public class SseController {
     private final SseService sseService;
 
     @GetMapping("/subscribe")
-    public ResponseEntity<SseEmitter> subscribe(@UserSession UserSessionDto user) {
+    public ResponseEntity<SseEmitter> subscribe(@UserSession UserSessionDto user) throws IOException {
 
         return ResponseEntity.status(200)
                 .header(CONTENT_TYPE, "text/event-stream; charset=UTF-8")
