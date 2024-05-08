@@ -15,7 +15,6 @@ export default function UploadContainer({
 
   // 구현할 InputDragDrop에서 파일이 선택될 때 상태를 업데이트 한다.
   const handleFileSelect = (file: File | null) => {
-    console.log("fileeeeeeeeeee", file);
     setFile(file);
   };
 

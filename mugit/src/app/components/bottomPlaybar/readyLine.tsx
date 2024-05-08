@@ -5,7 +5,7 @@ type PropsType = {
   key: number;
 };
 
-export default function ReadyLine({ key }: PropsType) {
+export default function ReadyLine() {
   return (
     <motion.div
       initial={{ scaleX: 0 }}

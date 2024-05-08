@@ -10,13 +10,9 @@ interface PropType {
 }
 
 export default function Trendslist({ flows }: PropType) {
-  console.log("trendslist flows!!!!");
-  console.log(flows);
   const t = useTranslations("Trends");
 
   if (flows === undefined) return <p>flows없음</p>;
-
-  console.log(flows);
 
   return (
     <div className="flex h-full w-full flex-col">
