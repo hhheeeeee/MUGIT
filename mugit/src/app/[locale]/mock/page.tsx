@@ -11,7 +11,7 @@ export default function Page() {
 
   async function login() {
     // const url = "https://mugit.site/api/users/mocks/login?pk=" + id;
-
+    //"https://mugit.site/api/users/mocks/login?pk=1"
     const response = await fetch("/login");
 
     console.log(response.json());

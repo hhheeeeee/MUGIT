@@ -1,17 +1,23 @@
 "use client";
 import IconCamera from "@/app/assets/icon/IconCamera";
-import { useState } from "react";
 import Image from "next/image";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 type UpoladPicturePropsType = {
-  imageSrc: string | StaticImport;
-  setImageSrc: React.Dispatch<React.SetStateAction<string | StaticImport>>;
+  imageSrc: string;
+  setImageSrc: React.Dispatch<React.SetStateAction<string>>;
+  imagefile: any;
+  setImageFile: React.Dispatch<React.SetStateAction<any>>;
 };
 
-function UploadPicture({ imageSrc, setImageSrc }: UpoladPicturePropsType) {
+function UploadPicture({
+  imageSrc,
+  setImageSrc,
+  imagefile,
+  setImageFile,
+}: UpoladPicturePropsType) {
   const onUpload = (e: any) => {
     const file = e.target.files[0];
+    setImageFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
 

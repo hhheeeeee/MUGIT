@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export const useInput = (initialValue: string | number) => {
+export const useInput = (initialValue: string) => {
   const [value, setValue] = useState(initialValue);
 
   const handleChange = (e: any) => {
