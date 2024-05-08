@@ -64,7 +64,7 @@ export default function UserInfo() {
 
   async function onClick() {
     let formdata = new FormData();
-    formdata.append("profileImage", newFile);
+    formdata.append("image", newFile);
     const response = await fetch("https://mugit.site/files", {
       method: "post",
       body: formdata,
