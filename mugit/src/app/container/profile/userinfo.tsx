@@ -104,11 +104,18 @@ export default function UserInfo() {
         followerCount: String(Cookies.get("followers")),
         followingCount: String(Cookies.get("followings")),
       });
+      clickModal;
     });
   }
 
   function follow() {
-    fetch(apiUrl + `/users/${params.id}/follows`);
+    fetch(apiUrl + `/users/${params.id}/follows`, {
+      method: userInfo.isFollower ? "DELETE" : "POST",
+    }).then(() => {
+      fetchUser(params.id).then((data) => {
+        setUserInfo(data);
+      });
+    });
   }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
@@ -127,11 +134,11 @@ export default function UserInfo() {
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5">
               <p>{t("followers")}</p>
-              <p className="text-2xl">{String(userInfo.followerCount)}</p>
+              <p className="text-2xl">{userInfo.followerCount}</p>
             </div>
             <div className="pl-5">
               <p>{t("followings")}</p>
-              <p className="text-2xl">{String(userInfo.followingCount)}</p>
+              <p className="text-2xl">{userInfo.followingCount}</p>
             </div>
           </div>
           <div>
@@ -143,8 +150,11 @@ export default function UserInfo() {
                 {t("edit")}
               </button>
             ) : (
-              <button className="mr-3 rounded border-2 border-black px-2 py-1">
-                {t("follow")}
+              <button
+                className="mr-3 rounded border-2 border-black px-2 py-1"
+                onClick={follow}
+              >
+                {userInfo.isFollower ? t("unfollow") : t("follow")}
               </button>
             )}
             <button

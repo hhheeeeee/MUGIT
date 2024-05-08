@@ -117,12 +117,8 @@ const Navbar = () => {
           <div className="flex w-[72px] justify-between">
             <Link href={`/profile/${user.id}`}>
               <Image
-                src={
-                  user.profileImagePath == "DEFAULT_IMAGE_URL"
-                    ? "/150.jpg"
-                    : user.profileImagePath
-                }
-                className="rounded-full"
+                src={user.profileImagePath}
+                className="h-[32px] w-[32px] rounded-full"
                 alt="Avatar"
                 width={32}
                 height={32}

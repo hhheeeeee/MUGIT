@@ -57,6 +57,7 @@
     "followers": "팔로워",
     "followings": "팔로잉",
     "follow": "팔로우",
+    "unfollow": "언팔로우",
     "edit": "수정",
     "cancel": "취소",
     "save": "저장"
