@@ -17,9 +17,8 @@ export default function NotePage() {
   const t = useTranslations("Form");
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
-  const [imageSrc, setImageSrc] = useState<string | StaticImport>(
-    "/person.jpg"
-  );
+  const [imageSrc, setImageSrc] = useState<string>("/person.jpg");
+  const [imagefile, setImageFile] = useState<any>(null);
   return (
     <main className="relative flex min-h-[90%] w-full flex-col px-52 py-10">
       <h1 className="relative border-b-2 border-solid border-gray-300 pl-5 text-5xl font-bold italic">
@@ -29,8 +28,13 @@ export default function NotePage() {
 
       <div className="mt-4 flex w-full">
         {/* 사진 올리는 부분임 */}
-        <UploadPicture imageSrc={imageSrc} setImageSrc={setImageSrc} />
-
+        <UploadPicture
+          imageSrc={imageSrc}
+          setImageSrc={setImageSrc}
+          imagefile={imagefile}
+          setImageFile={setImageFile}
+        />
+        s
         <div className="flex w-9/12 flex-col">
           <h2 className=" text-lg">{t("note")}</h2>
           <input
