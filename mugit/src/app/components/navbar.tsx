@@ -27,10 +27,11 @@ const Navbar = () => {
           setUser({
             isLogined: "false",
             nickName: "",
-            profileImage: "DEFAULT_IMAGE_URL",
+            profileImagePath:
+              "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
             profileText: "",
-            followers: "",
-            followings: "",
+            followersCount: "",
+            followingsCount: "",
           });
           router.refresh();
           break;
@@ -115,9 +116,9 @@ const Navbar = () => {
           <div className="flex w-[72px] justify-between">
             <Image
               src={
-                user.profileImage == "DEFAULT_IMAGE_URL"
+                user.profileImagePath == "DEFAULT_IMAGE_URL"
                   ? "/150.jpg"
-                  : user.profileImage
+                  : user.profileImagePath
               }
               className="rounded-full"
               alt="Avatar"
