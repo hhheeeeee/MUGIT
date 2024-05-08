@@ -6,11 +6,6 @@ export const navbaritems = [
   },
   {
     id: 2,
-    name: "profile",
-    to: "/profile",
-  },
-  {
-    id: 3,
     name: "support",
     to: "/support",
   },

@@ -12,7 +12,9 @@ import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 
 const fetchUser = async (id: string | string[]) => {
-  const response = await fetch(apiUrl + `/users/${id}/profiles/detail`);
+  const response = await fetch(apiUrl + `/users/${id}/profiles/detail`, {
+    credentials: "include",
+  });
   return response.json();
 };
 
@@ -28,12 +30,15 @@ export default function UserInfo() {
     profileImagePath:
       "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
     profileText: "Loading",
-    followersCount: "0",
-    followingsCount: "0",
+    followerCount: "0",
+    followingCount: "0",
   });
   useEffect(() => {
     fetchUser(params.id).then((data) => {
       setUserInfo(data);
+      setNewImage(data.profileImagePath);
+      setNewNickName(data.nickName);
+      setNewProfileText(data.profileText);
     });
   }, []);
 
@@ -72,7 +77,7 @@ export default function UserInfo() {
     }).then((response) => {
       return response.json();
     });
-    fetch(apiUrl + "/users/profiles", {
+    fetch("/patchprofile", {
       method: "patch",
       headers: {
         "Content-Type": "application/json",
@@ -87,14 +92,14 @@ export default function UserInfo() {
       }),
     }).then((response) => {
       setUser({
+        id: String(Cookies.get("userID")),
         isLogined: String(Cookies.get("isLogined")),
         nickName: String(Cookies.get("nickName")),
         profileImagePath: String(Cookies.get("profileImage")),
         profileText: String(Cookies.get("profileText")),
-        followersCount: String(Cookies.get("followers")),
-        followingsCount: String(Cookies.get("followings")),
+        followerCount: String(Cookies.get("followers")),
+        followingCount: String(Cookies.get("followings")),
       });
-      router.refresh();
     });
   }
   return (
@@ -114,23 +119,26 @@ export default function UserInfo() {
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5">
               <p>{t("followers")}</p>
-              <p className="text-2xl">{userInfo.followersCount}</p>
+              <p className="text-2xl">{String(userInfo.followerCount)}</p>
             </div>
             <div className="pl-5">
               <p>{t("followings")}</p>
-              <p className="text-2xl">{userInfo.followingsCount}</p>
+              <p className="text-2xl">{String(userInfo.followingCount)}</p>
             </div>
           </div>
           <div>
-            <button className="mr-3 rounded border-2 border-black px-2 py-1">
-              {t("follow")}
-            </button>
-            <button
-              className="rounded border-2 border-black px-2 py-1"
-              onClick={clickModal}
-            >
-              {t("edit")}
-            </button>
+            {userInfo.isMyProfile ? (
+              <button
+                className="rounded border-2 border-black px-2 py-1"
+                onClick={clickModal}
+              >
+                {t("edit")}
+              </button>
+            ) : (
+              <button className="mr-3 rounded border-2 border-black px-2 py-1">
+                {t("follow")}
+              </button>
+            )}
           </div>
         </div>
       </div>
