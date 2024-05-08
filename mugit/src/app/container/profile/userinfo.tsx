@@ -5,7 +5,7 @@ import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import IconCamera from "@/app/assets/icon/IconCamera";
 import { apiUrl } from "@/app/store/atoms";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
@@ -17,6 +17,7 @@ const fetchUser = async (id: string | string[]) => {
 };
 
 export default function UserInfo() {
+  const locale = useLocale();
   const router = useRouter();
   const params = useParams();
   const t = useTranslations("Profile");
@@ -130,6 +131,12 @@ export default function UserInfo() {
               onClick={clickModal}
             >
               {t("edit")}
+            </button>
+            <button
+              className="mx-4 rounded border-2 border-black px-2 py-1"
+              onClick={() => router.push(`/${locale}/note`)}
+            >
+              Note생성
             </button>
           </div>
         </div>
