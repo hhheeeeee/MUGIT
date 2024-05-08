@@ -11,11 +11,13 @@ import { useAtom } from "jotai";
 import { userAtom } from "../store/atoms/user";
 import { apiUrl } from "../store/atoms";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const t = useTranslations("Navbar");
   const pathname = usePathname();
   const locale = useLocale();
+  const router = useRouter();
 
   const [user, setUser] = useAtom(userAtom);
   const signOut = () => {
@@ -30,6 +32,7 @@ const Navbar = () => {
             followers: "",
             followings: "",
           });
+          router.refresh();
           break;
         }
         case 401: {

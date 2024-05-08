@@ -3,13 +3,16 @@
 import { useEffect } from "react";
 import { apiUrl, blocalUrl } from "@/app/store/atoms";
 import { useLocale } from "next-intl";
-import { useSetAtom } from "jotai";
+import { useSetAtom, useAtomValue } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
+import { prevpathAtom } from "@/app/store/atoms/user";
 
 export default function Page() {
   const locale = useLocale();
   const setUser = useSetAtom(userAtom);
+  const prevpath = useAtomValue(prevpathAtom);
+
   useEffect(() => {
     const accessToken = window.location.hash.split("=")[1].split("&")[0];
     fetch(apiUrl + "/users/login", {
@@ -23,12 +26,12 @@ export default function Page() {
             setUser({
               isLogined: String(Cookies.get("isLogined")),
               nickName: String(Cookies.get("nickName")),
-              profileImage: String(Cookies.get("profileImage")),
+              profileImagePath: String(Cookies.get("profileImage")),
               profileText: String(Cookies.get("profileText")),
-              followers: String(Cookies.get("followers")),
-              followings: String(Cookies.get("followings")),
+              followersCount: String(Cookies.get("followers")),
+              followingsCount: String(Cookies.get("followings")),
             });
-            window.history.go(-1);
+            location.href = prevpath;
             break;
           }
           case 302: {
