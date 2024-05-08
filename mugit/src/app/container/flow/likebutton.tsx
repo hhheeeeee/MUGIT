@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FlowDetailType } from "@/app/types/flowtype";
 import { apiUrl } from "@/app/store/atoms";
@@ -23,12 +23,18 @@ function patchLike(id: number) {
 }
 
 export default function LikeButton({ item, isLogined }: PropType) {
-  const [hasClicked, setHasClicked] = useState(item.likePressed);
-  const [likes, setLikes] = useState(item.likes);
+  console.log("item,item, item in LikeButton", item);
+  const [hasClicked, setHasClicked] = useState(false);
+  const [likes, setLikes] = useState(0);
 
   if (item.likePressed) {
     setHasClicked(true);
   }
+
+  useEffect(() => {
+    setHasClicked(item.likePressed);
+    setLikes(item.likes);
+  }, [item]);
 
   const handleLikeClick = () => {
     if (isLogined === "false") {
