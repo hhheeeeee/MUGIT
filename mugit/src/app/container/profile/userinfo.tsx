@@ -24,12 +24,12 @@ export default function UserInfo() {
   const [user, setUser] = useAtom(userAtom);
   const [userInfo, setUserInfo] = useState({
     isMyProfile: "false",
-    nickName: "",
+    nickName: "Loading",
     profileImagePath:
       "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
-    profileText: "",
-    followersCount: "",
-    followingsCount: "",
+    profileText: "Loading",
+    followersCount: "0",
+    followingsCount: "0",
   });
   useEffect(() => {
     fetchUser(params.id).then((data) => {
@@ -72,30 +72,30 @@ export default function UserInfo() {
     }).then((response) => {
       return response.json();
     });
-    console.log(response);
-    if (response.list) {
-      fetch(apiUrl + "/users/profiles", {
-        method: "patch",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nickName: newNickName,
-          profileText: newProfileText,
-          profileImagePath: response.list[0].path,
-        }),
-      }).then((response) => {
-        setUser({
-          isLogined: String(Cookies.get("isLogined")),
-          nickName: String(Cookies.get("nickName")),
-          profileImagePath: String(Cookies.get("profileImage")),
-          profileText: String(Cookies.get("profileText")),
-          followersCount: String(Cookies.get("followers")),
-          followingsCount: String(Cookies.get("followings")),
-        });
-        router.refresh();
+    fetch(apiUrl + "/users/profiles", {
+      method: "patch",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        nickName: newNickName,
+        profileText: newProfileText,
+        profileImagePath: response.list.length
+          ? response.list[0].path
+          : userInfo.profileImagePath,
+      }),
+    }).then((response) => {
+      setUser({
+        isLogined: String(Cookies.get("isLogined")),
+        nickName: String(Cookies.get("nickName")),
+        profileImagePath: String(Cookies.get("profileImage")),
+        profileText: String(Cookies.get("profileText")),
+        followersCount: String(Cookies.get("followers")),
+        followingsCount: String(Cookies.get("followings")),
       });
-    }
+      router.refresh();
+    });
   }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
