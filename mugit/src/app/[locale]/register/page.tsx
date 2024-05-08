@@ -15,6 +15,7 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         nickName: nickname,
         profileText: description,
@@ -24,7 +25,7 @@ export default function Page() {
       .then((response) => {
         switch (response.status) {
           case 201: {
-            location.href = `/${locale}/`;
+            location.href = `/${locale}`;
             break;
           }
           case 400: {

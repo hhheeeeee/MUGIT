@@ -19,6 +19,7 @@ export default function Page() {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      credentials: "include",
     })
       .then((response) => {
         switch (response.status) {
@@ -31,7 +32,9 @@ export default function Page() {
               followersCount: String(Cookies.get("followers")),
               followingsCount: String(Cookies.get("followings")),
             });
-            location.href = prevpath;
+            if (prevpath) {
+              location.href = prevpath;
+            }
             break;
           }
           case 302: {
