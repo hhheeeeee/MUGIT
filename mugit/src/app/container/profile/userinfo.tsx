@@ -81,7 +81,7 @@ export default function UserInfo() {
       return response.json();
     });
     fetch(apiUrl + "/users/profiles", {
-      method: "patch",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -147,13 +147,6 @@ export default function UserInfo() {
                 {t("follow")}
               </button>
             )}
-
-            <button
-              className="rounded border-2 border-black px-2 py-1"
-              onClick={clickModal}
-            >
-              {t("edit")}
-            </button>
             <button
               className="mx-4 rounded border-2 border-black px-2 py-1"
               onClick={() => router.push(`/${locale}/note`)}
