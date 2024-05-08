@@ -32,31 +32,28 @@ export default function NotePage() {
     }
     console.log("imagesource", imageSrc);
 
-    let formdata = new FormData();
-    formdata.append("image", imagefile);
-    const userPic = await fetch("https://mugit.site/files", {
-      method: "post",
-      credentials: "include",
-      body: formdata,
-    }).then((response) => {
-      return response.json();
-    });
+    let imageFormData = new FormData();
+    imageFormData.append("image", imagefile);
 
-    console.log("userpic", userPic);
+    let audioFormData = new FormData();
+    audioFormData.append("source", file);
 
-    let Audioformdata = new FormData();
-    Audioformdata.append("source", file);
-    const audioFile = await fetch("https://mugit.site/files", {
-      method: "post",
-      credentials: "include",
-      body: Audioformdata,
-    }).then((response) => {
-      return response.json();
-    });
+    const [userPic, audioFile] = await Promise.all([
+      fetch("https://mugit.site/files", {
+        method: "post",
+        credentials: "include",
+        body: imageFormData,
+      }).then((response) => response.json()),
+      fetch("https://mugit.site/files", {
+        method: "post",
+        credentials: "include",
+        body: audioFormData,
+      }).then((response) => response.json()),
+    ]);
 
     console.log("audio", audioFile);
 
-    fetch("/note", {
+    fetch("https://mugit.site/api/flows/note", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
