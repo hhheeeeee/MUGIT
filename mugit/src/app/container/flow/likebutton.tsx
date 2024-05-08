@@ -9,7 +9,7 @@ interface PropType {
   isLogined: string;
 }
 
-function patchLike(id: number) {
+async function patchLike(id: number) {
   fetch(apiUrl + `/likes/flows/${id}`, {
     method: "PATCH",
     headers: {
@@ -27,34 +27,26 @@ export default function LikeButton({ item, isLogined }: PropType) {
   const [hasClicked, setHasClicked] = useState(false);
   const [likes, setLikes] = useState(0);
 
-  if (item.likePressed) {
-    setHasClicked(true);
-  }
-
   useEffect(() => {
     setHasClicked(item.likePressed);
     setLikes(item.likes);
-  }, [item]);
+  }, [item.likePressed, item.likes]);
 
-  const handleLikeClick = () => {
+  async function handleLikeClick() {
     if (isLogined === "false") {
       return;
     }
+    setHasClicked(!hasClicked);
     if (hasClicked) {
-      console.log("handleCancleLike");
-      setHasClicked(false);
       const copy = likes - 1;
-      console.log("like : ", copy);
       setLikes(copy);
     } else {
-      console.log("handleLike");
-      setHasClicked(true);
       const copy = likes + 1;
       console.log("like : ", copy);
       setLikes(copy);
     }
-    patchLike(item.id);
-  };
+    await patchLike(item.id);
+  }
 
   return (
     <div className="flex flex-col items-center">
