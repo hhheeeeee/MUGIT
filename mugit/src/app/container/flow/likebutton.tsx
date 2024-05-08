@@ -2,10 +2,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FlowDetailType } from "@/app/types/flowtype";
+import { apiUrl } from "@/app/store/atoms";
 
 interface PropType {
   item: FlowDetailType;
   isLogined: string;
+}
+
+function patchLike(id: number) {
+  fetch(apiUrl + `/likes/flows/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    credentials: "include",
+  }).then((response) => {
+    console.log(response);
+  });
 }
 
 export default function LikeButton({ item, isLogined }: PropType) {
@@ -33,6 +47,7 @@ export default function LikeButton({ item, isLogined }: PropType) {
       console.log("like : ", copy);
       setLikes(copy);
     }
+    patchLike(item.id);
   };
 
   return (
