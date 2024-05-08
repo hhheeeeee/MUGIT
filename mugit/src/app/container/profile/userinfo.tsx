@@ -67,9 +67,7 @@ export default function UserInfo() {
     formdata.append("profileImage", newFile);
     const response = await fetch("https://mugit.site/files", {
       method: "post",
-      body: JSON.stringify({
-        image: formdata,
-      }),
+      body: formdata,
     }).then((response) => {
       return response.json();
     });
