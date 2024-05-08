@@ -77,7 +77,7 @@ export default function UserInfo() {
     }).then((response) => {
       return response.json();
     });
-    fetch("/patchprofile", {
+    fetch(apiUrl + "/users/profiles", {
       method: "patch",
       headers: {
         "Content-Type": "application/json",
