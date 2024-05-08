@@ -1,32 +1,55 @@
 "use client";
 
 import Image from "next/image";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import IconCamera from "@/app/assets/icon/IconCamera";
-import { apiUrl, blocalUrl } from "@/app/store/atoms";
+import { apiUrl } from "@/app/store/atoms";
 import { useTranslations } from "next-intl";
+import { useAtom } from "jotai";
+import { userAtom } from "@/app/store/atoms/user";
+import Cookies from "js-cookie";
+import { useParams, useRouter } from "next/navigation";
 
-const tempInfo = {
-  isLogined: true,
-  nickName: "Lil Nas X",
-  profileText: "when the light returns",
-  profileImage: "/lilnasx.png",
+const fetchUser = async (id: string | string[]) => {
+  const response = await fetch(apiUrl + `/users/${id}/profiles/detail`);
+  return response.json();
 };
 
 export default function UserInfo() {
+  const router = useRouter();
+  const params = useParams();
   const t = useTranslations("Profile");
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useAtom(userAtom);
+  const [userInfo, setUserInfo] = useState({
+    isMyProfile: "false",
+    nickName: "",
+    profileImagePath:
+      "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
+    profileText: "",
+    followersCount: "",
+    followingsCount: "",
+  });
+  useEffect(() => {
+    fetchUser(params.id).then((data) => {
+      setUserInfo(data);
+    });
+  }, []);
+
   function clickModal() {
     setIsOpen(!isOpen);
+    setNewImage(userInfo.profileImagePath);
   }
 
-  const [newImage, setNewImage] = useState(tempInfo.profileImage);
-  const [newNickName, setNewNickName] = useState(tempInfo.nickName);
-  const [newProfileText, setNewProfileText] = useState(tempInfo.profileText);
+  const [newFile, setNewFile] = useState<any>(null);
+  const [newImage, setNewImage] = useState(userInfo.profileImagePath);
+  const [newNickName, setNewNickName] = useState(userInfo.nickName);
+  const [newProfileText, setNewProfileText] = useState(userInfo.profileText);
 
   const onUpload = (e: any) => {
     const file = e.target.files[0];
+    setNewFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
@@ -39,11 +62,42 @@ export default function UserInfo() {
     });
   };
 
-  const onClick = () => {
-    fetch(blocalUrl + "/users/profiles", {
-      method: "patch",
+  async function onClick() {
+    let formdata = new FormData();
+    formdata.append("profileImage", newFile);
+    const response = await fetch("https://mugit.site/files", {
+      method: "post",
+      body: JSON.stringify({
+        image: formdata,
+      }),
+    }).then((response) => {
+      return response.json();
     });
-  };
+    console.log(response);
+    if (response.list) {
+      fetch(apiUrl + "/users/profiles", {
+        method: "patch",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nickName: newNickName,
+          profileText: newProfileText,
+          profileImagePath: response.list[0].path,
+        }),
+      }).then((response) => {
+        setUser({
+          isLogined: String(Cookies.get("isLogined")),
+          nickName: String(Cookies.get("nickName")),
+          profileImagePath: String(Cookies.get("profileImage")),
+          profileText: String(Cookies.get("profileText")),
+          followersCount: String(Cookies.get("followers")),
+          followingsCount: String(Cookies.get("followings")),
+        });
+        router.refresh();
+      });
+    }
+  }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
       <div className="flex w-2/3 justify-evenly">
@@ -51,21 +105,21 @@ export default function UserInfo() {
           width={150}
           height={150}
           alt="profile image"
-          src={tempInfo.profileImage}
+          src={userInfo.profileImagePath}
           className="h-48 w-48 rounded-full"
           priority
         />
         <div className="">
-          <p className="pb-3 text-4xl">{tempInfo.nickName}</p>
-          <p className="pb-3 text-xl">{tempInfo.profileText}</p>
+          <p className="pb-3 text-4xl">{userInfo.nickName}</p>
+          <p className="pb-3 text-xl">{userInfo.profileText}</p>
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5">
               <p>{t("followers")}</p>
-              <p className="text-2xl">10</p>
+              <p className="text-2xl">{userInfo.followersCount}</p>
             </div>
             <div className="pl-5">
               <p>{t("followings")}</p>
-              <p className="text-2xl">20</p>
+              <p className="text-2xl">{userInfo.followingsCount}</p>
             </div>
           </div>
           <div>
@@ -132,7 +186,7 @@ export default function UserInfo() {
                         className="hidden"
                         accept="image/*"
                         type="file"
-                        onChange={(e) => onUpload(e)}
+                        onChange={(event) => onUpload(event)}
                       />
                     </div>
                     <div>
@@ -140,13 +194,13 @@ export default function UserInfo() {
                       <input
                         type="text"
                         className="mb-3 w-48 rounded border-2 border-solid border-slate-500 p-1 text-lg focus:outline-none"
-                        defaultValue={tempInfo.nickName}
+                        defaultValue={userInfo.nickName}
                         onChange={(event) => setNewNickName(event.target.value)}
                       />
                       <p className="pb-3">Description</p>
                       <textarea
                         className="h-32 rounded border-2 border-solid border-slate-500 p-1 text-lg focus:outline-none"
-                        defaultValue={tempInfo.profileText}
+                        defaultValue={userInfo.profileText}
                         onChange={(event) =>
                           setNewProfileText(event.target.value)
                         }
