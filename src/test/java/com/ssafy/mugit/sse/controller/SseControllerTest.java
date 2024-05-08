@@ -1,7 +1,7 @@
 package com.ssafy.mugit.sse.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.mugit.infrastructure.repository.SseRepository;
+import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import com.ssafy.mugit.domain.sse.service.SseService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ class SseControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    SseRepository sseRepository;
+    SseQueueContainerRepository sseQueueContainerRepository;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -43,7 +43,7 @@ class SseControllerTest {
 
         // when
         ResultActions perform = mockMvc.perform(get("/sse/subscribe").cookie(loginCookies));
-        SseEmitter emitter = sseRepository.findById(USER_SESSION_DTO_01.getFixture().getId());
+        SseEmitter emitter = sseQueueContainerRepository.findById(USER_SESSION_DTO_01.getFixture().getId()).getSseEmitter();
 
         // then
         perform.andExpect(status().isOk())

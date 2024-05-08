@@ -1,6 +1,6 @@
 package com.ssafy.mugit.domain.message.api;
 
-import com.ssafy.mugit.domain.message.dto.SseMessageDto;
+import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
 import com.ssafy.mugit.domain.message.service.MessageService;
 import com.ssafy.mugit.presentation.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
