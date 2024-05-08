@@ -18,10 +18,10 @@ export default function Page() {
     setUser({
       isLogined: String(Cookies.get("isLogined")),
       nickName: String(Cookies.get("nickName")),
-      profileImage: String(Cookies.get("profileImage")),
+      profileImagePath: String(Cookies.get("profileImage")),
       profileText: String(Cookies.get("profileText")),
-      followers: String(Cookies.get("followers")),
-      followings: String(Cookies.get("followings")),
+      followersCount: String(Cookies.get("followers")),
+      followingsCount: String(Cookies.get("followings")),
     });
   }
 
