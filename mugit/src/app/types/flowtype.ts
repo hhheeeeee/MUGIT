@@ -10,6 +10,7 @@ export type FlowType = {
   musicPath: string;
   coverPath: string;
   createdAt: string;
+  hashtags: string[];
 };
 
 export type FlowDetailType = {

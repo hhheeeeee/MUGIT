@@ -30,7 +30,8 @@
     "details": "Details",
     "tree": "Tree",
     "comments": "comments",
-    "writeComments": "Write a comment"
+    "writeComments": "Write a comment",
+    "newNote": "Create Note"
   },
   "Form": {
     "note": "Note Name",
