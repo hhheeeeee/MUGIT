@@ -11,4 +11,8 @@ export const userAtom = atomWithStorage("user", {
   followingCount: "",
 });
 
+export const SessionID = atomWithStorage("sessionID", {
+  sessionId: "sessionId",
+});
+
 export const prevpathAtom = atomWithStorage("prevpath", "");
