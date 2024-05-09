@@ -16,22 +16,20 @@ interface PropType {
 export default function ButtonGroup({ item, page, isLogined }: PropType) {
   const router = useRouter();
 
-  console.log(isLogined);
+  if (isLogined !== "true") return <></>;
 
   return (
     <div className="absolute bottom-0 right-0 flex">
       {page === "detail" ? (
         <>
-          {isLogined === "true" && (
-            <button
-              className=" mr-3 rounded border-2 border-pointblue bg-pointblue px-1 py-[3px] 
+          <button
+            className=" mr-3 rounded border-2 border-pointblue bg-pointblue px-1 py-[3px] 
           text-white transition duration-300 hover:bg-[#0831d6]"
-              onClick={() => router.push(`/flow/${item.id}/working`)}
-            >
-              <IconPlus />
-              <span className="mx-1 text-base font-semibold">New Flow</span>
-            </button>
-          )}
+            onClick={() => router.push(`/flow/${item.id}/working`)}
+          >
+            <IconPlus />
+            <span className="mx-1 text-base font-semibold">New Flow</span>
+          </button>
           <LikeButton item={item} isLogined={isLogined} />
         </>
       ) : (

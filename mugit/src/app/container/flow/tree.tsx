@@ -1,10 +1,23 @@
+"use client";
+
 import { useLayoutEffect } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import Loading from "@/app/components/loading";
+import Error from "@/app/components/error";
+import useAsync from "@/app/hooks/useAsync";
+import { getFlowGraph } from "@/app/libs/flowReadApi";
+import { useParams } from "next/navigation";
 
 export default function Tree() {
+  const params = useParams<{ id: string }>();
+  const [state, refetch] = useAsync(() => getFlowGraph(params.id), []);
+  const { loading, data: flowGraph, error } = state;
+
   useLayoutEffect(() => {
+    if (!flowGraph || loading || error) return;
+
     const root = am5.Root.new("chartdiv");
 
     root.setThemes([am5themes_Animated.new(root)]);
@@ -14,9 +27,9 @@ export default function Tree() {
         downDepth: 1,
         initialDepth: 10,
         topDepth: 0,
-        valueField: "value",
+        // valueField: "value",
         categoryField: "name",
-        childDataField: "children",
+        childDataField: "childFlows",
         xField: "x",
         yField: "y",
         minRadius: 30,
@@ -73,60 +86,62 @@ export default function Tree() {
       });
     };
 
-    series.data.setAll([
-      {
-        name: "Browsers",
-        image: "/person.jpg",
-        x: am5.percent(50),
-        y: am5.percent(50),
-        children: [
-          {
-            name: "Chrome",
-            value: 1,
-            image: "/Rectangle 35.png",
-          },
-          {
-            name: "Firefox",
-            value: 1,
-            image: "/Rectangle 35.png",
-          },
-          {
-            name: "Firefox",
-            value: 1,
-            image: "/Rectangle 35.png",
-          },
-          {
-            name: "Firefox",
-            value: 1,
-            image: "/Rectangle 35.png",
-          },
-          {
-            name: "HHHHHHHH",
-            value: 1,
-            image: "/Rectangle 35.png",
-            children: [
-              {
-                name: "Chrome",
-                value: 1,
-                image: "/Rectangle 35.png",
-              },
-              {
-                name: "Firefox",
-                value: 1,
-                image: "/Rectangle 35.png",
-              },
-            ],
-          },
-        ],
-      },
-    ]);
+    series.data.setAll([flowGraph]);
+
+    // series.data.setAll([
+    //   {
+    //     name: "Browsers",
+    //     image: "/person.jpg",
+    //     x: am5.percent(50),
+    //     y: am5.percent(50),
+    //     children: [
+    //       {
+    //         name: "Chrome",
+    //         value: 1,
+    //         image: "/Rectangle 35.png",
+    //       },
+    //       {
+    //         name: "Firefox",
+    //         value: 1,
+    //         image: "/Rectangle 35.png",
+    //       },
+    //       {
+    //         name: "Firefox",
+    //         value: 1,
+    //         image: "/Rectangle 35.png",
+    //       },
+    //       {
+    //         name: "Firefox",
+    //         value: 1,
+    //         image: "/Rectangle 35.png",
+    //       },
+    //       {
+    //         name: "HHHHHHHH",
+    //         value: 1,
+    //         image: "/Rectangle 35.png",
+    //         children: [
+    //           {
+    //             name: "Chrome",
+    //             value: 1,
+    //             image: "/Rectangle 35.png",
+    //           },
+    //           {
+    //             name: "Firefox",
+    //             value: 1,
+    //             image: "/Rectangle 35.png",
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // ]);
 
     series.set("selectedDataItem", series.dataItems[0]);
 
     return () => {
       root.dispose();
     };
-  }, []);
+  }, [flowGraph, loading, error]);
 
   return <div id="chartdiv" style={{ width: "900px", height: "500px" }}></div>;
 }

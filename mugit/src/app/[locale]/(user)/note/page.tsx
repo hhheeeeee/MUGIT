@@ -40,12 +40,12 @@ export default function NotePage() {
 
     const [userPic, audioFile] = await Promise.all([
       fetch("https://mugit.site/files", {
-        method: "post",
+        method: "POST",
         credentials: "include",
         body: imageFormData,
       }).then((response) => response.json()),
       fetch("https://mugit.site/files", {
-        method: "post",
+        method: "POST",
         credentials: "include",
         body: audioFormData,
       }).then((response) => response.json()),
@@ -54,7 +54,7 @@ export default function NotePage() {
     console.log("audio", audioFile);
 
     fetch("https://mugit.site/api/flows/note", {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

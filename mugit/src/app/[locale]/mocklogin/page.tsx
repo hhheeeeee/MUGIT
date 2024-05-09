@@ -27,9 +27,7 @@ export default function Page() {
   const onSubmit = async (): Promise<void> => {
     const response = await fetch(apiUrl + `/users/mocks/login?pk=${pk}`);
     response.json().then((data: MockLoginResponseType) => {
-      setSessionID({
-        sessionId: data.sessionId,
-      });
+      setSessionID(data.sessionId);
       setUser({
         id: String(data.userId),
         isLogined: "true",
@@ -46,12 +44,12 @@ export default function Page() {
     const response = await fetch(apiUrl + `/users/mocks/login?pk=${pk}`, {
       method: "GET",
       headers: {
-        Authorization: sessionId.sessionId,
+        Authorization: sessionId,
       },
       credentials: "include",
     });
 
-    console.log(sessionId.sessionId);
+    console.log(sessionId);
   };
 
   return (

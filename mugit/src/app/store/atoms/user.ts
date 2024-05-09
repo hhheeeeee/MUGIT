@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 
-export const userAtom = atomWithStorage("user", {
+export const userInitialValue = {
   id: "",
   isLogined: "false",
   nickName: "",
@@ -9,10 +9,10 @@ export const userAtom = atomWithStorage("user", {
   profileText: "",
   followerCount: "",
   followingCount: "",
-});
+};
 
-export const SessionID = atomWithStorage("sessionID", {
-  sessionId: "sessionId",
-});
+export const userAtom = atomWithStorage("user", userInitialValue);
+
+export const SessionID = atomWithStorage("sessionID", "sessionID");
 
 export const prevpathAtom = atomWithStorage("prevpath", "");
