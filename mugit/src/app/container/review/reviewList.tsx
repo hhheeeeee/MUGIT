@@ -12,13 +12,25 @@ import { getFlowReview } from "@/app/libs/flowReadApi";
 import Loading from "@/app/components/loading";
 import Error from "@/app/components/error";
 import { ReviewType } from "@/app/types/flowtype";
+import fireToast from "@/app/utils/fireToast";
+import { playDuration } from "@/app/store/atoms";
 
 const parseTimeToSeconds = (timeString: string) => {
   const [minutes, seconds] = timeString.split(":").map((v) => parseInt(v, 10));
   return minutes * 60 + seconds;
 };
 
+const isValidTimeFormat = (time: string, totalTime: number): boolean => {
+  const numberTime = parseTimeToSeconds(time);
+  if (numberTime < 0 || numberTime > totalTime) {
+    return false;
+  }
+  const regex = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+  return regex.test(time);
+};
+
 export default function ReviewList() {
+  const globalDuration = useAtomValue(playDuration);
   const params = useParams<{ id: string }>();
   const [state, refetch] = useAsync(() => getFlowReview(params.id), []);
   const { loading, data: flowReview, error } = state;
@@ -54,6 +66,14 @@ export default function ReviewList() {
   };
 
   const handlePostReview = () => {
+    if (!isValidTimeFormat(timeline, globalDuration)) {
+      fireToast({
+        type: "경고",
+        title: "올바른 형식이 아닙니다",
+      });
+      setTimeline("00:00");
+      return;
+    }
     addReviewOptimistically();
     setContent("");
     setTimeline("00:00");
