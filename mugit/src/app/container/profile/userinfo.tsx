@@ -94,18 +94,19 @@ export default function UserInfo() {
           ? response.list[0].path
           : userInfo.profileImagePath,
       }),
-    }).then((response) => {
-      setUser({
-        id: String(Cookies.get("userID")),
-        isLogined: String(Cookies.get("isLogined")),
-        nickName: String(Cookies.get("nickName")),
-        profileImagePath: String(Cookies.get("profileImage")),
-        profileText: String(Cookies.get("profileText")),
-        followerCount: String(Cookies.get("followers")),
-        followingCount: String(Cookies.get("followings")),
-      });
-      clickModal;
-    });
+    })
+      .then(() => {
+        setUser({
+          id: String(Cookies.get("userId")),
+          isLogined: String(Cookies.get("isLogined")),
+          nickName: String(Cookies.get("nickName")),
+          profileImagePath: String(Cookies.get("profileImagePath")),
+          profileText: String(Cookies.get("profileText")),
+          followerCount: String(Cookies.get("followers")),
+          followingCount: String(Cookies.get("followings")),
+        });
+      })
+      .then(() => setIsOpen(!isOpen));
   }
 
   function follow() {

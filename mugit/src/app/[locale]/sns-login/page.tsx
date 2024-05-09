@@ -25,10 +25,10 @@ export default function Page() {
         switch (response.status) {
           case 200: {
             setUser({
-              id: String(Cookies.get("userID")),
+              id: String(Cookies.get("userId")),
               isLogined: String(Cookies.get("isLogined")),
               nickName: String(Cookies.get("nickName")),
-              profileImagePath: String(Cookies.get("profileImage")),
+              profileImagePath: String(Cookies.get("profileImagePath")),
               profileText: String(Cookies.get("profileText")),
               followerCount: String(Cookies.get("followers")),
               followingCount: String(Cookies.get("followings")),
