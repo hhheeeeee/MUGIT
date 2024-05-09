@@ -15,10 +15,18 @@ public class CookieUtil {
             throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
         }
 
-        return Arrays.stream(request.getCookies())
+        return Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals("JSESSIONID")).
                 findFirst().
                 map(Cookie::getValue)
                 .orElseThrow(() -> new CustomException(FileError.SESSIONID_NOT_EXISTED));
+    }
+
+    public String getSessionIdInHeader(HttpServletRequest request) {
+        String jSessionId = request.getHeader("Authorization");
+        if(jSessionId == null) {
+            throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
+        }
+        return jSessionId;
     }
 }

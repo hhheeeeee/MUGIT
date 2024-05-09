@@ -41,7 +41,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LogInterceptor())
                 .addPathPatterns("/**");
-//        registry.addInterceptor(new SessionValidateInterceptor(redisTemplate, NAMESPACE))
-//                .addPathPatterns("/files");
+        registry.addInterceptor(new SessionValidateInterceptor(redisTemplate, NAMESPACE))
+                .addPathPatterns("/files");
     }
 }

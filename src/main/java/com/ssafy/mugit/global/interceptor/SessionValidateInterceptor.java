@@ -28,8 +28,8 @@ public class SessionValidateInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-        String jSessionId = new CookieUtil().getSessionId(request);
+        String jSessionId = new CookieUtil().getSessionIdInHeader(request);
+//        String jSessionId = new CookieUtil().getSessionId(request);
         String redisSessionKey = getRedisSessionKey(jSessionId);
         log.info("[Session Validate Interceptor] JSSESIONID : {}", jSessionId);
         log.info("[Session Validate Interceptor] Redis Session Key : {}", redisSessionKey);
