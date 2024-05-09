@@ -22,6 +22,7 @@ const parseTimeToSeconds = (timeString: string) => {
 
 const isValidTimeFormat = (time: string, totalTime: number): boolean => {
   const numberTime = parseTimeToSeconds(time);
+  console.log(time, numberTime, totalTime);
   if (numberTime < 0 || numberTime > totalTime) {
     return false;
   }

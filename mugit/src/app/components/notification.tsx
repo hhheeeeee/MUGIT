@@ -23,7 +23,7 @@ export default function Notification() {
     fireToast({
       type: "정보",
       title: "follow",
-      text: e.data.message.description,
+      text: e.data?.message?.description,
     });
   };
 
