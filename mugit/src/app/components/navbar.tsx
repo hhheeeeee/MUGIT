@@ -8,10 +8,11 @@ import Logo from "../assets/logo";
 import { navbaritems } from "../constants/navbaritems";
 import GoogleButton from "../container/google/googlebutton";
 import { useAtom } from "jotai";
-import { userAtom } from "../store/atoms/user";
+import { userAtom, userInitialValue } from "../store/atoms/user";
 import { apiUrl } from "../store/atoms";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import fireToast from "../utils/fireToast";
 
 const Navbar = () => {
   const t = useTranslations("Navbar");
@@ -20,25 +21,32 @@ const Navbar = () => {
   const router = useRouter();
 
   const [user, setUser] = useAtom(userAtom);
+
   const signOut = () => {
     fetch(apiUrl + "/users/logout").then((response) => {
       switch (response.status) {
         case 200: {
-          setUser({
-            id: "",
-            isLogined: "false",
-            nickName: "",
-            profileImagePath:
-              "https://mugit.site/files/008494eb-b272-4c83-919b-677378107fd2.jpg",
-            profileText: "",
-            followerCount: "",
-            followingCount: "",
+          setUser(userInitialValue);
+          // router.refresh();
+          localStorage.clear();
+          router.push(`/${locale}`);
+          fireToast({
+            type: "성공",
+            title: "로그아웃이 되었습니다",
           });
-          router.refresh();
+
           break;
         }
         case 401: {
           alert("로그인 정보가 없습니다.");
+          setUser(userInitialValue);
+          localStorage.clear();
+          router.push(`/${locale}`);
+          fireToast({
+            type: "성공",
+            title: "로그아웃이 되었습니다(401)",
+          });
+
           break;
         }
       }

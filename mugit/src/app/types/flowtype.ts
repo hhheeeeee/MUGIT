@@ -43,3 +43,31 @@ export type FlowDetailType = {
   hashtags: string[];
   createdAt: string;
 };
+
+type FlowNode = {
+  id: number;
+  name: string;
+  image: string;
+};
+
+export type FlowGraphType = {
+  id: number;
+  name: string;
+  image: string;
+  childFlows: FlowNode[];
+};
+
+export type ReviewType = {
+  id: number;
+  user: {
+    id: number;
+    nickName: string;
+    profileImagePath: string;
+  };
+  content: string;
+  timeline: string | null;
+};
+
+export type FlowReviewType = {
+  list: ReviewType[];
+};

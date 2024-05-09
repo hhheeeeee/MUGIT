@@ -41,7 +41,7 @@ function SelectTags() {
           })}
       </div>
       <div className="mb-2 flex w-10/12 flex-wrap">
-        {genres.map((item) => {
+        {genres.map((item, idx) => {
           const isExist = selected.includes(item.name);
           return (
             <>
@@ -49,7 +49,7 @@ function SelectTags() {
                 <></>
               ) : (
                 <button
-                  key={item.id}
+                  key={idx}
                   value={item.name}
                   className="my-1 ml-1 rounded-md border-2 border-solid bg-gray-600 bg-opacity-50 px-2 py-1 text-xs text-white
 									hover:bg-gray-500"
