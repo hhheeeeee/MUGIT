@@ -13,6 +13,7 @@ import { apiUrl } from "../store/atoms";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import fireToast from "../utils/fireToast";
+import Notification from "./notification";
 
 const Navbar = () => {
   const t = useTranslations("Navbar");
@@ -151,6 +152,7 @@ const Navbar = () => {
                 />
               </svg>
             </button>
+            <Notification />
           </div>
         ) : (
           <div className="mt-4">

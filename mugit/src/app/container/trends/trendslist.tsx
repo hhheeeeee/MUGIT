@@ -21,7 +21,7 @@ export default function Trendslist({ flows }: PropType) {
         {flows.map((item) => {
           return (
             <div key={item.id}>
-              <div className="relative h-[180px] rounded-lg">
+              <div className="relative aspect-square w-full rounded-lg">
                 <Image
                   className="rounded-lg "
                   src={item.coverPath}
