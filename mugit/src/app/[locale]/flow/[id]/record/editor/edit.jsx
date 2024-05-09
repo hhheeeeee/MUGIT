@@ -349,9 +349,9 @@ const Edit = () => {
     >
       {/* <NavBar /> */}
       {/* <DialogBox open={dialogBox} /> */}
-      <ModeSwitch />
 
       <Box>
+        <ModeSwitch />
         <EditorButtons
           handleClick={handleClick}
           cutButton={enableCut}

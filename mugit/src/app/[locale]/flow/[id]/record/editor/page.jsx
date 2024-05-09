@@ -5,7 +5,8 @@ import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
 import RegionWave from "../regionwave";
 import LiveRecord from "../liverecord";
-import DragDrop from "@/app/components/fileUpload/DragDrop";
+
+import DragnDrop from "./components/DragnDrop.jsx";
 
 export default function Editor() {
   const SOURCE = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
@@ -65,20 +66,20 @@ export default function Editor() {
                 <Tab.Panels>
                   <Tab.Panel>
                     {/* 드래그 앤 드롭 */}
-                    {/* <DragDrop /> */}
+                    <DragnDrop />
                     {/* 소스 파일 추가 */}
-                    {SOURCE.map((url) => (
+                    {/* {SOURCE.map((url) => (
                       <RegionWave key={url} url={`/musics/${url}`} />
-                    ))}
+                    ))} */}
                   </Tab.Panel>
                   <Tab.Panel>
                     {/* 녹음기 */}
                     <LiveRecord />
                     {/* 파형 */}
                     {/* 녹음된 파일 소스에 추가 */}
-                    {VOICE.map((url) => (
+                    {/* {VOICE.map((url) => (
                       <RegionWave key={url} url={`/musics/${url}`} />
-                    ))}
+                    ))} */}
                   </Tab.Panel>
                   <Tab.Panel>
                     {/* 녹음기 */}
@@ -87,9 +88,9 @@ export default function Editor() {
                     {/* <AudioComponent /> */}
                     {/* 파형 */}
                     {/* 녹음된 파일 소스에 추가 */}
-                    {SYNTH.map((url) => (
+                    {/* {SYNTH.map((url) => (
                       <RegionWave key={url} url={`/musics/${url}`} />
-                    ))}
+                    ))} */}
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>

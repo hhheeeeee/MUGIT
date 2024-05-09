@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/[locale]/flow/[id]/record/editor/edit.jsx",
-    "src/app/[locale]/flow/[id]/record/editor/page.jsx"
+    "src/app/[locale]/flow/[id]/record/editor/page.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/DragnDrop.jsx"
   ],
   "exclude": ["node_modules"]
 }

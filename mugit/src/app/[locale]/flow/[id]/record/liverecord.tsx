@@ -152,21 +152,21 @@ const LiveRecord: React.FC = () => {
       </label>
       <button
         id="record"
-        className="mr-4 rounded-md border p-2"
+        className="play-pause-button mr-4 rounded-md border p-2"
         onClick={handleRecordClick}
       >
         {isRecording ? stopIcon : recordIcon}
       </button>
       <button
         id="pause"
-        className="mr-4 rounded-md border p-2"
+        className="play-pause-button mr-4 rounded-md border p-2"
         onClick={handlePauseClick}
       >
         {isPlaying ? playIcon : pauseIcon}
       </button>
-      <select id="mic-select" className="mr-4">
+      {/* <select id="mic-select" className="mr-4">
         <option value="">Select mic</option>
-      </select>
+      </select> */}
 
       <p id="progress">00:00</p>
       <div id="mic" className="mt-4 rounded-md border border-black"></div>
