@@ -25,3 +25,6 @@ export const nowPlaying = atom(SonginitialValue);
 
 // 댓글에서 시간을 클릭했는지
 export const playTime = atom(0);
+
+// 현재 재생 중인 곡의 총 길이가 어떻게 되는지
+export const playDuration = atom(0);
