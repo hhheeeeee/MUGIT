@@ -36,6 +36,7 @@ export default function UserInfo() {
     followerCount: "0",
     followingCount: "0",
   });
+
   useEffect(() => {
     fetchUser(params.id).then((data) => {
       setUserInfo(data);
@@ -106,7 +107,15 @@ export default function UserInfo() {
           followingCount: String(Cookies.get("followings")),
         });
       })
-      .then(() => setIsOpen(!isOpen));
+      .then(() => {
+        fetchUser(params.id).then((data) => {
+          setUserInfo(data);
+          setNewImage(data.profileImagePath);
+          setNewNickName(data.nickName);
+          setNewProfileText(data.profileText);
+        });
+        setIsOpen(!isOpen);
+      });
   }
 
   function follow() {
