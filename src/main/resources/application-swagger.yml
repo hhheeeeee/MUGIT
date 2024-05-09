@@ -2,7 +2,7 @@ springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
   api-docs:
-    path: /swagger.json
+    path: /files/swagger.json
     enabled: true
   swagger-ui:
     operations-sorter: alpha # alpha(알파벳 오름차순), method(HTTP메소드순)
