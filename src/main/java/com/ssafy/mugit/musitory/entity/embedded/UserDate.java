@@ -20,4 +20,9 @@ public class UserDate {
         this.userId = userId;
         this.date = LocalDate.now();
     }
+
+    public UserDate(long userId, LocalDate date) {
+        this.userId = userId;
+        this.date = date;
+    }
 }
