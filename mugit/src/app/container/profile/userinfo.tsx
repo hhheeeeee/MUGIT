@@ -5,11 +5,12 @@ import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import IconCamera from "@/app/assets/icon/IconCamera";
 import { apiUrl } from "@/app/store/atoms";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import FollowPopover from "./followpopover";
 
 const fetchUser = async (id: string | string[]) => {
   const response = await fetch(apiUrl + `/users/${id}/profiles/detail`, {
@@ -19,8 +20,6 @@ const fetchUser = async (id: string | string[]) => {
 };
 
 export default function UserInfo() {
-  const locale = useLocale();
-  const router = useRouter();
   const params = useParams();
   const t = useTranslations("Profile");
   const [isOpen, setIsOpen] = useState(false);
@@ -142,11 +141,12 @@ export default function UserInfo() {
           <p className="pb-3 text-4xl">{userInfo.nickName}</p>
           <p className="pb-3 text-xl">{userInfo.profileText}</p>
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
-            <div className="pr-5">
+            <div className="pr-5 text-center">
               <p>{t("followers")}</p>
               <p className="text-2xl">{userInfo.followerCount}</p>
+              {/* <FollowPopover number={userInfo.followerCount} /> */}
             </div>
-            <div className="pl-5">
+            <div className="pl-5 text-center">
               <p>{t("followings")}</p>
               <p className="text-2xl">{userInfo.followingCount}</p>
             </div>
@@ -167,12 +167,6 @@ export default function UserInfo() {
                 {userInfo.isFollower ? t("unfollow") : t("follow")}
               </button>
             )}
-            <button
-              className="mx-4 rounded border-2 border-black px-2 py-1"
-              onClick={() => router.push(`/${locale}/note`)}
-            >
-              Note생성
-            </button>
           </div>
         </div>
       </div>
