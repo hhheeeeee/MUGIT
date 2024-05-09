@@ -14,6 +14,7 @@ export const dummytrends = [
     coverPath:
       "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
     createdAt: "string",
+    hashtags: ["hip-hop"]
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ export const dummytrends = [
     coverPath:
       "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
     createdAt: "string",
+    hashtags: ["hip-hop"]
   },
   {
     id: 3,
@@ -46,5 +48,6 @@ export const dummytrends = [
     coverPath:
       "https://mugit.site/files/6a0c57d9-9678-4c1d-b563-822d410b05eb.png",
     createdAt: "string",
+    hashtags: ["hip-hop"]
   },
 ];

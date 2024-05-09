@@ -17,6 +17,7 @@ export const SonginitialValue = {
   musicPath: "string",
   coverPath: "string",
   createdAt: "string",
+  hashtags: [],
 };
 
 // 현재 bottomNavbar에서 play되고 있는 노래가 있을 때 그 노래에 대한 정보
