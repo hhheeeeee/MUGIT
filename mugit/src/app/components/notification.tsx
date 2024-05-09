@@ -1,6 +1,5 @@
 "use client";
-import { userAtom } from "../store/atoms/user";
-import { useAtomValue } from "jotai";
+
 import fireToast from "../utils/fireToast";
 
 export default function Notification() {
