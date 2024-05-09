@@ -71,6 +71,7 @@ export default function WavesurferComp({
   if (wavesurfer) {
     wavesurfer.on("decode", (duration) => {
       setDuration(formatTime(duration));
+      setglobalDuration(duration);
     });
   }
 
