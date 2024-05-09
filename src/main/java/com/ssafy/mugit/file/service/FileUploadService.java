@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FileService {
+public class FileUploadService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     @Value("${upload-path}")

@@ -4,6 +4,9 @@ spring:
       - optional:file:env/backend/.env[.properties]
       - optional:file:/mugit/yaml/config/application.properties
 
+  profiles:
+    include: swagger
+
   servlet:
     multipart:
       max-file-size: 100MB
