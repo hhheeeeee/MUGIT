@@ -12,7 +12,8 @@ public class CookieUtil {
     public String getSessionId(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
+//            throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
+            return null;
         }
 
         return Arrays.stream(cookies)
