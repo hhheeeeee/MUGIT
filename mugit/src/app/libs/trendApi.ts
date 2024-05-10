@@ -35,8 +35,6 @@ export async function getSearchResult(
     requestURL += `search?page=${page}&keyword=${keyword}`;
   }
 
-  console.log(requestURL);
-
   const response = await fetch(requestURL, {
     method: "GET",
     credentials: "include",

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import PlayHover from "../PlayHover";
-import { dummytrends } from "../dummy";
 import { FlowType } from "@/app/types/flowtype";
 
 type SearchResultTableProps = {
