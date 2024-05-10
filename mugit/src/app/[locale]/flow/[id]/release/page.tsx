@@ -20,6 +20,7 @@ export default function NotePage() {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://mugit.site/files/default/flow.png"
   );
+  const [tags, setTags] = useState<string[]>([]);
   const [imagefile, setImageFile] = useState<any>(null);
   return (
     <main className="relative flex min-h-[90%] w-full flex-col px-52 py-10">
@@ -52,7 +53,7 @@ export default function NotePage() {
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
           />
 
-          <SelectTags />
+          <SelectTags selected={tags} setSelected={setTags} />
 
           <WavesurferComp musicPath="" musicname="" type="source" />
 

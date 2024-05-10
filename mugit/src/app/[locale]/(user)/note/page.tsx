@@ -8,16 +8,22 @@ import SelectTags from "@/app/components/selectTags";
 import { useInput } from "@/app/hooks/useInput";
 import { useState } from "react";
 // import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { useTranslations } from "next-intl";
-import { apiUrl } from "@/app/store/atoms";
+import { useLocale, useTranslations } from "next-intl";
 import fireToast from "@/app/utils/fireToast";
+import { useRouter } from "next/navigation";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/app/store/atoms/user";
 
 export default function NotePage() {
-  const t = useTranslations("Form");
+  const router = useRouter();
+  const locale = useLocale();
 
+  const userInfo = useAtomValue(userAtom);
+  const t = useTranslations("Form");
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
   const [privacy, setPrivacy] = useState<string>("PUBLIC");
+  const [tags, setTags] = useState<string[]>([]);
   const [imageSrc, setImageSrc] = useState<string>(
     "https://mugit.site/files/default/flow.png"
   );
@@ -52,6 +58,8 @@ export default function NotePage() {
       }).then((response) => response.json()),
     ]);
 
+    router.push(`${locale}/profile/${userInfo.id}`);
+
     fetch("https://mugit.site/api/flows/note", {
       method: "POST",
       headers: {
@@ -63,10 +71,10 @@ export default function NotePage() {
         message: description,
         authority: privacy,
         files: [userPic.list[0], audioFile.list[0]],
-        hashtags: ["string"],
+        hashtags: tags,
       }),
-    }).then((response) => {
-      console.log(response);
+    }).then((res) => {
+      console.log(res);
     });
   }
 
@@ -98,7 +106,7 @@ export default function NotePage() {
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
           />
 
-          <SelectTags />
+          <SelectTags selected={tags} setSelected={setTags} />
 
           <div className="mt-4 flex w-full">
             <MyRadioGroup privacy={privacy} setPrivacy={setPrivacy} />
