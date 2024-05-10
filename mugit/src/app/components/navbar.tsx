@@ -77,8 +77,8 @@ const Navbar = () => {
           </svg>
         </button>
       </div> */}
-      <div className="flex w-full flex-grow items-center">
-        <div className="flex-grow text-sm">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex text-sm">
           {navbaritems.map((item) => {
             let activefonts;
             if (pathname.includes(item.to)) {
@@ -90,16 +90,20 @@ const Navbar = () => {
               <Link
                 key={item.id}
                 href={item.to}
-                className={`mr-4 mt-4 block hover:text-white lg:mt-0 lg:inline-block ${activefonts}`}
+                className={`mr-4 block hover:text-white lg:mt-0 lg:inline-block ${activefonts}`}
               >
                 {t(item.name)}
               </Link>
             );
           })}
         </div>
-        <div className="mx-3">
+        <div className="flex items-center">
           {locale === "en" ? (
-            <Link locale="ko" href={pathname} className="text-2xl text-white">
+            <Link
+              locale="ko"
+              href={pathname}
+              className="mx-3 text-2xl text-white"
+            >
               <Image
                 width={50}
                 height={50}
@@ -110,7 +114,11 @@ const Navbar = () => {
               />
             </Link>
           ) : (
-            <Link locale="en" href={pathname} className="text-2xl text-white">
+            <Link
+              locale="en"
+              href={pathname}
+              className="mx-3 text-2xl text-white"
+            >
               <Image
                 width={50}
                 height={50}
@@ -121,44 +129,44 @@ const Navbar = () => {
               />
             </Link>
           )}
-        </div>
-        {user.isLogined == "true" ? (
-          <div className="flex w-[72px] justify-between">
-            <Link href={`/profile/${user.id}`}>
-              <Image
-                src={user.profileImagePath}
-                className="h-[32px] w-[32px] rounded-full"
-                alt="Avatar"
-                width={32}
-                height={32}
-              />
-            </Link>
-            <button
-              onClick={signOut}
-              className="p h-8 w-8 rounded-full border-2 border-slate-500 pl-[3px]"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="rgb(100 116 139)"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+          {user.isLogined == "true" ? (
+            <div className="flex w-28 justify-between">
+              <Link href={`/profile/${user.id}`}>
+                <Image
+                  src={user.profileImagePath}
+                  className="h-[32px] w-[32px] rounded-full"
+                  alt="Avatar"
+                  width={32}
+                  height={32}
                 />
-              </svg>
-            </button>
-            <Notification />
-          </div>
-        ) : (
-          <div className="mt-4">
-            <GoogleButton />
-          </div>
-        )}
+              </Link>
+              <button
+                onClick={signOut}
+                className="p h-8 w-8 rounded-full border-2 border-slate-500 pl-[3px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="rgb(100 116 139)"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                  />
+                </svg>
+              </button>
+              <Notification />
+            </div>
+          ) : (
+            <div className="flex">
+              <GoogleButton />
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
