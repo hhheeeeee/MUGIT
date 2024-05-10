@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
 import { useParams } from "next/navigation";
+import fireToast from "@/app/utils/fireToast";
 import FollowPopover from "./followpopover";
 
 const fetchUser = async (id: string | string[]) => {
@@ -118,13 +119,20 @@ export default function UserInfo() {
   }
 
   function follow() {
-    fetch(apiUrl + `/users/${params.id}/follows`, {
-      method: userInfo.isFollower ? "DELETE" : "POST",
-    }).then(() => {
-      fetchUser(params.id).then((data) => {
-        setUserInfo(data);
+    if (user.isLogined === "true") {
+      fetch(apiUrl + `/users/${params.id}/follows`, {
+        method: userInfo.isFollower ? "DELETE" : "POST",
+      }).then(() => {
+        fetchUser(params.id).then((data) => {
+          setUserInfo(data);
+        });
       });
-    });
+    } else {
+      fireToast({
+        type: "경고",
+        title: "로그인이 필요합니다.",
+      });
+    }
   }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">

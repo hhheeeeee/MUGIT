@@ -19,6 +19,9 @@ const config: Config = {
         pointblack: "#121214",
         pointblue: "#0033ff",
       },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
     },
   },
   plugins: [],

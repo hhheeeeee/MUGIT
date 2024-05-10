@@ -8,6 +8,7 @@ const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
+  showCloseButton: true,
 });
 
 type ToastProps = {
