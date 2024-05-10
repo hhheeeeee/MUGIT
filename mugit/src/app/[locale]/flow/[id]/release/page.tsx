@@ -17,6 +17,7 @@ export default function NotePage() {
   const t = useTranslations("Form");
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
+  const [tags, setTags] = useState<string[]>([]);
   const [imageSrc, setImageSrc] = useState<string>("/person.jpg");
   const [imagefile, setImageFile] = useState<any>(null);
   return (
@@ -50,7 +51,7 @@ export default function NotePage() {
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
           />
 
-          <SelectTags />
+          <SelectTags selected={tags} setSelected={setTags} />
 
           <WavesurferComp
             musicPath=""
