@@ -17,11 +17,7 @@ export type FlowType = {
 
 export type FlowDetailType = {
   id: number;
-  user: {
-    id: number;
-    nickName: string;
-    profileImagePath: string;
-  };
+  user: User;
   title: string;
   message: string;
   authority: string;

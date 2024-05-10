@@ -7,7 +7,6 @@ async function getFlow() {
     method: "GET",
     credentials: "include",
   });
-
   return response.json();
 }
 

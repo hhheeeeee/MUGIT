@@ -7,6 +7,19 @@ interface elementType {
   name: string;
 }
 
+export async function getFlowList(
+  page: number
+): Promise<TrendSearchResponseType> {
+  const response = await fetch(apiUrl + `/flows?page=${page}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Flow Review fetch failed");
+  }
+  return response.json();
+}
+
 export async function getSearchResult(
   page: number = 0,
   keyword: string
