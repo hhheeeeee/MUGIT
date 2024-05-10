@@ -18,7 +18,9 @@ export default function NotePage() {
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
   const [privacy, setPrivacy] = useState<string>("PUBLIC");
-  const [imageSrc, setImageSrc] = useState<string>("/person.jpg");
+  const [imageSrc, setImageSrc] = useState<string>(
+    "https://mugit.site/files/default/flow.png"
+  );
   const [imagefile, setImageFile] = useState<any>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -78,7 +80,7 @@ export default function NotePage() {
       </h1>
       <Description target="note" />
 
-      <div className="mt-4 flex w-full">
+      <div className="mt-4 flex w-full sm:flex-col md:flex-col lg:flex-row">
         {/* 사진 올리는 부분임 */}
         <UploadPicture
           imageSrc={imageSrc}
@@ -88,7 +90,7 @@ export default function NotePage() {
         />
 
         {/* 파일 가져오는 부분임 */}
-        <div className="flex w-9/12 flex-col">
+        <div className="flex w-9/12 flex-col  md:mt-4 md:w-full lg:w-9/12">
           <UploadContainer file={file} setFile={setFile} />
 
           <h2 className="mt-4 text-lg">{t("note")}</h2>

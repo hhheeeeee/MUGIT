@@ -19,8 +19,6 @@ export default async function TrendsPage({
   unstable_setRequestLocale(locale);
 
   const flows = await getFlow();
-  console.log("flows 응답임");
-  console.log(flows);
 
   return (
     <>

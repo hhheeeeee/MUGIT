@@ -32,7 +32,7 @@ function UploadPicture({
 
   return (
     <>
-      <div className="flex w-3/12 flex-col items-center ">
+      <div className="mt-4 flex w-3/12 flex-col items-center md:w-full lg:w-3/12">
         <Image
           width={254}
           height={254}
@@ -43,7 +43,7 @@ function UploadPicture({
         />
         <label
           htmlFor="uploadimg"
-          className="mt-2 flex h-8 w-56 items-center justify-center gap-2 rounded-md bg-gray-300 text-sm hover:bg-[#c8cace] hover:shadow"
+          className=" mt-2 flex h-8 w-56 items-center justify-center gap-2 rounded-md bg-gray-300 text-sm hover:bg-[#c8cace] hover:shadow"
         >
           <IconCamera />
           Upload Image

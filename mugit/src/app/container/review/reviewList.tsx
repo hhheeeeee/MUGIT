@@ -17,6 +17,7 @@ import Error from "@/app/components/error";
 import { ReviewType } from "@/app/types/flowtype";
 import fireToast from "@/app/utils/fireToast";
 import { playDuration } from "@/app/store/atoms";
+import { useTranslations } from "next-intl";
 
 const parseTimeToSeconds = (timeString: string) => {
   const [minutes, seconds] = timeString.split(":").map((v) => parseInt(v, 10));
@@ -34,6 +35,7 @@ const isValidTimeFormat = (time: string, totalTime: number): boolean => {
 };
 
 export default function ReviewList() {
+  const t = useTranslations("Flow");
   const globalDuration = useAtomValue(playDuration);
   const params = useParams<{ id: string }>();
   const [state, refetch] = useAsync(() => getFlowReview(params.id), []);
@@ -74,6 +76,14 @@ export default function ReviewList() {
   };
 
   const handlePostReview = () => {
+    if (userInfo.id == "") {
+      fireToast({
+        type: "경고",
+        title: "로그인이 필요합니다.",
+      });
+      setContent("");
+      return;
+    }
     if (!isValidTimeFormat(timeline, globalDuration)) {
       fireToast({
         type: "경고",
@@ -126,7 +136,7 @@ export default function ReviewList() {
           />
           <input
             type="text"
-            placeholder="Write a comment"
+            placeholder={t("writeComments")}
             className="mr-2 w-full rounded-full border-4 border-gray-200 pl-5 focus:outline-none"
             value={content}
             onChange={(event) => setContent(event.target.value)}
