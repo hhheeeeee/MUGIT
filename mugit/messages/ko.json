@@ -6,7 +6,8 @@
     "search": "검색",
     "browseGenres": "장르들에 따른 검색을 해보세요",
     "title": "트렌드",
-    "searchSound": "       원하는 Sound를 검색하기"
+    "searchSound": "       원하는 Sound를 검색하기",
+    "noResult": "검색 결과가 없습니다."
   },
   "Support": {
     "title": "Mugit이란?"

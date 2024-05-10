@@ -6,7 +6,8 @@
     "search": "Search",
     "browseGenres": "Browse Genres",
     "title": "Trends",
-    "searchSound": "        Search any Sound"
+    "searchSound": "        Search any Sound",
+    "noResult": "No Results"
   },
   "Support": {
     "title": "What is Mugit?"

@@ -28,7 +28,6 @@ export default function LikeButton({ item, isLogined }: PropType) {
       setLikes(copy);
     } else {
       const copy = likes + 1;
-      console.log("like : ", copy);
       setLikes(copy);
     }
     await patchLike(item.id);

@@ -32,7 +32,6 @@ export default function NotePage() {
       });
       return;
     }
-    console.log("imagesource", imageSrc);
 
     let imageFormData = new FormData();
     imageFormData.append("image", imagefile);
@@ -52,8 +51,6 @@ export default function NotePage() {
         body: audioFormData,
       }).then((response) => response.json()),
     ]);
-
-    console.log("audio", audioFile);
 
     fetch("https://mugit.site/api/flows/note", {
       method: "POST",

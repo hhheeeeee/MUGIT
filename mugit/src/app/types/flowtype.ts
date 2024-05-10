@@ -1,10 +1,12 @@
+interface User {
+  id: number;
+  nickName: string;
+  profileImagePath: string;
+}
+
 export type FlowType = {
   id: number;
-  user: {
-    id: number;
-    nickName: string;
-    profileImagePath: string;
-  };
+  user: User;
   title: string;
   authority: string;
   musicPath: string;
