@@ -6,7 +6,14 @@ import { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/navbar";
 import BottomPlaybar from "../components/bottomPlaybar/BottomPlaybar";
+import localFont from "next/font/local";
 
+const pretendard = localFont({
+  src: "../fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -34,7 +41,10 @@ export default function LocaleLayout({
     <html lang={locale}>
       <link rel="icon" href="/icon.png" type="image/png" sizes="any" />
       <Provider>
-        <body className={inter.className} suppressHydrationWarning={true}>
+        <body
+          className={`${pretendard.variable} font-pretendard`}
+          suppressHydrationWarning={true}
+        >
           <NextIntlClientProvider locale={locale} messages={messages}>
             <Navbar />
             {children}

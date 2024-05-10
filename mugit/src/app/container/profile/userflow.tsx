@@ -43,7 +43,7 @@ export default function UserFlow() {
   }, []);
 
   return (
-    <div className="relative mx-auto my-10 w-2/3">
+    <div className="relative mx-auto mt-10 w-2/3 pb-10">
       <Tab.Group>
         <Tab.List>
           <Tab
@@ -77,23 +77,44 @@ export default function UserFlow() {
           ) : (
             <></>
           )}
-          <button
-            className="absolute -top-1.5 right-0 rounded border-2 border-pointblue bg-pointblue px-2 
+          {params.id === user.id ? (
+            <button
+              className="absolute -top-1.5 right-0 rounded border-2 border-pointblue bg-pointblue px-2 
             py-[1px] text-xl text-white transition duration-300 hover:bg-[#0831d6]"
-            onClick={() => router.push(`/${locale}/note`)}
-          >
-            {t("newNote")}
-          </button>
+              onClick={() => router.push(`/${locale}/note`)}
+            >
+              {t("newNote")}
+            </button>
+          ) : (
+            <></>
+          )}
         </Tab.List>
         <hr className="border-2" />
         <Tab.Panels>
           <Tab.Panel>
             {flows.map((flow: FlowType) => (
               <div key={flow.id} className="my-5 flex w-full">
-                <Image src={flow.coverPath} alt="" width={150} height={150} />
+                <Image
+                  src={flow.coverPath}
+                  alt=""
+                  width={150}
+                  height={150}
+                  className="hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                />
                 <div className="relative ml-5 w-full">
-                  <p className="text-xl font-semibold">{flow.title}</p>
-                  <p className="text-base">{flow.user.nickName}</p>
+                  <a
+                    href={`/${locale}/flow/${flow.id}`}
+                    className="block text-xl font-semibold hover:font-black hover:underline"
+                  >
+                    {flow.title}
+                  </a>
+                  <a
+                    href={`/${locale}/profile/${flow.user.id}`}
+                    className="block text-base hover:font-bold hover:underline"
+                  >
+                    {flow.user.nickName}
+                  </a>
                   <div className="absolute bottom-0 w-full">
                     <WavesurferComp
                       musicPath={flow.musicPath}
@@ -108,10 +129,27 @@ export default function UserFlow() {
           <Tab.Panel>
             {likes.map((flow: FlowType) => (
               <div key={flow.id} className="my-5 flex w-full">
-                <Image src={flow.coverPath} alt="" width={150} height={150} />
+                <Image
+                  src={flow.coverPath}
+                  alt=""
+                  width={150}
+                  height={150}
+                  className="hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                />
                 <div className="relative ml-5 w-full">
-                  <p className="text-xl font-semibold">{flow.title}</p>
-                  <p className="text-base">{flow.user.nickName}</p>
+                  <a
+                    href={`/${locale}/flow/${flow.id}`}
+                    className="block text-xl font-semibold hover:font-black hover:underline"
+                  >
+                    {flow.title}
+                  </a>
+                  <a
+                    href={`/${locale}/profile/${flow.user.id}`}
+                    className="block text-base hover:font-bold hover:underline"
+                  >
+                    {flow.user.nickName}
+                  </a>
                   <div className="absolute bottom-0 w-full">
                     <WavesurferComp
                       musicPath={flow.musicPath}
@@ -127,10 +165,27 @@ export default function UserFlow() {
             <Tab.Panel>
               {works.map((flow: FlowType) => (
                 <div key={flow.id} className="my-5 flex w-full">
-                  <Image src={flow.coverPath} alt="" width={150} height={150} />
+                  <Image
+                    src={flow.coverPath}
+                    alt=""
+                    width={150}
+                    height={150}
+                    className="hover:cursor-pointer hover:shadow-lg"
+                    onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                  />
                   <div className="relative ml-5 w-full">
-                    <p className="text-xl font-semibold">{flow.title}</p>
-                    <p className="text-base">{flow.user.nickName}</p>
+                    <a
+                      href={`/${locale}/flow/${flow.id}`}
+                      className="block text-xl font-semibold hover:font-black hover:underline"
+                    >
+                      {flow.title}
+                    </a>
+                    <a
+                      href={`/${locale}/profile/${flow.user.id}`}
+                      className="block text-base hover:font-bold hover:underline"
+                    >
+                      {flow.user.nickName}
+                    </a>
                     <div className="absolute bottom-0 w-full">
                       <WavesurferComp
                         musicPath={flow.musicPath}
