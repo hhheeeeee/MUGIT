@@ -1,3 +1,4 @@
+import fireToast from "../utils/fireToast";
 import { apiUrl } from "../store/atoms";
 import {
   FlowDetailType,
@@ -41,4 +42,49 @@ export async function getFlowReview(id: string): Promise<FlowReviewType> {
   }
 
   return response.json();
+}
+
+type postReviewType = {
+  content: string;
+  timeline: string;
+};
+
+export function postFlowReview(flowid: string, review: postReviewType) {
+  fetch(apiUrl + "/reviews/flows/" + flowid, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(review),
+  }).then((response) => {
+    if (!response.ok) {
+      console.log("서버 응답 오류", response);
+      return;
+    }
+    return response.json();
+  });
+}
+
+export function deleteFlowReview(reviewID: number) {
+  fetch(apiUrl + `/reviews/${reviewID}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("서버 응답 오류", response);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error(error);
+      fireToast({
+        type: "경고",
+        title: "댓글 삭제 중 문제 발생",
+      });
+    });
 }

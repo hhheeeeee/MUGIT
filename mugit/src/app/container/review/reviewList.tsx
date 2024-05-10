@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { apiUrl } from "@/app/store/atoms";
 import { useState, useEffect } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { playTime } from "@/app/store/atoms";
-import { userAtom, SessionID } from "@/app/store/atoms/user";
+import { userAtom } from "@/app/store/atoms/user";
 import useAsync from "@/app/hooks/useAsync";
 import { useParams } from "next/navigation";
-import { getFlowReview } from "@/app/libs/flowReadApi";
+import {
+  getFlowReview,
+  postFlowReview,
+  deleteFlowReview,
+} from "@/app/libs/flowReadApi";
 import Loading from "@/app/components/loading";
 import Error from "@/app/components/error";
 import { ReviewType } from "@/app/types/flowtype";
@@ -39,21 +42,20 @@ export default function ReviewList() {
   const userInfo = useAtomValue(userAtom);
   const [timeline, setTimeline] = useState<string>("00:00");
   const [content, setContent] = useState<string>("");
-  const [time, setTime] = useState<string>("");
   const setplayTime = useSetAtom(playTime);
 
   useEffect(() => {
     if (flowReview?.list) {
       setReviews(flowReview.list);
     }
-  }, [flowReview]); // flowReview가 변경될 때마다 이 effect를 실행합니다.
+  }, [flowReview]);
 
   if (loading) return <p> loading.. </p>;
   if (error) return <Error />;
 
   const addReviewOptimistically = () => {
     const newReviewOBJ: ReviewType = {
-      id: 9999999999999999999999,
+      id: reviews[reviews.length - 1].id + 1,
       user: {
         id: Number(userInfo.id),
         nickName: userInfo.nickName,
@@ -63,7 +65,12 @@ export default function ReviewList() {
       timeline: timeline,
     };
 
-    setReviews((prevReviews) => [newReviewOBJ, ...prevReviews]);
+    setReviews((prevReviews) => [...prevReviews, newReviewOBJ]);
+  };
+
+  const deleteReviewOptimistically = (reviewID: number) => {
+    const newReviews = reviews.filter((review) => review.id !== reviewID);
+    setReviews(newReviews);
   };
 
   const handlePostReview = () => {
@@ -75,64 +82,29 @@ export default function ReviewList() {
       setTimeline("00:00");
       return;
     }
-    addReviewOptimistically();
-    setContent("");
-    setTimeline("00:00");
-    fetch(apiUrl + "/reviews/flows/" + params.id, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        content: content,
-        timeline: timeline,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.log("서버 응답 오류", response);
-        }
-        return response.json();
-      })
-      .then(() => {
-        refetch();
-      })
-      .catch((error) => {
-        console.error(error);
-        setReviews(reviews); // 이전 댓글 목록으로 되돌림
+    console.log(content);
+    if (content.length === 0) {
+      fireToast({
+        type: "경고",
+        title: "한 글자 이상을 적어주세요",
       });
+      return;
+    }
+    addReviewOptimistically();
+    postFlowReview(params.id, { content: content, timeline: timeline });
+    setTimeline("00:00");
+    setContent("");
   };
 
   const handleClickTime = (time: string | null) => {
     if (time == null) return;
     const numberTime = parseTimeToSeconds(time);
-    setTime(time);
     setplayTime(numberTime);
   };
 
   const handleDeleteReview = (reviewID: number) => {
-    // optimistic적으로 삭제하기
-    fetch(apiUrl + `/reviews/${reviewID}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.log("서버 응답 오류", response);
-        }
-        return response.json();
-      })
-      .then(() => {
-        refetch();
-      })
-      .catch((error) => {
-        console.error(error);
-        setReviews(reviews); // 이전 댓글 목록으로 되돌림
-      });
+    deleteReviewOptimistically(reviewID);
+    deleteFlowReview(reviewID);
   };
 
   return (
@@ -156,7 +128,7 @@ export default function ReviewList() {
             type="text"
             placeholder="Write a comment"
             className="mr-2 w-full rounded-full border-4 border-gray-200 pl-5 focus:outline-none"
-            defaultValue={content}
+            value={content}
             onChange={(event) => setContent(event.target.value)}
           />
           <button onClick={handlePostReview}>
