@@ -6,6 +6,7 @@ import FlexBetween from "components/flexbox/FlexBetween";
 import FlexBox from "components/flexbox/FlexBox";
 import { H3, Small } from "components/Typography";
 import Link from "next/link";
+import Image from "next/image";
 
 const ProjectCard3 = ({ project }) => {
   const { title, cover, duration, status } = project;
@@ -20,14 +21,18 @@ const ProjectCard3 = ({ project }) => {
             margin: "1rem",
             borderRadius: "8px",
             overflow: "hidden",
-            "& img": {
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            },
+            // "& img": {
+            //   width: "100%",
+            //   height: "100%",
+            //   objectFit: "cover",
+            // },
           }}
         >
-          <img src={cover} alt={title} />
+          <Image
+            src={cover}
+            alt={title}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </Box>
 
         <Box padding={2} paddingTop={0}>

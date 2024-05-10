@@ -10,7 +10,7 @@ import {
   playIcon,
   pauseIcon,
   downloadIcon,
-} from "./editor/constants/icons";
+} from "../../constants/icons";
 
 const LiveRecord: React.FC = () => {
   const [wavesurfer, setWaveSurfer] = useState<WaveSurfer | null>(null);
@@ -18,6 +18,7 @@ const LiveRecord: React.FC = () => {
   const [scrollingWaveform, setScrollingWaveform] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [recordedUrl, setRecordedUrl] = useState(null);
 
   const createWaveSurfer = () => {
     // Create an instance of WaveSurfer
@@ -28,7 +29,7 @@ const LiveRecord: React.FC = () => {
     if (container) {
       const ws = WaveSurfer.create({
         container,
-        waveColor: "#567FFF",
+        waveColor: "white",
         barGap: 1,
         barWidth: 2,
         barRadius: 2,
@@ -45,41 +46,30 @@ const LiveRecord: React.FC = () => {
       // 끝난 레코드로 웨이브서퍼 만듦
       rec.on("record-end", (blob: Blob) => {
         const recordedUrl = URL.createObjectURL(blob);
-        // Play button
-        const playButton = document.createElement("button"); // <button> 요소 생성
-        const playIconContainer = document.createElement("div");
-        ReactDOM.render(playIcon, playIconContainer);
-        playButton.appendChild(playIconContainer);
-        playButton.style.border = "1px solid black";
-        playButton.style.padding = "10px";
-        playButton.onclick = () => wsRecorded.playPause();
-        document
-          .querySelector<HTMLDivElement>("#recordings")
-          ?.appendChild(playButton);
-
-        // Download button
-        const downloadButton = document.createElement("button");
-        const downloadIconContainer = document.createElement("div");
-        ReactDOM.render(downloadIcon, downloadIconContainer);
-        downloadButton.appendChild(downloadIconContainer);
-        downloadButton.style.border = "1px solid black";
-        downloadButton.style.padding = "10px";
-        downloadButton.style.textDecoration = "none";
-        downloadButton.onclick = () => {
-          window.location.href = recordedUrl;
-        };
-        document
-          .querySelector<HTMLDivElement>("#recordings")
-          ?.appendChild(downloadButton);
         const wsRecorded = WaveSurfer.create({
           container: "#recordings",
-          waveColor: "#567FFF",
+          waveColor: "white",
           barGap: 1,
           barWidth: 2,
           barRadius: 2,
           cursorWidth: 3,
           cursorColor: "#567FFF",
           url: recordedUrl,
+        });
+        // Play button
+        const button = container.appendChild(document.createElement("button"));
+        button.textContent = "Play";
+        button.onclick = () => wsRecorded.playPause();
+        wsRecorded.on("pause", () => (button.textContent = "Play"));
+        wsRecorded.on("play", () => (button.textContent = "Pause"));
+
+        // Download link
+        const link = container.appendChild(document.createElement("a"));
+        Object.assign(link, {
+          href: recordedUrl,
+          download:
+            "recording." + blob.type.split(";")[0].split("/")[1] || "webm",
+          textContent: "Download",
         });
       });
 
@@ -164,9 +154,9 @@ const LiveRecord: React.FC = () => {
       >
         {isPlaying ? playIcon : pauseIcon}
       </button>
-      {/* <select id="mic-select" className="mr-4">
+      <select id="mic-select" className="mr-4">
         <option value="">Select mic</option>
-      </select> */}
+      </select>
 
       <p id="progress">00:00</p>
       <div id="mic" className="mt-4 rounded-md border border-black"></div>

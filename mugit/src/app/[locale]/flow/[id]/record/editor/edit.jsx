@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useReducer, useRef } from "react";
 import ReactStudio from "react-studio-js";
-import * as Tone from "tone";
+
 import EventEmitter from "event-emitter";
 import { saveAs } from "file-saver";
 import { v4 as uuidv4 } from "uuid";
@@ -16,6 +16,7 @@ import { useThemeSettings } from "./hooks";
 import EditorButtons from "./components/editorButtons/EditorButtons";
 // ===========================================================>
 import ModeSwitch from "./components/ModeSwitch";
+import * as Tone from "tone";
 
 const Edit = () => {
   const {
@@ -42,7 +43,7 @@ const Edit = () => {
   // =============Initial State================>
   const initialState = {
     ee: new EventEmitter(),
-    // toneCtx: Tone.getContext(),
+    toneCtx: Tone.getContext(),
     setUpChain: useRef(),
     uploadRef: useRef(null),
     uploadAnnRef: useRef(null),
@@ -133,7 +134,7 @@ const Edit = () => {
       if (node !== null && toneCtx !== null) {
         const playlist = ReactStudio(
           {
-            // ac: toneCtx.rawContext,
+            ac: toneCtx.rawContext,
             container: node,
             state: "cursor",
             mono: true,

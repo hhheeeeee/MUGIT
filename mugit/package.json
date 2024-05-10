@@ -32,7 +32,7 @@
     "react-studio-js-types": "^1.0.1",
     "standardized-audio-context": "^25.3.72",
     "sweetalert2": "^11.10.8",
-    "tone": "^14.9.17",
+    "tone": "^15.0.2",
     "uuid": "^9.0.1",
     "wavesurfer.js": "^7.7.11"
   },

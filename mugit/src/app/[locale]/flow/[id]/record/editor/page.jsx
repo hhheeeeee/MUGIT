@@ -1,20 +1,20 @@
 "use client";
 import React from "react";
-import Edit from "./edit";
+import Edit from "./Edit";
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
-import RegionWave from "../regionwave";
-import LiveRecord from "../liverecord";
-
-import DragnDrop from "./components/DragnDrop.jsx";
+import LiveRecord from "./components/record/Liverecord.tsx";
+import DragnDrop from "./components/source/DragnDrop";
+import { Synth2 } from "./components/synth/Synth";
+import { Fmsynth2 } from "./components/synth/FMSynth";
 
 export default function Editor() {
-  const SOURCE = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
-  const VOICE = ["Tin_Spirit.mp3", "Unavailable.mp3"];
-  const SYNTH = [
-    "Valley_of_Spies.mp3",
-    "Winner_Winner_Funky_Chicken_Dinner.mp3",
-  ];
+  // const SOURCE = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
+  // const VOICE = ["Tin_Spirit.mp3", "Unavailable.mp3"];
+  // const SYNTH = [
+  //   "Valley_of_Spies.mp3",
+  //   "Winner_Winner_Funky_Chicken_Dinner.mp3",
+  // ];
 
   return (
     <div className="h-full px-20">
@@ -27,7 +27,7 @@ export default function Editor() {
           className=" rounded-2xl border border-solid border-black p-10"
         >
           <div className="source-file">
-            {/* 멀티트랙 음량 편집기 */}
+            {/* 멀티트랙 음향 편집기 */}
             <SettingsContext>
               <Edit />
             </SettingsContext>
@@ -65,32 +65,14 @@ export default function Editor() {
                 <hr />
                 <Tab.Panels>
                   <Tab.Panel>
-                    {/* 드래그 앤 드롭 */}
                     <DragnDrop />
-                    {/* 소스 파일 추가 */}
-                    {/* {SOURCE.map((url) => (
-                      <RegionWave key={url} url={`/musics/${url}`} />
-                    ))} */}
                   </Tab.Panel>
                   <Tab.Panel>
-                    {/* 녹음기 */}
                     <LiveRecord />
-                    {/* 파형 */}
-                    {/* 녹음된 파일 소스에 추가 */}
-                    {/* {VOICE.map((url) => (
-                      <RegionWave key={url} url={`/musics/${url}`} />
-                    ))} */}
                   </Tab.Panel>
                   <Tab.Panel>
-                    {/* 녹음기 */}
                     <LiveRecord />
-                    {/* 신스 */}
-                    {/* <AudioComponent /> */}
-                    {/* 파형 */}
-                    {/* 녹음된 파일 소스에 추가 */}
-                    {/* {SYNTH.map((url) => (
-                      <RegionWave key={url} url={`/musics/${url}`} />
-                    ))} */}
+                    <Fmsynth2 />
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>

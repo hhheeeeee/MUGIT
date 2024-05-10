@@ -1,0 +1,43 @@
+/* Fmsynth.module.css */
+
+.label {
+  display: inline-block;
+  width: 150px;
+}
+
+.pianoRoll {
+  margin-top: 1em;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 6vw);
+  grid-template-rows: repeat(5, 6vw);
+  gap: 5px;
+  user-select: none;
+}
+
+/* CSS 모듈 */
+.button {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.button.active,
+.button:active {
+  background-color: #00f;
+  color: #fff;
+}
+/* 
+button:nth-child(n + 11):nth-child(-n + 20) {
+  margin-left: 5px;
+}
+
+button:nth-child(n + 21):nth-child(-n + 30) {
+  margin-left: 10px;
+}
+
+button:nth-child(n + 31):nth-child(-n + 40) {
+  margin-left: 15px;
+} */
