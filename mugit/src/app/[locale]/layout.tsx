@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/navbar";
 import BottomPlaybar from "../components/bottomPlaybar/BottomPlaybar";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,12 @@ export default function LocaleLayout({
 
   return (
     <html lang={locale}>
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="TljhAbieSJ88uetRVi_IKKWhml5qOE5caPmegNTwC9M"
+        />
+      </Head>
       <link rel="icon" href="/icon.png" type="image/png" sizes="any" />
       <Provider>
         <body className={inter.className} suppressHydrationWarning={true}>
