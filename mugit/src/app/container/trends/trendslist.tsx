@@ -9,6 +9,7 @@ import { TrendSearchResponseType } from "@/app/types/trendtype";
 import useAsync from "@/app/hooks/useAsync";
 import { getFlowList } from "@/app/libs/trendApi";
 import useRefFocusEffect from "@/app/hooks/useRefFocusEffect";
+import { Audio } from "react-loader-spinner";
 interface PropType {
   flows: TrendSearchResponseType;
 }
@@ -71,7 +72,9 @@ export default function Trendslist({ flows }: PropType) {
               })}
             </div>
           </div>
-          {isloading && <div className="text-center">loading....</div>}
+          {isloading && (
+            <Audio height="80" width="80" color="green" ariaLabel="loading" />
+          )}
           <div ref={elementRef} className="pt-10 ">
             {" "}
           </div>
