@@ -55,9 +55,17 @@ export default function ReviewList() {
   if (loading) return <p> loading.. </p>;
   if (error) return <Error />;
 
+  const setReviewID = (): number => {
+    if (reviews.length) {
+      return reviews[reviews.length - 1].id + 1;
+    } else {
+      return 0;
+    }
+  };
+
   const addReviewOptimistically = () => {
     const newReviewOBJ: ReviewType = {
-      id: reviews[reviews.length - 1].id + 1,
+      id: setReviewID(),
       user: {
         id: Number(userInfo.id),
         nickName: userInfo.nickName,
