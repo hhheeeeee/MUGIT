@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
             case SSE_EMITTER_NOT_FOUND -> new ResponseEntity<>(new MessageDto("연결을 찾을 수 없습니다."), HttpStatus.NOT_FOUND);
             case EXCEED_SSE_EMITTER_TIMEOUT -> new ResponseEntity<>(new MessageDto("클라이언트와의 연결이 종료되었습니다."), HttpStatus.NOT_ACCEPTABLE);
             case SSE_QUEUE_CONTAINER_NOT_FOUND -> new ResponseEntity<>(new MessageDto("메시지 큐를 찾을 수 없습니다."), HttpStatus.NOT_FOUND);
+            case ALREADY_EXIST_CONNECTION -> new ResponseEntity<>(new MessageDto("이미 SSE가 연결되어 있습니다."), HttpStatus.CONFLICT);
         };
     }
 

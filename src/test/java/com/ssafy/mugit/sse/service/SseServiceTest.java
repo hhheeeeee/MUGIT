@@ -32,9 +32,6 @@ class SseServiceTest {
     @Mock
     SseEmitter mockEmitter;
 
-    @Mock
-    SseEmitter mockEmitter2;
-
     SseQueueContainerRepository sseQueueContainerRepository;
 
     SseService sut;
@@ -66,13 +63,12 @@ class SseServiceTest {
     void testFailAndError() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, mockEmitter);
-        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-        sseQueueContainer.setLastEmitterCreateTime(0L);
+        sseQueueContainerRepository.save(userId, null);
         SseMessageDto<?> message = MESSAGE_DTO_01.getFixture();
 
-        // when
-        willThrow(new IOException()).given(mockEmitter).send((SseEmitter.SseEventBuilder) any());
+        // when : 마지막 전송시간 0으로 설정
+        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
+        sseQueueContainer.setLastEmitterCreateTime(0L);
 
         // then
         assertThatThrownBy(() -> sut.send(userId, message))
@@ -84,13 +80,12 @@ class SseServiceTest {
     void testFailAndOfferInQueue() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, mockEmitter);
-        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-        sseQueueContainer.setLastEmitterCreateTime(System.currentTimeMillis());
+        sseQueueContainerRepository.save(userId, null);
         SseMessageDto<NotificationDto> dto = MESSAGE_DTO_01.getFixture();
 
-        // when
-        willThrow(new IOException()).given(mockEmitter).send((SseEmitter.SseEventBuilder) any());
+        // when : 마지막 전송시간 현재시간으로 설정 후 전송
+        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
+        sseQueueContainer.setLastEmitterCreateTime(System.currentTimeMillis());
         sut.send(userId, dto);
 
         // then
@@ -104,18 +99,34 @@ class SseServiceTest {
     void testPollingFailMessage() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, mockEmitter);
+        sseQueueContainerRepository.save(userId, null);
+        SseMessageDto<NotificationDto> message = MESSAGE_DTO_01.getFixture();
+
+        // when 1 : 마지막 전송시간 현재시간 설정 후 전송(메시지 큐에 1개 쌓임)
         SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
         sseQueueContainer.setLastEmitterCreateTime(System.currentTimeMillis());
-        SseMessageDto<NotificationDto> message = MESSAGE_DTO_01.getFixture();
-        willThrow(new IOException()).given(mockEmitter).send((SseEmitter.SseEventBuilder) any());
         sut.send(userId, message);
-        System.out.println("queue size = " + sseQueueContainer.getMessageQueue().size());
+
+        // when 2 : 가짜 전송 생성 후 실행
+        sut.attemptPolling(userId, sseQueueContainer);
+
+        // then : 연결요청 + 저장된 메시지 전송
+        verify(mockEmitter, times(2)).send((SseEmitter.SseEventBuilder) any());
+    }
+
+    @Test
+    @DisplayName("[통합] 타임아웃되지 않은 연결이 있을 경우, subscribe 시 오류 전송")
+    void testExistNotTimeoutSse() throws IOException {
+        // given
+        long userId = 1L;
 
         // when
-        sut.subscribe(userId, mockEmitter2);
+        sseQueueContainerRepository.save(userId, new SseEmitter(600000L));
+        SseMessageDto<NotificationDto> message = MESSAGE_DTO_01.getFixture();
 
         // then
-        verify(mockEmitter2, times(2)).send((SseEmitter.SseEventBuilder) any());
+        assertThatThrownBy(() -> sut.subscribe(userId))
+                .isInstanceOf(SseException.class)
+                .hasMessage(SseError.ALREADY_EXIST_CONNECTION.getMessage());
     }
 }

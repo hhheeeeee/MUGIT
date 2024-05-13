@@ -26,6 +26,7 @@ public class SseController {
 
         return ResponseEntity.status(200)
                 .header(CONTENT_TYPE, "text/event-stream; charset=UTF-8")
+                .header("X-Accel-Buffering", "no")
                 .body(sseService.subscribe(user.getId()));
     }
 

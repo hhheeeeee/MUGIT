@@ -6,6 +6,7 @@ import com.ssafy.mugit.domain.sse.service.SseService;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -21,6 +22,9 @@ class MessageServiceTest {
 
     MessageService sut = new MessageService(sseService);
 
+    @Mock
+    SseEmitter mockSseEmitter;
+
     @Test
     @DisplayName("메시지를 입력받아서 전송")
     void testSendMessage() throws IOException {
@@ -29,12 +33,12 @@ class MessageServiceTest {
         SseMessageDto<NotificationDto> sseMessageDto = MESSAGE_DTO_01.getFixture();
 
         // when
-        sseService.subscribe(userId);
-        SseEmitter sendEmitter = sut.send(sseMessageDto);
+        SseEmitter emitter = sseService.subscribe(userId);
+        sut.send(sseMessageDto);
 
         // then
-        assertThat(sendEmitter).isNotNull();
-        assertThat(sendEmitter.getTimeout()).isEqualTo(10_000L);
-        assertThat(sendEmitter).isEqualTo(sseQueueContainerRepository.findById(userId).getSseEmitter());
+        assertThat(emitter).isNotNull();
+        assertThat(emitter.getTimeout()).isEqualTo(10_000L);
+        assertThat(emitter).isEqualTo(sseQueueContainerRepository.findById(userId).getSseEmitter());
     }
 }

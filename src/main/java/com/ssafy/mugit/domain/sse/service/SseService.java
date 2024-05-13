@@ -1,8 +1,9 @@
 package com.ssafy.mugit.domain.sse.service;
 
 import com.ssafy.mugit.domain.exception.SseException;
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.domain.exception.error.SseError;
 import com.ssafy.mugit.infrastructure.dto.ConnectionDto;
+import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainer;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
-import static com.ssafy.mugit.domain.exception.error.SseError.EXCEED_SSE_EMITTER_TIMEOUT;
-import static com.ssafy.mugit.domain.exception.error.SseError.SSE_EMITTER_NOT_FOUND;
+import static com.ssafy.mugit.domain.exception.error.SseError.*;
 import static com.ssafy.mugit.domain.sse.service.SseEvent.CONNECT;
 
 @Service
@@ -31,36 +31,52 @@ public class SseService {
     }
 
     public SseEmitter subscribe(long userId) throws IOException {
-        SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
-        return subscribe(userId, emitter);
-    }
-
-    public SseEmitter subscribe(long userId, SseEmitter sseEmitter) throws IOException {
-        addHandlerAndSave(sseEmitter, userId);
-        send(userId, new SseMessageDto<ConnectionDto>(userId, CONNECT, new ConnectionDto()));
-
-        // MessageQueue가 존재한다면 polling 시도
-        if (sseQueueContainerRepository.existsById(userId)) {
-            SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-            sseQueueContainer.poll(userId);
-        }
-
-        return sseEmitter;
-    }
-
-    public SseEmitter send(long userId, SseMessageDto<?> sseMessageDto) {
-        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-        SseEmitter sseEmitter = sseQueueContainer.getSseEmitter();
-        send(sseQueueContainer.getSseEmitter(), sseQueueContainer, userId, sseMessageDto.getEvent(), sseMessageDto);
-        return sseEmitter;
-    }
-
-    public void send(SseEmitter emitter, SseQueueContainer sseQueueContainer, long userId, SseEvent event, SseMessageDto<?> message) throws SseException {
         try {
-            if (emitter == null) throw new SseException(SSE_EMITTER_NOT_FOUND);
-            emitter.send(SseEmitter.event()
+            SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
+            // SSE 연결이 만료 전이면 오류 전송
+            if (sseContainer.getSseEmitter().getTimeout() != null && System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() < sseContainer.getSseEmitter().getTimeout() * 1000)
+                throw new SseException(ALREADY_EXIST_CONNECTION);
+            else throw new SseException(SseError.SSE_QUEUE_CONTAINER_NOT_FOUND);
+        } catch (SseException e) {
+            SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
+            sseQueueContainerRepository.save(userId, emitter);
+            SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
+            return subscribeNewSse(userId, sseContainer);
+        }
+    }
+
+    public SseEmitter subscribeNewSse(long userId, SseQueueContainer sseContainer) throws IOException {
+        // handler 등록 및 저장
+        addHandlerAndSave(userId, sseContainer.getSseEmitter());
+
+        // connection 전송
+        send(userId, sseContainer, new SseMessageDto<ConnectionDto>(userId, CONNECT, new ConnectionDto()));
+
+        // polling 시도
+        attemptPolling(userId, sseContainer);
+        return sseContainer.getSseEmitter();
+    }
+
+    // Timeout 이전에 생성된 알림 polling 시도
+    public void attemptPolling(long userId, SseQueueContainer sseContainer) throws IOException {
+        if (sseContainer.getSseEmitter().getTimeout() != null && System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() < sseContainer.getSseEmitter().getTimeout()){
+            sseContainer.poll(userId);
+        }
+    }
+
+    // sseQueueContainer cache에서 찾아서 전송
+    public void send(Long userId, SseMessageDto<?> message) throws IOException {
+        SseQueueContainer sseQueueContainerInCache = sseQueueContainerRepository.findById(userId);
+        send(userId, sseQueueContainerInCache, message);
+    }
+
+    public void send(Long userId, SseQueueContainer sseQueueContainer, SseMessageDto<?> message) throws SseException {
+        try {
+            SseEmitter sseEmitter = sseQueueContainer.getSseEmitter();
+            if (sseEmitter == null) throw new SseException(SSE_EMITTER_NOT_FOUND);
+            sseEmitter.send(SseEmitter.event()
                     .id(String.valueOf(userId))
-                    .name(event.getEventName())
+                    .name(message.getEvent().getEventName())
                     .data(message));
             log.info("message 전송완료 : {}", message);
         } catch (SseException e) {
@@ -80,7 +96,7 @@ public class SseService {
         return sseEmitter;
     }
 
-    private void addHandlerAndSave(SseEmitter emitter, long userId) {
+    private void addHandlerAndSave(long userId, SseEmitter emitter) {
         emitter.onCompletion(() -> {
             log.info("user{}'s emitter complete, left : {}", userId, sseQueueContainerRepository.size());
             sseQueueContainerRepository.deleteEmitterById(userId);
