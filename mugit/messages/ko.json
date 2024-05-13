@@ -32,7 +32,8 @@
     "tree": "음악 트리",
     "comments": "댓글",
     "writeComments": "댓글을 입력해주세요",
-    "newNote": "Note 생성하기"
+    "newNote": "Note 생성하기",
+    "edit": "수정하기"
   },
   "Form": {
     "note": "Note 이름",

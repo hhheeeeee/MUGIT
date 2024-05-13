@@ -13,7 +13,7 @@ export default function Page({ params }: { params: { keyword: string } }) {
   const t = useTranslations("Trends");
   const router = useRouter();
   const [searchInput, setSearchInput] = useState<string>("");
-  const [page, setPage] = useState(0);
+  const [apiPage, setApiPage] = useState(0);
 
   useEffect(() => {
     setSearchInput(decodeURIComponent(params.keyword));
@@ -24,8 +24,8 @@ export default function Page({ params }: { params: { keyword: string } }) {
   };
 
   const [state, refetch] = useAsync(
-    () => getSearchResult(page, params.keyword),
-    []
+    () => getSearchResult(apiPage, params.keyword),
+    [apiPage]
   );
   const { loading, data: searchResult, error } = state;
 
@@ -53,7 +53,11 @@ export default function Page({ params }: { params: { keyword: string } }) {
       </div>
       <ResultTable data={searchResult?.content} />
       {searchResult?.content.length ? (
-        <Pagination />
+        <Pagination
+          totalPage={searchResult.totalPages}
+          apiPage={apiPage}
+          setApiPage={setApiPage}
+        />
       ) : (
         <div className="pt-9 text-center text-gray-500">{t("noResult")}</div>
       )}

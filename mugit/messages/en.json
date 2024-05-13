@@ -32,7 +32,8 @@
     "tree": "Tree",
     "comments": "comments",
     "writeComments": "Write a comment",
-    "newNote": "Create Note"
+    "newNote": "Create New Note",
+    "edit": "Edit"
   },
   "Form": {
     "note": "Note Name",

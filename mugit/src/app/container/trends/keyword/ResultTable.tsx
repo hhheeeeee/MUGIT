@@ -1,11 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import PlayHover from "../PlayHover";
 import { FlowType } from "@/app/types/flowtype";
+import { useRouter } from "@/navigation";
 
 type SearchResultTableProps = {
   data: FlowType[] | undefined;
 };
 export default function ResultTable({ data }: SearchResultTableProps) {
+  const router = useRouter();
   return (
     <>
       <div className="mt-6 w-full border-y-2 border-solid border-gray-300">
@@ -47,10 +51,16 @@ export default function ResultTable({ data }: SearchResultTableProps) {
                   />
                 </div>
               </div>
-              <div className="flex h-32 w-3/12 items-center justify-center">
+              <div
+                className="flex h-32 w-3/12 cursor-pointer items-center justify-center hover:underline"
+                onClick={() => router.push(`/flow/${item.id}`)}
+              >
                 {item.title}
               </div>
-              <div className="flex h-32 w-3/12 items-center justify-center">
+              <div
+                className="flex h-32 w-3/12 cursor-pointer items-center justify-center hover:underline"
+                onClick={() => router.push(`/profile/${item.user.id}`)}
+              >
                 {item.user.nickName}
               </div>
               <div className="flex h-32 w-4/12 items-center justify-center">
