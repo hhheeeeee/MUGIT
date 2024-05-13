@@ -87,5 +87,11 @@
     "sat": "Sat",
     "date": "date",
     "count": "count"
+  },
+  "Notification": {
+    "notice": "Notice",
+    "read": "Read",
+    "readall": "Read All",
+    "noContent": "There're no unread notifications"
   }
 }

@@ -87,5 +87,11 @@
     "sat": "토",
     "date": "날짜",
     "count": "횟수"
+  },
+  "Notification": {
+    "notice": "알림",
+    "read": "읽음",
+    "readall": "모두 읽음",
+    "noContent": "안 읽은 알림이 없습니다."
   }
 }
