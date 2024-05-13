@@ -1,43 +1,43 @@
 "use client";
 
-import fireToast from "../utils/fireToast";
+// import fireToast from "../utils/fireToast";
 
 export default function Notification() {
-  const SSE_CONNECT_API_PATH = "/sse/subscribe";
+  // const SSE_CONNECT_API_PATH = "/sse/subscribe";
 
-  // functions
-  const connectHandler = function (e: any) {
-    // console.log("connect : 연결됨", e);
-    // console.log(e.data);
-  };
-  const errorHandler = function (e: any) {
-    // console.log("에러", e);
-  };
-  const openHandler = function (e: any) {
-    // console.log(e);
-    // console.log("open : 연결");
-  };
-  const followHandler = function (e: any) {
-    console.log(e.data.event);
-    console.log(e.data.description);
-    fireToast({
-      type: "정보",
-      title: "follow",
-      text: e.data?.message?.description,
-    });
-  };
+  // // functions
+  // const connectHandler = function (e: any) {
+  //   // console.log("connect : 연결됨", e);
+  //   // console.log(e.data);
+  // };
+  // const errorHandler = function (e: any) {
+  //   // console.log("에러", e);
+  // };
+  // const openHandler = function (e: any) {
+  //   // console.log(e);
+  //   // console.log("open : 연결");
+  // };
+  // const followHandler = function (e: any) {
+  //   console.log(e.data.event);
+  //   console.log(e.data.description);
+  //   fireToast({
+  //     type: "정보",
+  //     title: "follow",
+  //     text: e.data?.message?.description,
+  //   });
+  // };
 
-  const eventSource = new EventSource(
-    "https://mugit.site" + SSE_CONNECT_API_PATH,
-    {
-      withCredentials: true,
-    }
-  );
+  // const eventSource = new EventSource(
+  //   "https://mugit.site" + SSE_CONNECT_API_PATH,
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
 
-  eventSource.addEventListener("connect", connectHandler);
-  eventSource.addEventListener("error", errorHandler);
-  eventSource.addEventListener("open", openHandler);
-  eventSource.addEventListener("follow", followHandler);
+  // eventSource.addEventListener("connect", connectHandler);
+  // eventSource.addEventListener("error", errorHandler);
+  // eventSource.addEventListener("open", openHandler);
+  // eventSource.addEventListener("follow", followHandler);
 
   return (
     <button className="p h-8 w-8 rounded-full pl-[3px]">
