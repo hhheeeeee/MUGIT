@@ -173,19 +173,42 @@ export default function UserFlow() {
                     className="hover:cursor-pointer hover:shadow-lg"
                     onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
                   />
-                  <div className="relative ml-5 w-full">
-                    <a
-                      href={`/${locale}/flow/${flow.id}`}
-                      className="block text-xl font-semibold hover:font-black hover:underline"
-                    >
-                      {flow.title}
-                    </a>
-                    <a
-                      href={`/${locale}/profile/${flow.user.id}`}
-                      className="block text-base hover:font-bold hover:underline"
-                    >
-                      {flow.user.nickName}
-                    </a>
+                  <div className="relative ml-5 flex w-full justify-between">
+                    <div>
+                      <a
+                        href={`/${locale}/flow/${flow.id}`}
+                        className="block text-xl font-semibold hover:font-black hover:underline"
+                      >
+                        {flow.title}
+                      </a>
+                      <a
+                        href={`/${locale}/profile/${flow.user.id}`}
+                        className="block text-base hover:font-bold hover:underline"
+                      >
+                        {flow.user.nickName}
+                      </a>
+                    </div>
+                    <div>
+                      <button
+                        className=" mr-3 rounded border-2 border-pointblue bg-white p-1 
+          text-pointblue transition duration-300 hover:bg-pointblue hover:text-white"
+                        // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
+                      >
+                        <span className="mx-1 text-base font-semibold">
+                          Edit
+                        </span>
+                      </button>
+                      <button
+                        className=" mr-3 rounded border-2 border-pointblue bg-white p-1 
+                    text-pointblue transition duration-300 hover:bg-pointblue hover:text-white"
+                        // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
+                        onClick={() => router.push(`/flow/${flow.id}/working`)}
+                      >
+                        <span className="mx-1 text-base font-semibold">
+                          Release
+                        </span>
+                      </button>
+                    </div>
                     <div className="absolute bottom-0 w-full">
                       <WavesurferComp
                         musicPath={flow.musicPath}

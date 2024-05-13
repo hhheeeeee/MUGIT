@@ -55,12 +55,7 @@ export default function FlowInfo({ page }: PropType) {
 
               <p className="text-5xl font-semibold">{flowDetail.title}</p>
               <p className="text-2xl">{flowDetail.user.nickName}</p>
-              <ButtonGroup
-                item={flowDetail}
-                page={page}
-                // isLogined={isLogined}
-                isLogined={userInfo.isLogined}
-              />
+              <ButtonGroup item={flowDetail} page={page} />
             </div>
           </div>
           <hr className="border-2" />
