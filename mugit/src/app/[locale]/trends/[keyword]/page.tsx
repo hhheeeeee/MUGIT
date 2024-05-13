@@ -53,7 +53,7 @@ export default function Page({ params }: { params: { keyword: string } }) {
       </div>
       <ResultTable data={searchResult?.content} />
       {searchResult?.content.length ? (
-        <Pagination />
+        <Pagination totalPage={searchResult.totalPages} />
       ) : (
         <div className="pt-9 text-center text-gray-500">{t("noResult")}</div>
       )}

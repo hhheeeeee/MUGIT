@@ -1,4 +1,14 @@
-export default function Pagination() {
+type PaginationProps = {
+  totalPage: number;
+};
+
+function createArray(end: number): number[] {
+  return Array.from({ length: end }, (_, index) => index + 1);
+}
+
+export default function Pagination({ totalPage }: PaginationProps) {
+  const pageArray = createArray(totalPage);
+  console.log(totalPage);
   return (
     <nav className="mx-auto">
       <ul className="inline-flex -space-x-px text-sm">
@@ -10,47 +20,19 @@ export default function Pagination() {
             Previous
           </a>
         </li>
-        <li>
-          <a
-            href="#"
-            className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            1
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            2
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            aria-current="page"
-            className="flex h-8 items-center justify-center border border-gray-300 bg-blue-50 px-3 text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-          >
-            3
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            4
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            5
-          </a>
-        </li>
+        {pageArray.map((item) => {
+          return (
+            <li key={item}>
+              <a
+                href="#"
+                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                {item}
+              </a>
+            </li>
+          );
+        })}
+
         <li>
           <a
             href="#"

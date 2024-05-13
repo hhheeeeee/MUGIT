@@ -7,12 +7,14 @@ import LikeButton from "./likebutton";
 import { userAtom } from "@/app/store/atoms/user";
 import { useAtomValue } from "jotai";
 import { postNewFlow } from "@/app/libs/FlowApi";
+import { useTranslations } from "next-intl";
 interface PropType {
   item: FlowDetailType;
   page: string;
 }
 
 export default function ButtonGroup({ item, page }: PropType) {
+  const t = useTranslations("Flow");
   const router = useRouter();
   const userInfo = useAtomValue(userAtom);
 
@@ -34,7 +36,7 @@ export default function ButtonGroup({ item, page }: PropType) {
             onClick={handleClickNewFlow}
           >
             <IconPlus />
-            <span className="mx-1 text-base font-semibold">New Flow</span>
+            <span className="mx-1 text-base font-semibold">{t("newFlow")}</span>
           </button>
           <LikeButton item={item} isLogined={userInfo.isLogined} />
         </>
@@ -43,9 +45,8 @@ export default function ButtonGroup({ item, page }: PropType) {
           className=" mr-3 rounded border-2 border-pointblue bg-pointblue p-1 
           text-white transition duration-300 hover:bg-[#0831d6]"
           // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
-          onClick={() => router.push(`/flow/${item.id}/working`)}
         >
-          <span className="mx-1 text-base font-semibold">Edit</span>
+          <span className="mx-1 text-base font-semibold">{t("edit")}</span>
         </button>
       )}
     </div>

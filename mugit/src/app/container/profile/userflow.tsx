@@ -3,13 +3,15 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { userAtom } from "@/app/store/atoms/user";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { Tab } from "@headlessui/react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/app/store/atoms";
 import { FlowType } from "@/app/types/flowtype";
+import { releaseFlowAtom } from "@/app/store/atoms";
+
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
@@ -30,6 +32,8 @@ export default function UserFlow() {
   const [flows, setFlows] = useState([]);
   const [likes, setLikes] = useState([]);
   const [works, setWorks] = useState([]);
+  const setReleaseFlow = useSetAtom(releaseFlowAtom);
+
   useEffect(() => {
     fetchFlows(String(params.id), "released").then((data) =>
       setFlows(data.list)
@@ -41,6 +45,11 @@ export default function UserFlow() {
       );
     }
   }, []);
+
+  const handleClickRelease = (flow: FlowType) => {
+    setReleaseFlow(flow);
+    router.push(`/${locale}/flow/${flow.id}/release`);
+  };
 
   return (
     <div className="relative mx-auto mt-10 w-2/3 pb-10">
@@ -202,7 +211,7 @@ export default function UserFlow() {
                         className=" mr-3 rounded border-2 border-pointblue bg-white p-1 
                     text-pointblue transition duration-300 hover:bg-pointblue hover:text-white"
                         // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
-                        onClick={() => router.push(`/flow/${flow.id}/working`)}
+                        onClick={() => handleClickRelease(flow)}
                       >
                         <span className="mx-1 text-base font-semibold">
                           Release

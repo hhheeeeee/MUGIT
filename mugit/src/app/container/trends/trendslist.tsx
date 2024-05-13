@@ -24,6 +24,7 @@ export default function Trendslist({ flows }: PropType) {
   const [isloading, setIsLoading] = useState(false);
 
   const examplefetch = async () => {
+    if (!flowlistresponse) return;
     if (flowlistresponse && flowlistresponse.totalPages - 1 > page) {
       setIsLoading(true);
       setPage((prev) => prev + 1);
@@ -65,7 +66,6 @@ export default function Trendslist({ flows }: PropType) {
                       />
                       <PlayHover item={item} />
                     </div>
-                    <p className="text-xl">{item.id}</p>
                     <TrendsItem item={item} />
                   </div>
                 );
@@ -75,7 +75,7 @@ export default function Trendslist({ flows }: PropType) {
           {isloading && (
             <Audio height="80" width="80" color="green" ariaLabel="loading" />
           )}
-          <div ref={elementRef} className="pt-10 ">
+          <div ref={elementRef} className="mt-20">
             {" "}
           </div>
         </>
