@@ -28,26 +28,22 @@ const Navbar = () => {
       switch (response.status) {
         case 200: {
           setUser(userInitialValue);
-          // router.refresh();
           localStorage.clear();
           router.push(`/${locale}`);
           fireToast({
             type: "성공",
             title: "로그아웃이 되었습니다",
           });
-
+          fetch("https://mugit.site/sse/complete", {
+            credentials: "include",
+          });
           break;
         }
         case 401: {
-          alert("로그인 정보가 없습니다.");
-          setUser(userInitialValue);
-          localStorage.clear();
-          router.push(`/${locale}`);
           fireToast({
-            type: "성공",
-            title: "로그아웃이 되었습니다(401)",
+            type: "에러",
+            title: "로그인 정보가 없습니다.",
           });
-
           break;
         }
       }
