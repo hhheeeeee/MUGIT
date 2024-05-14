@@ -67,7 +67,7 @@ public class SseService {
                     .data(message));
             log.info("message 전송완료 : {}", message);
         } catch (SseException e) {
-            if (System.currentTimeMillis() - sseQueueContainer.getLastEmitterCreateTime() > EMITTER_TIMEOUT * 1000) {
+            if (System.currentTimeMillis() - sseQueueContainer.getLastEmitterCreateTime() > EMITTER_TIMEOUT) {
                 throw new SseException(EXCEED_SSE_EMITTER_TIMEOUT);
             }
             sseQueueContainer.getMessageQueue().offer(message);
@@ -79,16 +79,12 @@ public class SseService {
     public void send(Long userId, SseMessageDto<?> message) throws IOException {
         SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
 
-        // 예외처리 1 : SSE를 찾지 못했을 때
-        if (sseContainer == null || sseContainer.getSseEmitter() == null || sseContainer.getSseEmitter().getTimeout() == null)
-            throw new SseException(SSE_EMITTER_NOT_FOUND);
+        // 예외처리 : SSE Container를 찾지 못했을 때 오류 출력
+        if (sseContainer == null)
+            throw new SseException(SSE_QUEUE_CONTAINER_NOT_FOUND);
 
-        // 예외처리 2 : SSE를 찾았지만 Timeout * 2 이상일 때
-        else if (System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() > EMITTER_TIMEOUT * 2)
-           throw new SseException(EXCEED_SSE_EMITTER_TIMEOUT);
-
-        // 예외처리 3 : SSE를 찾았고 Timeout 되었을 때
-        else if (System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() > sseContainer.getSseEmitter().getTimeout())
+        // 예외처리 2 : SSE를 찾지 못했을 때 Queue에 저장
+        else if (sseContainer.getSseEmitter() == null || sseContainer.getSseEmitter().getTimeout() == null || System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() > sseContainer.getSseEmitter().getTimeout())
             sseContainer.getMessageQueue().offer(message);
 
         // 전송

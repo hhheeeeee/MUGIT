@@ -58,24 +58,7 @@ class SseServiceTest {
     }
 
     @Test
-    @DisplayName("[통합] MessageQueue 생성하고 전송 실패 시 현시간과 비교 후 10초 이상이면 오류")
-    void testFailAndError() throws IOException {
-        // given
-        Long userId = 1L;
-        sseQueueContainerRepository.save(userId, new SseEmitter(1L));
-        SseMessageDto<?> message = MESSAGE_DTO_01.getFixture();
-
-        // when : 마지막 전송시간 0으로 설정
-        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-        sseQueueContainer.setLastEmitterCreateTime(0L);
-
-        // then
-        assertThatThrownBy(() -> sut.send(userId, message))
-                .isInstanceOf(SseException.class).hasMessage(SseError.EXCEED_SSE_EMITTER_TIMEOUT.getMessage());
-    }
-
-    @Test
-    @DisplayName("[통합] MessageQueue 생성하고 전송 실패 시 현시간과 비교 후 10초 이내이면 저장")
+    @DisplayName("[통합] MessageQueue 생성하고 전송 실패 시 저장")
     void testFailAndOfferInQueue() throws IOException {
         // given
         Long userId = 1L;

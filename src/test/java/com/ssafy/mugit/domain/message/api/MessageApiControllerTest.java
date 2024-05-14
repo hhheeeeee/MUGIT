@@ -42,7 +42,7 @@ class MessageApiControllerTest {
 
         // then
         perform
-                .andExpect(content().json("{\"message\":\"연결을 찾을 수 없습니다.\"}"))
+                .andExpect(content().json("{\"message\":\"메시지 큐를 찾을 수 없습니다.\"}"))
                 .andExpect(status().is(404));
     }
 
