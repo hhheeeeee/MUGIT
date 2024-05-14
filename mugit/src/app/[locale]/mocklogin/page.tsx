@@ -39,11 +39,12 @@ export default function Page() {
     console.log("open : 연결", e);
   };
   const followHandler = function (e: any) {
-    console.log(e.data.message);
+    console.log(JSON.parse(e.data).message);
+    const data = JSON.parse(e.data);
     fireToast({
       type: "정보",
-      title: e.data,
-      text: e.data.message.description,
+      title: data.message.type,
+      text: data.message.description,
     });
   };
 

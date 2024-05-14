@@ -1,29 +1,57 @@
 import { Popover, Transition } from "@headlessui/react";
 import { apiUrl } from "@/app/store/atoms";
-import { useParams } from "next/navigation";
-import useAsync from "@/app/hooks/useAsync";
-import Loading from "@/app/components/loading";
-import Error from "@/app/components/error";
+import { useState } from "react";
 
-const fetchFollowers = async () => {
-  const response = await fetch(apiUrl + "/users/followers", {
+const fetchFollowers = async (type: string) => {
+  const response = await fetch(apiUrl + `/users/${type}`, {
     credentials: "include",
   });
   return response.json();
 };
 
-export default function FollowPopover({ number }: { number: string }) {
-  const params = useParams();
-  const [state, refetch] = useAsync(() => fetchFollowers(), []);
-  const { loading, data: list, error } = state;
-  if (loading) return <Loading />;
-  if (error) return <Error />;
+export default function FollowPopover({
+  number,
+  type,
+}: {
+  number: string;
+  type: string;
+}) {
+  const [users, setUsers] = useState([
+    {
+      followerId: 0,
+      followerNickName: "",
+      followerProfileText: "",
+      followerProfileImagePath: "",
+    },
+  ]);
+  const getUsers = () => {
+    fetch(apiUrl + `/users/${type}`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => setUsers(data.list));
+  };
   return (
     <Popover className="relative">
-      <Popover.Button className="text-2xl">{number}</Popover.Button>
-      <Popover.Panel className="absolute z-10">
-        <div className="h-60 w-40 border border-solid border-black bg-white"></div>
-      </Popover.Panel>
+      {({ open }) => (
+        <>
+          <Popover.Button
+            className="text-2xl focus:outline-none"
+            onClick={open ? () => "" : getUsers}
+          >
+            {number}
+          </Popover.Button>
+          <Popover.Panel className="absolute z-10">
+            <div className="h-60 w-40 border border-solid border-black bg-white">
+              {users.map((user) => (
+                <div key={user.followerId}>
+                  <p>{user.followerNickName}</p>
+                </div>
+              ))}
+            </div>
+          </Popover.Panel>
+        </>
+      )}
     </Popover>
   );
 }

@@ -1,7 +1,4 @@
-"use client";
-
 import { Popover } from "@headlessui/react";
-import fireToast from "../utils/fireToast";
 import { apiUrl } from "../store/atoms";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
