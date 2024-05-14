@@ -33,15 +33,6 @@ export default function Page() {
     });
   };
 
-  const SSE_CONNECT_API_PATH = "/sse/subscribe";
-
-  const eventSource = new EventSource(
-    "https://mugit.site" + SSE_CONNECT_API_PATH,
-    {
-      withCredentials: true,
-    }
-  );
-
   useEffect(() => {
     const accessToken = window.location.hash.split("=")[1].split("&")[0];
     fetch(apiUrl + "/users/login", {
@@ -62,6 +53,15 @@ export default function Page() {
               followerCount: String(Cookies.get("followers")),
               followingCount: String(Cookies.get("followings")),
             });
+
+            const SSE_CONNECT_API_PATH = "/sse/subscribe";
+
+            const eventSource = new EventSource(
+              "https://mugit.site" + SSE_CONNECT_API_PATH,
+              {
+                withCredentials: true,
+              }
+            );
 
             eventSource.addEventListener("connect", connectHandler);
             eventSource.addEventListener("error", errorHandler);
