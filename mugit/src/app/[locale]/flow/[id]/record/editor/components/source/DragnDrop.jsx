@@ -1,194 +1,113 @@
-// // pages/index.js
-
-// import { useEffect, useState } from "react";
-// import WaveSurfer from "wavesurfer.js";
-
-// export default function Home() {
-//   const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
-
-//   useEffect(() => {
-//     const pitchWorker = new Worker("/examples/pitch-worker.js", {
-//       type: "module",
-//     });
-
-//     const wavesurfer = WaveSurfer.create({
-//       container: "#waveform",
-//       waveColor: "rgba(200, 200, 200, 0.5)",
-//       progressColor: "rgba(100, 100, 100, 0.5)",
-//       url: "/examples/audio/librivox.mp3",
-//       minPxPerSec: 200,
-//       sampleRate: 11025,
-//     });
-
-//     // Pitch detection
-//     wavesurfer.on("decode", () => {
-//       const peaks = wavesurfer.getDecodedData().getChannelData(0);
-//       pitchWorker.postMessage({
-//         peaks,
-//         sampleRate: wavesurfer.options.sampleRate,
-//       });
-//     });
-
-//     // Drag'n'drop
-//     {
-//       const dropArea = document.querySelector("#drop");
-//       dropArea.ondragenter = (e) => {
-//         e.preventDefault();
-//         e.target.classList.add("over");
-//       };
-//       dropArea.ondragleave = (e) => {
-//         e.preventDefault();
-//         e.target.classList.remove("over");
-//       };
-//       dropArea.ondragover = (e) => {
-//         e.preventDefault();
-//       };
-//       dropArea.ondrop = (e) => {
-//         e.preventDefault();
-//         e.target.classList.remove("over");
-
-//         // Check if files are present
-//         if (e.dataTransfer.files.length > 0) {
-//           const reader = new FileReader();
-//           reader.onload = (event) => {
-//             wavesurfer.load(event.target.result);
-//             console.log(e.dataTransfer.files);
-//             setFileName(e.dataTransfer.files[0].name); // 파일 이름 상태 업데이트
-//           };
-//           reader.readAsDataURL(e.dataTransfer.files[0]);
-
-//           // Write the name of the file into the drop area
-//           dropArea.textContent = "Loading..."; // 로딩 중 표시
-//           wavesurfer.empty();
-//         } else {
-//           console.log("No files dropped.");
-//         }
-//       };
-//       document.body.ondrop = (e) => {
-//         e.preventDefault();
-//       };
-//     }
-//     // cleanup function
-//     return () => {
-//       // wavesurfer destroy 등의 정리 작업 추가
-//     };
-//   }, []);
-
-//   return (
-//     <>
-//       <div id="waveform"></div>
-//       <div id="drop" className="drop-area">
-//         {fileName ? fileName : "Drag-n-drop your own audio file"}
-//       </div>
-//       <style jsx>{`
-//         .drop-area {
-//           height: 128px;
-//           border: 4px dashed #999;
-//           margin: 2em 0;
-//           text-align: center;
-//           display: flex;
-//           flex-direction: column;
-//           justify-content: center;
-//           font-size: 18px;
-//         }
-//         .drop-area.over {
-//           border-color: #333;
-//         }
-//       `}</style>
-//     </>
-//   );
-// }
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
+import { v4 as uuidv4 } from "uuid";
+import { downloadIcon, playIcon, stopIcon } from "../../constants/icons";
 
-export default function DragnDrop() {
-  const [audioFiles, setAudioFiles] = useState([]); // 오디오 파일 목록 상태 추가
-
+export default function DragnDrop({ audioFiles, setAudioFiles }) {
+  const waveSurfers = useRef({});
+  const waveformRefs = useRef({});
+  const playIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+      />
+    </svg>
+  );
   useEffect(() => {
-    // 웹 워커 생성 등의 코드
-
-    // Drag'n'drop
-    {
-      const dropArea = document.querySelector("#drop");
-      dropArea.ondragenter = (e) => {
-        e.preventDefault();
-        e.target.classList.add("over");
-      };
-      dropArea.ondragleave = (e) => {
-        e.preventDefault();
-        e.target.classList.remove("over");
-      };
-      dropArea.ondragover = (e) => {
-        e.preventDefault();
-      };
-      dropArea.ondrop = (e) => {
-        e.preventDefault();
-        e.target.classList.remove("over");
-
-        const files = e.dataTransfer.files;
-        // 새로운 오디오 파일 목록을 기존 상태에 추가
-        setAudioFiles((prevFiles) => [...prevFiles, ...files]);
-
-        // 로딩 중 표시
-        dropArea.textContent = "Loading...";
-
-        // 오디오 파일을 Wavesurfer로 로드하고 UI 업데이트
-        handleAudioLoad(files);
-      };
-      document.body.ondrop = (e) => {
-        e.preventDefault();
-      };
-    }
-    // cleanup function
-    return () => {
-      // wavesurfer destroy 등의 정리 작업 추가
-    };
+    document.body.ondrop = (e) => e.preventDefault();
   }, []);
 
-  // Wavesurfer를 사용하여 오디오 파일 로드 및 UI 업데이트 함수
-  const handleAudioLoad = (files) => {
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const wavesurfer = WaveSurfer.create({
-          container: "#waveform",
-          waveColor: "rgba(200, 200, 200, 0.5)",
-          progressColor: "rgba(100, 100, 100, 0.5)",
-          // 오디오 파일 로드
-          url: event.target.result,
-          minPxPerSec: 200,
-          sampleRate: 11025,
-        });
-
-        // Play 버튼 토글 및 다운로드 활성화
-        handleWaveSurferControls(wavesurfer, file.name);
-      };
-      reader.readAsDataURL(file);
+  useEffect(() => {
+    audioFiles.forEach(({ file, id }) => {
+      if (!waveSurfers.current[id] && waveformRefs.current[id]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const wavesurfer = WaveSurfer.create({
+            container: waveformRefs.current[id],
+            waveColor: "rgba(200, 200, 200, 0.5)",
+            progressColor: "rgba(100, 100, 100, 0.8)",
+            url: event.target.result,
+          });
+          wavesurfer.on("ready", () => {
+            waveSurfers.current[id] = wavesurfer;
+            console.log("WaveSurfer is ready for id:", id);
+          });
+          wavesurfer.on("error", (e) => {
+            console.error("WaveSurfer error:", e);
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     });
-  };
+  }, [audioFiles]);
 
-  // Play 버튼 토글 및 다운로드 활성화 함수
-  const handleWaveSurferControls = (wavesurfer, fileName) => {
-    const playButton = document.createElement("button");
-    playButton.textContent = "Play";
-    playButton.onclick = () => wavesurfer.playPause();
-    document.getElementById("controls").appendChild(playButton);
-
-    const downloadButton = document.createElement("button");
-    downloadButton.textContent = "Download";
-    downloadButton.onclick = () => wavesurfer.exportPCM();
-    document.getElementById("controls").appendChild(downloadButton);
+  const handleFilesDrop = (files) => {
+    setAudioFiles((prevFiles) => [
+      ...prevFiles,
+      ...Array.from(files).map((file) => ({
+        file,
+        id: uuidv4(),
+      })),
+    ]);
   };
 
   return (
     <>
-      <div id="waveform"></div>
-      <div id="drop" className="drop-area">
+      <div
+        id="drop"
+        className="drop-area"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          handleFilesDrop(e.dataTransfer.files);
+        }}
+      >
         Drag-n-drop your own audio file
       </div>
-      <div id="controls"></div>
+      {audioFiles.map(({ file, id }) => (
+        <div key={id} className="file-container">
+          <div className="controls">
+            <p className="file-info">
+              {file.name} - {(file.size / 1024 / 1024).toFixed(2)} MB
+            </p>
+            <button onClick={() => waveSurfers.current[id].playPause()}>
+              <img src={playIcon} alt="Play/Pause" />
+            </button>
+            {/* <button onClick={() => waveSurfers.current[id].exportPCM()}>
+              <img src={downloadIcon} alt="Download" />
+            </button> */}
+            <button
+              onClick={() => {
+                waveSurfers.current[id]?.destroy();
+                delete waveSurfers.current[id];
+                setAudioFiles((prev) => prev.filter((x) => x.id !== id));
+              }}
+            >
+              <img src={stopIcon} alt="Remove" />
+            </button>
+          </div>
+          <div
+            ref={(el) => (waveformRefs.current[id] = el)}
+            className="waveform"
+          ></div>
+        </div>
+      ))}
       <style jsx>{`
+        .file-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 20px;
+        }
         .drop-area {
           height: 128px;
           border: 4px dashed #999;
@@ -199,8 +118,29 @@ export default function DragnDrop() {
           justify-content: center;
           font-size: 18px;
         }
-        .drop-area.over {
-          border-color: #333;
+        .waveform {
+          height: 100px;
+          margin-top: 10px;
+          width: 100%;
+        }
+        .controls {
+          display: flex;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        .controls button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          margin-right: 5px;
+        }
+        .controls img {
+          width: 24px;
+          height: 24px;
+        }
+        .file-info {
+          text-align: center;
+          margin-top: 10px;
         }
       `}</style>
     </>

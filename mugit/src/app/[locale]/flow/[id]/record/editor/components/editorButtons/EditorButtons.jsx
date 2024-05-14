@@ -3,6 +3,7 @@ import {
   CallSplit,
   ContentCut,
   Download,
+  DownloadDoneRounded,
   DragIndicator,
   FileUpload,
   FontDownload,
@@ -200,6 +201,18 @@ const EditorButtons = ({
         <Download
           onClick={() => {
             const event = { target: { name: "download" } };
+            handleClick(event);
+          }}
+        />
+      ),
+    },
+    {
+      name: "exportTrack",
+      icon: (
+        <DownloadDoneRounded
+          onClick={() => {
+            const trackInfo = { id: track.id, name: track.name };
+            const event = { target: { name: "exportTrack", trackInfo } };
             handleClick(event);
           }}
         />

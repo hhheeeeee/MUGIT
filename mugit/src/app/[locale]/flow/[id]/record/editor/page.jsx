@@ -4,9 +4,9 @@ import Edit from "./Edit";
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
 import LiveRecord from "./components/record/Liverecord.tsx";
-import DragnDrop from "./components/source/DragnDrop";
 import { Synth2 } from "./components/synth/Synth";
 import { Fmsynth2 } from "./components/synth/FMSynth";
+import DragnDrop from "./components/source/DragnDrop";
 
 export default function Editor() {
   // const SOURCE = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
@@ -65,13 +65,15 @@ export default function Editor() {
                 <hr />
                 <Tab.Panels>
                   <Tab.Panel>
-                    <DragnDrop />
+                    {/* 소스 추가 */}
+                    {/* <DragnDrop /> */}
                   </Tab.Panel>
                   <Tab.Panel>
+                    {/* 목소리 녹음 */}
                     <LiveRecord />
                   </Tab.Panel>
                   <Tab.Panel>
-                    <LiveRecord />
+                    {/* 자체 사운드 추가 */}
                     <Fmsynth2 />
                   </Tab.Panel>
                 </Tab.Panels>

@@ -201,6 +201,20 @@ const Edit = () => {
           })
         );
 
+        ee.on("exportTrack", async (trackInfo) => {
+          const mixedAudio = await Tone.Offline(({ context }) => {
+            const player = new Tone.Player({
+              url: trackInfo.url, // 트랙 URL
+              context: context,
+            }).toDestination();
+            player.start(0);
+            return player;
+          }, duration); // `duration`은 내보낼 오디오의 길이
+
+          // 렌더링된 오디오를 WAV 파일로 저장
+          saveAs(mixedAudio.toBlob(), `${trackInfo.name}.wav`);
+        });
+
         ee.on(
           "tracksLeft",
           (tracks) =>
@@ -263,7 +277,7 @@ const Edit = () => {
   }
 
   function handleClick(event) {
-    const { name } = event.target;
+    const { name, trackInfo } = event.target;
 
     switch (name) {
       case "play":
@@ -298,6 +312,9 @@ const Edit = () => {
         return uploadRef.current.click();
       case "download":
         return ee.emit("startaudiorendering", "wav");
+      case "exportTrack":
+        ee.emit("exportTrack", trackInfo);
+        break;
       case "addAnnotation":
         return uploadAnnRef.current.click();
       case "downloadAnnotation":
