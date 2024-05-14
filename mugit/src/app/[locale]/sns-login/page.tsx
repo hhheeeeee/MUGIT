@@ -55,19 +55,19 @@ export default function Page() {
             });
 
             if (prevpath) {
-              const SSE_CONNECT_API_PATH = "/sse/subscribe";
+              // const SSE_CONNECT_API_PATH = "/sse/subscribe";
 
-              const eventSource = new EventSource(
-                "https://mugit.site" + SSE_CONNECT_API_PATH,
-                {
-                  withCredentials: true,
-                }
-              );
+              // const eventSource = new EventSource(
+              //   "https://mugit.site" + SSE_CONNECT_API_PATH,
+              //   {
+              //     withCredentials: true,
+              //   }
+              // );
 
-              eventSource.addEventListener("connect", connectHandler);
-              eventSource.addEventListener("error", errorHandler);
-              eventSource.addEventListener("open", openHandler);
-              eventSource.addEventListener("follow", followHandler);
+              // eventSource.addEventListener("connect", connectHandler);
+              // eventSource.addEventListener("error", errorHandler);
+              // eventSource.addEventListener("open", openHandler);
+              // eventSource.addEventListener("follow", followHandler);
 
               location.href = prevpath;
             }
