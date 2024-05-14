@@ -1,4 +1,4 @@
-package com.ssafy.mugit.infrastructure;
+package com.ssafy.mugit.infrastructure.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -26,6 +29,9 @@ public class RedisConfig {
 
     @Value("${spring.data.redis.password}")
     private String password;
+
+    @Value("${redis.topic}")
+    private String topic;
 
     private final ObjectMapper objectMapper;
 
@@ -55,5 +61,29 @@ public class RedisConfig {
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();
+    }
+
+    @Bean
+    Publisher publisher(RedisTemplate<String, Object> redisTemplate) {
+        return new Publisher(redisTemplate);
+    }
+
+    @Bean
+    Receiver receiver() {
+        return new Receiver();
+    }
+
+    @Bean
+    public MessageListenerAdapter messageListenerAdapter(Receiver receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
+
+    @Bean
+    public RedisMessageListenerContainer container(LettuceConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(listenerAdapter, new PatternTopic(topic));
+
+        return container;
     }
 }

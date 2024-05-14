@@ -14,13 +14,13 @@ import java.io.IOException;
 import static com.ssafy.mugit.domain.message.fixture.SseMessageDtoFixture.MESSAGE_DTO_01;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MessageServiceTest {
+class ApiRedisMessageServiceTest {
 
     SseQueueContainerRepository sseQueueContainerRepository = new SseQueueContainerRepository();
 
     SseService sseService = new SseService(10_000L, sseQueueContainerRepository);
 
-    MessageService sut = new MessageService(sseService);
+    ApiMessageService sut = new ApiMessageService(sseService);
 
     @Mock
     SseEmitter mockSseEmitter;

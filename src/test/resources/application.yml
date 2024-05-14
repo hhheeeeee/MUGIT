@@ -55,3 +55,6 @@ server:
 logging:
   level:
     root: ${ROOT_LOGGING_LEVEL}
+
+redis:
+  topic: ${REDIS_TOPIC}

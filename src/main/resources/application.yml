@@ -50,7 +50,11 @@ server:
         secure: true
         max-age: ${SESSION_TIMEOUT}
         same-site: none
+  port: 8082
 
 logging:
   level:
     root: ${ROOT_LOGGING_LEVEL}
+
+redis:
+  topic: ${REDIS_TOPIC}
