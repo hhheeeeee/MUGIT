@@ -14,6 +14,28 @@ export default function Page() {
   const setUser = useSetAtom(userAtom);
   const prevpath = useAtomValue(prevpathAtom);
 
+  // functions
+  const connectHandler = function (e: any) {
+    console.log("connect : 연결됨", e);
+    console.log(e.data);
+  };
+  const errorHandler = function (e: any) {
+    console.log("에러", e);
+  };
+  const openHandler = function (e: any) {
+    console.log(e);
+    console.log("open : 연결");
+  };
+  const followHandler = function (e: any) {
+    console.log(e.data.event);
+    console.log(e.data.description);
+    fireToast({
+      type: "정보",
+      title: "follow",
+      text: e.data?.message?.description,
+    });
+  };
+
   useEffect(() => {
     const accessToken = window.location.hash.split("=")[1].split("&")[0];
     fetch(apiUrl + "/users/login", {
@@ -36,28 +58,6 @@ export default function Page() {
             });
 
             const SSE_CONNECT_API_PATH = "/sse/subscribe";
-
-            // functions
-            const connectHandler = function (e: any) {
-              // console.log("connect : 연결됨", e);
-              // console.log(e.data);
-            };
-            const errorHandler = function (e: any) {
-              // console.log("에러", e);
-            };
-            const openHandler = function (e: any) {
-              // console.log(e);
-              // console.log("open : 연결");
-            };
-            const followHandler = function (e: any) {
-              console.log(e.data.event);
-              console.log(e.data.description);
-              fireToast({
-                type: "정보",
-                title: "follow",
-                text: e.data?.message?.description,
-              });
-            };
 
             const eventSource = new EventSource(
               "https://mugit.site" + SSE_CONNECT_API_PATH,

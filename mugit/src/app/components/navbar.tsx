@@ -24,18 +24,19 @@ const Navbar = () => {
   const [user, setUser] = useAtom(userAtom);
 
   const signOut = () => {
+    fetch("https://mugit.site/sse/complete", {
+      credentials: "include",
+    });
     fetch(apiUrl + "/users/logout").then((response) => {
       switch (response.status) {
         case 200: {
           setUser(userInitialValue);
           localStorage.clear();
-          router.push(`/${locale}`);
+          // router.push(`/${locale}`);
+          router.refresh();
           fireToast({
             type: "성공",
             title: "로그아웃이 되었습니다",
-          });
-          fetch("https://mugit.site/sse/complete", {
-            credentials: "include",
           });
           break;
         }

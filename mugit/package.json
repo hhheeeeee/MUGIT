@@ -20,6 +20,7 @@
     "@uiw/react-heat-map": "^2.2.2",
     "@uiw/react-tooltip": "^4.22.3",
     "@wavesurfer/react": "^1.0.5",
+    "aos": "^2.3.4",
     "cookie": "^0.6.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.1.8",
