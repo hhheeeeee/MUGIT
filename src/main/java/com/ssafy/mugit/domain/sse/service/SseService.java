@@ -34,7 +34,7 @@ public class SseService {
 
         // SSE 연결이 만료 전이면 오류 전송
         if (sseContainer != null && sseContainer.getSseEmitter() != null && sseContainer.getSseEmitter().getTimeout() != null
-                && System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() < sseContainer.getSseEmitter().getTimeout() * 1000)
+                && System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() < sseContainer.getSseEmitter().getTimeout())
             throw new SseException(ALREADY_EXIST_CONNECTION);
 
         // SseEmitter 찾지 못하거나 만료되었을 때 새로 생성
