@@ -55,15 +55,14 @@ export default function Notification() {
   };
 
   const readAll = () => {
-    // notifications.map((noti) => {
-    //   if (noti.id) {
-    //     fetch(apiUrl + `/users/notifications/${noti.id}`, {
-    //       method: "PATCH",
-    //       credentials: "include",
-    //     });
-    //   }
-    // });
-    // getNotifications();
+    fetch(apiUrl + `/users/notifications`, {
+      method: "PATCH",
+      credentials: "include",
+    }).then((response) => {
+      if (response.ok) {
+        getNotifications();
+      }
+    });
   };
 
   return (
@@ -91,7 +90,7 @@ export default function Notification() {
                   className="text-sm hover:cursor-pointer hover:font-semibold hover:text-pointblue"
                   onClick={readAll}
                 >
-                  {t("readall")}개발중
+                  {t("readall")}
                 </p>
               </div>
               {notifications.map((noti) => (
