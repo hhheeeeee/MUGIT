@@ -80,6 +80,6 @@ export default function Page() {
         }
       })
       .catch((error) => console.log(error));
-  }, []);
+  });
   return <div>로그인 중... 로딩중 화면 넣기</div>;
 }
