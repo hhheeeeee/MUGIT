@@ -1,6 +1,7 @@
 package com.ssafy.mugit.infrastructure.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.mugit.domain.message.service.RedisMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -64,26 +65,21 @@ public class RedisConfig {
     }
 
     @Bean
-    Publisher publisher(RedisTemplate<String, Object> redisTemplate) {
-        return new Publisher(redisTemplate);
-    }
-
-    @Bean
-    Receiver receiver() {
-        return new Receiver();
-    }
-
-    @Bean
-    public MessageListenerAdapter messageListenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
-    }
-
-    @Bean
     public RedisMessageListenerContainer container(LettuceConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic(topic));
 
         return container;
+    }
+
+    @Bean
+    public MessageListenerAdapter messageListenerAdapter(RedisMessageService redisMessageService) {
+        return new MessageListenerAdapter(redisMessageService, "onMessage");
+    }
+
+    @Bean
+    Publisher publisher(RedisTemplate<String, Object> redisTemplate) {
+        return new Publisher(redisTemplate);
     }
 }

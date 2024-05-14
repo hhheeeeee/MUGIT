@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
+@Service("ApiMessageService")
 @Slf4j
 @RequiredArgsConstructor
 public class ApiMessageService implements MessageService {

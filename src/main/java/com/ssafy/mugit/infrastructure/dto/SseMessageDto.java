@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class SseMessageDto<T> {
     private Long userId;
     private SseEvent event;
