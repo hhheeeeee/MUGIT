@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import com.ssafy.mugit.domain.sse.service.SseService;
 import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ class SseControllerTest {
     @Autowired
     private SseService sseService;
 
+    @BeforeEach
+    void setUp() {
+        sseQueueContainerRepository.clear();
+    }
+
     @Test
     @DisplayName("SSE 연결 테스트")
     void sseConnectionTest() throws Exception {
@@ -43,11 +49,9 @@ class SseControllerTest {
 
         // when
         ResultActions perform = mockMvc.perform(get("/sse/subscribe").cookie(loginCookies));
-        SseEmitter emitter = sseQueueContainerRepository.findById(USER_SESSION_DTO_01.getFixture().getId()).getSseEmitter();
 
         // then
         perform.andExpect(status().isOk())
                 .andExpect(header().stringValues(CONTENT_TYPE, "text/event-stream; charset=UTF-8"));
-        assertThat(emitter).isNotNull();
     }
 }

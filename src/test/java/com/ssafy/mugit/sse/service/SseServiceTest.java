@@ -5,8 +5,8 @@ import com.ssafy.mugit.domain.exception.error.SseError;
 import com.ssafy.mugit.domain.message.dto.NotificationDto;
 import com.ssafy.mugit.domain.sse.service.SseService;
 import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
-import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainer;
+import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -21,7 +21,6 @@ import java.io.IOException;
 import static com.ssafy.mugit.domain.message.fixture.SseMessageDtoFixture.MESSAGE_DTO_01;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 
 
@@ -63,7 +62,7 @@ class SseServiceTest {
     void testFailAndError() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, null);
+        sseQueueContainerRepository.save(userId, new SseEmitter(1L));
         SseMessageDto<?> message = MESSAGE_DTO_01.getFixture();
 
         // when : 마지막 전송시간 0으로 설정
@@ -80,7 +79,7 @@ class SseServiceTest {
     void testFailAndOfferInQueue() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, null);
+        sseQueueContainerRepository.save(userId, new SseEmitter(-1L));
         SseMessageDto<NotificationDto> dto = MESSAGE_DTO_01.getFixture();
 
         // when : 마지막 전송시간 현재시간으로 설정 후 전송
@@ -99,7 +98,7 @@ class SseServiceTest {
     void testPollingFailMessage() throws IOException {
         // given
         Long userId = 1L;
-        sseQueueContainerRepository.save(userId, null);
+        sseQueueContainerRepository.save(userId, new SseEmitter(-1L));
         SseMessageDto<NotificationDto> message = MESSAGE_DTO_01.getFixture();
 
         // when 1 : 마지막 전송시간 현재시간 설정 후 전송(메시지 큐에 1개 쌓임)
@@ -108,7 +107,9 @@ class SseServiceTest {
         sut.send(userId, message);
 
         // when 2 : 가짜 전송 생성 후 실행
-        sut.attemptPolling(userId, sseQueueContainer);
+        sseQueueContainerRepository.save(userId, mockEmitter);
+        when(mockEmitter.getTimeout()).thenReturn(600000L);
+        sut.subscribeNewSse(userId, sseQueueContainer);
 
         // then : 연결요청 + 저장된 메시지 전송
         verify(mockEmitter, times(2)).send((SseEmitter.SseEventBuilder) any());

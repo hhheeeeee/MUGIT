@@ -1,6 +1,7 @@
 package com.ssafy.mugit.sse.repository;
 
 import com.ssafy.mugit.domain.exception.SseException;
+import com.ssafy.mugit.infrastructure.repository.SseQueueContainer;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,18 +22,16 @@ class SseQueueContainerRepositoryTest {
     }
 
     @Test
-    @DisplayName("EmitterContainer 없을때 조회 시 오류")
+    @DisplayName("EmitterContainer 없을때 조회 시 null")
     void testNotFoundEmitter() {
         // given
         long userId = 1;
 
         // when
-        assertThatThrownBy(() -> sut.findById(userId))
+        SseQueueContainer sseQueueContainer = sut.findById(userId);
 
-                // then
-                .isInstanceOf(SseException.class)
-                .hasMessageContaining(SSE_QUEUE_CONTAINER_NOT_FOUND.getMessage());
-
+        // then
+        assertThat(sseQueueContainer).isNull();
     }
 
     @Test

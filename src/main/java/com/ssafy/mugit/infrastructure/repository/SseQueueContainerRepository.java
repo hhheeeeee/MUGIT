@@ -13,14 +13,14 @@ public class SseQueueContainerRepository {
 
     private final Map<Long, SseQueueContainer> sseQueueContainerMap = new ConcurrentHashMap<>();
 
-    public void save(Long id, SseEmitter emitter) {
+    public SseQueueContainer save(Long id, SseEmitter emitter) {
         if (!sseQueueContainerMap.containsKey(id))  sseQueueContainerMap.put(id, new SseQueueContainer(emitter));
         else sseQueueContainerMap.get(id).changeEmitter(emitter);
+        return findById(id);
     }
 
     public SseQueueContainer findById(Long id) {
-        // Emitter 없을 때 오류
-        if (!sseQueueContainerMap.containsKey(id)) throw new SseException(SseError.SSE_QUEUE_CONTAINER_NOT_FOUND);
+        if (!sseQueueContainerMap.containsKey(id)) return null;
         return sseQueueContainerMap.get(id);
     }
 
@@ -36,5 +36,9 @@ public class SseQueueContainerRepository {
 
     public int size() {
         return sseQueueContainerMap.size();
+    }
+
+    public void clear() {
+        this.sseQueueContainerMap.clear();
     }
 }
