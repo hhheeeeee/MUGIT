@@ -99,18 +99,16 @@ class SseServiceTest {
     }
 
     @Test
-    @DisplayName("[통합] 타임아웃되지 않은 연결이 있을 경우, subscribe 시 오류 전송")
+    @DisplayName("[통합] 타임아웃되지 않은 연결이 있을 경우, 기존 연결 완료하기")
     void testExistNotTimeoutSse() throws IOException {
         // given
         long userId = 1L;
+        sseQueueContainerRepository.save(userId, mockEmitter);
 
         // when
-        sseQueueContainerRepository.save(userId, new SseEmitter(600000L));
-        SseMessageDto<NotificationDto> message = MESSAGE_DTO_01.getFixture();
+        sut.subscribe(userId);
 
         // then
-        assertThatThrownBy(() -> sut.subscribe(userId))
-                .isInstanceOf(SseException.class)
-                .hasMessage(SseError.ALREADY_EXIST_CONNECTION.getMessage());
+        verify(mockEmitter, times(1)).complete();
     }
 }
