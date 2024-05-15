@@ -1,5 +1,6 @@
 package com.ssafy.mugit.infrastructure.redis;
 
+import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,7 +15,7 @@ public class Publisher {
     @Value("${redis.topic}")
     private String topic;
 
-    public void publish(String message) {
+    public void publish(SseMessageDto<?> message) {
         redisTemplate.convertAndSend(topic, message);
     }
 }

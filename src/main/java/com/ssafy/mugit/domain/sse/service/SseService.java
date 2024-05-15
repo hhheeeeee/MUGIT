@@ -32,17 +32,13 @@ public class SseService {
     public SseEmitter subscribe(long userId) throws IOException {
         SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
 
-        // SSE 연결이 만료 전이면 오류 전송
-        if (sseContainer != null && sseContainer.getSseEmitter() != null && sseContainer.getSseEmitter().getTimeout() != null
-                && System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() < sseContainer.getSseEmitter().getTimeout())
-            throw new SseException(ALREADY_EXIST_CONNECTION);
+        // SSE 연결이 만료 전이면 기존연결 완료하기
+        if (sseContainer != null && sseContainer.getSseEmitter() != null && sseContainer.getSseEmitter().getTimeout() != null)
+            sseContainer.getSseEmitter().complete();
 
-        // SseEmitter 찾지 못하거나 만료되었을 때 새로 생성
-        else {
-            SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
-            SseQueueContainer sseQueueContainer = sseQueueContainerRepository.save(userId, emitter);
-            return subscribeNewSse(userId, sseQueueContainer);
-        }
+        SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
+        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.save(userId, emitter);
+        return subscribeNewSse(userId, sseQueueContainer);
     }
 
     public SseEmitter subscribeNewSse(long userId, SseQueueContainer sseContainer) throws IOException {
@@ -83,11 +79,11 @@ public class SseService {
         if (sseContainer == null)
             throw new SseException(SSE_QUEUE_CONTAINER_NOT_FOUND);
 
-        // 예외처리 2 : SSE를 찾지 못했을 때 Queue에 저장
+            // 예외처리 2 : SSE를 찾지 못했을 때 Queue에 저장
         else if (sseContainer.getSseEmitter() == null || sseContainer.getSseEmitter().getTimeout() == null || System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() > sseContainer.getSseEmitter().getTimeout())
             sseContainer.getMessageQueue().offer(message);
 
-        // 전송
+            // 전송
         else send(userId, sseContainer, message);
     }
 

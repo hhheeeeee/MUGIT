@@ -11,7 +11,7 @@ public class CustomAuthorizeHttpRequestsFilter {
         return (authorize) -> authorize
 
                 // sse 요청은 전부 인증 필요
-//                .requestMatchers("/sse/**").authenticated()
+                .requestMatchers("/sse/**").authenticated()
 
                 // 이외 요청은 전부 허용
                 .anyRequest().permitAll();

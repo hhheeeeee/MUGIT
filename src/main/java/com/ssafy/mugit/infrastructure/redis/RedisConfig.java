@@ -65,12 +65,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisMessageListenerContainer container(LettuceConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic(topic));
-
-        return container;
+    Publisher publisher(RedisTemplate<String, Object> redisTemplate) {
+        return new Publisher(redisTemplate);
     }
 
     @Bean
@@ -79,7 +75,11 @@ public class RedisConfig {
     }
 
     @Bean
-    Publisher publisher(RedisTemplate<String, Object> redisTemplate) {
-        return new Publisher(redisTemplate);
+    public RedisMessageListenerContainer container(LettuceConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+        final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(listenerAdapter, new PatternTopic(topic));
+
+        return container;
     }
 }

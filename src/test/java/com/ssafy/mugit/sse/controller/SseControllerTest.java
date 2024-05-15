@@ -56,19 +56,6 @@ class SseControllerTest {
     }
 
     @Test
-    @DisplayName("SSE 재연결 테스트")
-    void sseReconnectionTest() throws Exception {
-        // given
-        Cookie[] loginCookies = mockMvc.perform(get("/mock/login")).andReturn().getResponse().getCookies();
-
-        // when
-        mockMvc.perform(get("/sse/subscribe").cookie(loginCookies)).andExpect(status().isOk());
-
-        // then
-        mockMvc.perform(get("/sse/subscribe").cookie(loginCookies)).andExpect(status().is(409));
-    }
-
-    @Test
     @DisplayName("SSE 타임아웃 이후 재연결 테스트")
     void sseReconnectionTestAfterTimeout() throws Exception {
         // given
