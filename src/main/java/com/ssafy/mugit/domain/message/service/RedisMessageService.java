@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class RedisMessageService implements MessageService, MessageListener {
 
     private final SseService sseService;
     private final ObjectMapper objectMapper;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public void send(SseMessageDto<?> sseMessageDto) {
@@ -35,7 +37,7 @@ public class RedisMessageService implements MessageService, MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         String channel = new String(message.getChannel());
-        SseMessageDto<?> sseMessageDto = objectMapper.readValue(message.getBody(), SseMessageDto.class);
+        SseMessageDto<?> sseMessageDto = (SseMessageDto<?>) redisTemplate.getDefaultSerializer().deserialize(message.getBody());
         log.info("채널 {}로부터 수신한 메시지 : {}", channel, sseMessageDto);
         send(sseMessageDto);
     }
