@@ -1,27 +1,27 @@
-import { createContext, useEffect, useReducer } from 'react';
-import { dark, light } from '../theme';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import ContextMenu from '../components/ContextMenu';
+import { createContext, useEffect, useReducer } from "react";
+import { dark, light } from "../theme";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import ContextMenu from "../components/ContextMenu";
 
 // ======Imports============
-const THEME_DARK = 'THEME_DARK';
-const THEME_LIGHT = 'THEME_LIGHT';
+const THEME_DARK = "THEME_DARK";
+const THEME_LIGHT = "THEME_LIGHT";
 
-const CONTEXT_MENU = 'CONTEXT_MENU';
-const CLOSE_CONTEXT_MENU = 'CLOSE_CONTEXT_MENU';
-const KEY_PRESS = 'KEY_PRESS';
-const EVENT_EMITTER = 'EVENT_EMITTER';
-const PODCAST_TITLE = 'PODCAST_TITLE';
-const SETSHOWANNOTATIONS = 'SETSHOWANNOTATIONS';
-const SETENEABLEANNOTATIONS = 'SETENEABLEANNOTATIONS';
-const ANNOTATIONS = 'ANNOTATIONS';
-const SETDIALOGBOX = 'SETDIALOGBOX';
+const CONTEXT_MENU = "CONTEXT_MENU";
+const CLOSE_CONTEXT_MENU = "CLOSE_CONTEXT_MENU";
+const KEY_PRESS = "KEY_PRESS";
+const EVENT_EMITTER = "EVENT_EMITTER";
+const PODCAST_TITLE = "PODCAST_TITLE";
+const SETSHOWANNOTATIONS = "SETSHOWANNOTATIONS";
+const SETENEABLEANNOTATIONS = "SETENEABLEANNOTATIONS";
+const ANNOTATIONS = "ANNOTATIONS";
+const SETDIALOGBOX = "SETDIALOGBOX";
 const initialState = {
-  podcast: 'Podcast',
+  podcast: "Podcast",
   theme: {
-    mode: 'dark',
-    backgroundColor: dark,
-    textColor: 'white',
+    mode: "light", // 기본 모드를 light로 변경
+    backgroundColor: light,
+    textColor: "black",
   },
 
   contextMenu: {
@@ -30,7 +30,7 @@ const initialState = {
     display: false,
   },
   keyPress: {
-    key: '',
+    key: "",
     shiftKey: false,
   },
   event_Emitter: null,
@@ -47,13 +47,13 @@ function reducer(state, action) {
     case THEME_DARK:
       return {
         ...state,
-        theme: { mode: 'dark', backgroundColor: dark, textColor: 'white' },
+        theme: { mode: "dark", backgroundColor: dark, textColor: "white" },
       };
 
     case THEME_LIGHT:
       return {
         ...state,
-        theme: { mode: 'light', backgroundColor: light, textColor: 'black' },
+        theme: { mode: "light", backgroundColor: light, textColor: "black" },
       };
 
     case CONTEXT_MENU:
@@ -82,6 +82,7 @@ function reducer(state, action) {
       return state;
   }
 }
+
 const ThemeSettings = createContext({
   ...initialState,
 });
@@ -98,7 +99,7 @@ export const SettingsContext = ({ children }) => {
   // Change theme mode
   const themeMode = () => {
     const { mode } = state.theme;
-    if (mode === 'dark') {
+    if (mode === "dark") {
       return dispatch({ type: THEME_LIGHT });
     }
     dispatch({ type: THEME_DARK });
@@ -153,7 +154,7 @@ export const SettingsContext = ({ children }) => {
   // handle events
   useEffect(() => {
     // context menu event listener
-    const editor = document.getElementById('editor');
+    const editor = document.getElementById("editor");
     editor.oncontextmenu = (e) => {
       e.preventDefault();
       const { clientX, clientY } = e;

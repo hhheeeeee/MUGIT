@@ -202,6 +202,10 @@ export default function UserFlow() {
                         className=" mr-3 rounded border-2 border-pointblue bg-white p-1 
           text-pointblue transition duration-300 hover:bg-pointblue hover:text-white"
                         // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
+                        // 임시
+                        onClick={() =>
+                          router.push(`/${locale}/flow/${flow.id}/record`)
+                        }
                       >
                         <span className="mx-1 text-base font-semibold">
                           Edit

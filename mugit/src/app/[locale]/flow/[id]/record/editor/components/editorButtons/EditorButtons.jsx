@@ -206,18 +206,6 @@ const EditorButtons = ({
         />
       ),
     },
-    {
-      name: "exportTrack",
-      icon: (
-        <DownloadDoneRounded
-          onClick={() => {
-            const trackInfo = { id: track.id, name: track.name };
-            const event = { target: { name: "exportTrack", trackInfo } };
-            handleClick(event);
-          }}
-        />
-      ),
-    },
   ];
 
   return (

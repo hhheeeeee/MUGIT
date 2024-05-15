@@ -1,20 +1,48 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Edit from "./Edit";
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
-import LiveRecord from "./components/record/Liverecord.tsx";
-import { Synth2 } from "./components/synth/Synth";
-import { Fmsynth2 } from "./components/synth/FMSynth";
-import DragnDrop from "./components/source/DragnDrop";
+import LiveRecord from "./components/record/Liverecord";
+import DragnDropEdit from "./components/source/DragnDropEdit.jsx";
+import { useSearchParams } from "next/navigation";
+import { useThemeSettings } from "../editor/hooks";
+import FMKeyboard from "./components/synth/FmKeyboard";
 
 export default function Editor() {
-  // const SOURCE = ["Burkinelectric.mp3", "Far_Apart.mp3", "Podcast.wav"];
-  // const VOICE = ["Tin_Spirit.mp3", "Unavailable.mp3"];
-  // const SYNTH = [
-  //   "Valley_of_Spies.mp3",
-  //   "Winner_Winner_Funky_Chicken_Dinner.mp3",
-  // ];
+  const searchParams = useSearchParams();
+  const [audioFiles, setAudioFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    const audioFilesParam = searchParams.get("audioFiles");
+    if (audioFilesParam) {
+      try {
+        const parsedAudioFiles = JSON.parse(
+          decodeURIComponent(audioFilesParam)
+        );
+        const files = parsedAudioFiles.map(
+          (fileData: { name: string; data: string; type: string }) => {
+            const byteString = atob(fileData.data.split(",")[1]);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([ab], { type: fileData.type });
+            return new File([blob], fileData.name);
+          }
+        );
+        setAudioFiles(files);
+      } catch (error) {
+        console.error("Failed to parse audioFiles from URL", error);
+      }
+    }
+  }, [searchParams]);
+
+  const handleFileUpload = (files: File[]) => {
+    setUploadedFiles(files);
+  };
 
   return (
     <div className="h-full px-20">
@@ -24,12 +52,11 @@ export default function Editor() {
       <div>
         <div
           style={{ borderWidth: "8px" }}
-          className=" rounded-2xl border border-solid border-black p-10"
+          className="rounded-2xl border border-solid border-black p-10"
         >
           <div className="source-file">
-            {/* 멀티트랙 음향 편집기 */}
             <SettingsContext>
-              <Edit />
+              <Edit uploadedFiles={uploadedFiles} />
             </SettingsContext>
             <div className="w-4/ mx-auto my-10">
               <Tab.Group>
@@ -65,16 +92,19 @@ export default function Editor() {
                 <hr />
                 <Tab.Panels>
                   <Tab.Panel>
-                    {/* 소스 추가 */}
-                    {/* <DragnDrop /> */}
+                    <DragnDropEdit
+                      audioFiles={audioFiles}
+                      setAudioFiles={setAudioFiles}
+                      onFileUpload={handleFileUpload}
+                    />
                   </Tab.Panel>
                   <Tab.Panel>
-                    {/* 목소리 녹음 */}
                     <LiveRecord />
                   </Tab.Panel>
                   <Tab.Panel>
-                    {/* 자체 사운드 추가 */}
-                    <Fmsynth2 />
+                    <main className="flex flex-col justify-center bg-gray-800 p-4 text-white">
+                      <FMKeyboard />
+                    </main>
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
