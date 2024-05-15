@@ -910,8 +910,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
-import DragnDrop from "./editor/components/source/DragnDrop";
+
 import RecordMessage from "./recordMessage";
+import DragnDrop from "./editor/components/source/DragnDrop";
 
 const dummymessage = [
   {
