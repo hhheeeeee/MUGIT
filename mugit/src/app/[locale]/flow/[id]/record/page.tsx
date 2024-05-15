@@ -1013,7 +1013,7 @@ export default function RecordPage() {
 
   async function goEdit() {
     const audioFilesString = encodeURIComponent(JSON.stringify(audioFiles));
-    router.push(`/editor?audioFiles=${audioFilesString}`);
+    router.push("editor");
   }
 
   useEffect(() => {

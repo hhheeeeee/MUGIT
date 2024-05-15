@@ -3,15 +3,20 @@ import { useState } from "react";
 import { genres } from "../constants/genres";
 import { useTranslations } from "next-intl";
 
-function SelectTags() {
-  const t = useTranslations("Form");
+type SelectTagsPropsType = {
+  selected: string[];
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
-  const [selected, setSelected] = useState<string[]>([]);
+function SelectTags({ selected, setSelected }: SelectTagsPropsType) {
+  const t = useTranslations("Form");
 
   const toggleTag = (e: any) => {
     const isExist = selected.includes(e.target.value);
     if (selected && isExist) {
-      const newSelected = selected.filter((item) => item !== e.target.value);
+      const newSelected = selected.filter(
+        (item: string) => item !== e.target.value
+      );
       setSelected(newSelected);
     } else {
       const newSelected = [...selected, e.target.value];
@@ -24,7 +29,7 @@ function SelectTags() {
       <h2 className="mt-4 text-lg">{t("tags")}</h2>
       <div className="flex min-h-10 w-full flex-wrap rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-2">
         {selected &&
-          selected.map((item) => {
+          selected.map((item: string) => {
             if (item)
               return (
                 <button
@@ -41,7 +46,7 @@ function SelectTags() {
           })}
       </div>
       <div className="mb-2 flex w-10/12 flex-wrap">
-        {genres.map((item) => {
+        {genres.map((item, idx) => {
           const isExist = selected.includes(item.name);
           return (
             <>
@@ -49,7 +54,7 @@ function SelectTags() {
                 <></>
               ) : (
                 <button
-                  key={item.id}
+                  key={idx}
                   value={item.name}
                   className="my-1 ml-1 rounded-md border-2 border-solid bg-gray-600 bg-opacity-50 px-2 py-1 text-xs text-white
 									hover:bg-gray-500"

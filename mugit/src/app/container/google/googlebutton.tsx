@@ -26,7 +26,8 @@ export default function GoogleButton() {
         src="/google/web_dark_sq_ctn@4x.png"
         alt=""
         width={150}
-        height={0}
+        height={32}
+        style={{ width: 150, height: 32 }}
       />
     </a>
   );

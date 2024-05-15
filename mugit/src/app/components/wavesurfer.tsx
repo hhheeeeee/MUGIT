@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import IconPause from "@/app/assets/icon/IconPause";
 import IconPlay from "../assets/icon/IconPlay";
-import { useAtom, useAtomValue } from "jotai";
-import { playTime } from "../store/atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { playTime, playDuration } from "../store/atoms";
 
 const formatTime = (seconds: number) =>
   [seconds / 60, seconds % 60]
@@ -38,6 +38,7 @@ export default function WavesurferComp({
   const time = useAtomValue(playTime);
   const containerRef = useRef(null);
   const [duration, setDuration] = useState("0:00");
+  const setglobalDuration = useSetAtom(playDuration);
   const [ex, setEx] = useState<string>("");
   const handleInput = (e: any) => {
     setEx(e.target.value);
@@ -68,7 +69,10 @@ export default function WavesurferComp({
   }, [wavesurfer]);
 
   if (wavesurfer) {
-    wavesurfer.on("decode", (duration) => setDuration(formatTime(duration)));
+    wavesurfer.on("decode", (duration) => {
+      setDuration(formatTime(duration));
+      setglobalDuration(duration);
+    });
   }
 
   return (

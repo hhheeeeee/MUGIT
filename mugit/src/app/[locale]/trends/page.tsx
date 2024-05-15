@@ -3,11 +3,10 @@ import Trendslist from "@/app/container/trends/trendslist";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 async function getFlow() {
-  const response = await fetch("https://mugit.site/api" + "/flows", {
+  const response = await fetch("https://mugit.site/api" + "/flows?page=0", {
     method: "GET",
     credentials: "include",
   });
-
   return response.json();
 }
 

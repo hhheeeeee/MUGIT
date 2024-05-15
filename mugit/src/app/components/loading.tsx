@@ -30,7 +30,7 @@ export default function Loading() {
         className="absolute h-full bg-pointyellow text-center"
       />
       <h1 className="flex-nowrap p-28 text-center text-6xl text-white mix-blend-difference">
-        <i>highlight</i>
+        <i>Loading</i>
       </h1>
     </div>
   );

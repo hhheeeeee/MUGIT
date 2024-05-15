@@ -8,17 +8,25 @@ import SelectTags from "@/app/components/selectTags";
 import { useInput } from "@/app/hooks/useInput";
 import { useState } from "react";
 // import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { useTranslations } from "next-intl";
-import { apiUrl } from "@/app/store/atoms";
+import { useLocale, useTranslations } from "next-intl";
 import fireToast from "@/app/utils/fireToast";
+import { useRouter } from "next/navigation";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/app/store/atoms/user";
 
 export default function NotePage() {
-  const t = useTranslations("Form");
+  const router = useRouter();
+  const locale = useLocale();
 
+  const userInfo = useAtomValue(userAtom);
+  const t = useTranslations("Form");
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
   const [privacy, setPrivacy] = useState<string>("PUBLIC");
-  const [imageSrc, setImageSrc] = useState<string>("/person.jpg");
+  const [tags, setTags] = useState<string[]>([]);
+  const [imageSrc, setImageSrc] = useState<string>(
+    "https://mugit.site/files/default/flow.png"
+  );
   const [imagefile, setImageFile] = useState<any>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -30,7 +38,6 @@ export default function NotePage() {
       });
       return;
     }
-    console.log("imagesource", imageSrc);
 
     let imageFormData = new FormData();
     imageFormData.append("image", imagefile);
@@ -40,21 +47,21 @@ export default function NotePage() {
 
     const [userPic, audioFile] = await Promise.all([
       fetch("https://mugit.site/files", {
-        method: "post",
+        method: "POST",
         credentials: "include",
         body: imageFormData,
       }).then((response) => response.json()),
       fetch("https://mugit.site/files", {
-        method: "post",
+        method: "POST",
         credentials: "include",
         body: audioFormData,
       }).then((response) => response.json()),
     ]);
 
-    console.log("audio", audioFile);
+    router.push(`${locale}/profile/${userInfo.id}`);
 
     fetch("https://mugit.site/api/flows/note", {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -64,10 +71,10 @@ export default function NotePage() {
         message: description,
         authority: privacy,
         files: [userPic.list[0], audioFile.list[0]],
-        hashtags: ["string"],
+        hashtags: tags,
       }),
-    }).then((response) => {
-      console.log(response);
+    }).then((res) => {
+      console.log(res);
     });
   }
 
@@ -78,7 +85,7 @@ export default function NotePage() {
       </h1>
       <Description target="note" />
 
-      <div className="mt-4 flex w-full">
+      <div className="mt-4 flex w-full sm:flex-col md:flex-col lg:flex-row">
         {/* 사진 올리는 부분임 */}
         <UploadPicture
           imageSrc={imageSrc}
@@ -88,7 +95,7 @@ export default function NotePage() {
         />
 
         {/* 파일 가져오는 부분임 */}
-        <div className="flex w-9/12 flex-col">
+        <div className="flex w-9/12 flex-col  md:mt-4 md:w-full lg:w-9/12">
           <UploadContainer file={file} setFile={setFile} />
 
           <h2 className="mt-4 text-lg">{t("note")}</h2>
@@ -99,7 +106,7 @@ export default function NotePage() {
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
           />
 
-          <SelectTags />
+          <SelectTags selected={tags} setSelected={setTags} />
 
           <div className="mt-4 flex w-full">
             <MyRadioGroup privacy={privacy} setPrivacy={setPrivacy} />

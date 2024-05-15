@@ -2,28 +2,14 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FlowDetailType } from "@/app/types/flowtype";
-import { apiUrl } from "@/app/store/atoms";
+import { patchLike } from "@/app/libs/likeApi";
 
 interface PropType {
   item: FlowDetailType;
   isLogined: string;
 }
 
-async function patchLike(id: number) {
-  fetch(apiUrl + `/likes/flows/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    credentials: "include",
-  }).then((response) => {
-    console.log(response);
-  });
-}
-
 export default function LikeButton({ item, isLogined }: PropType) {
-  console.log("item,item, item in LikeButton", item);
   const [hasClicked, setHasClicked] = useState(false);
   const [likes, setLikes] = useState(0);
 
@@ -42,7 +28,6 @@ export default function LikeButton({ item, isLogined }: PropType) {
       setLikes(copy);
     } else {
       const copy = likes + 1;
-      console.log("like : ", copy);
       setLikes(copy);
     }
     await patchLike(item.id);

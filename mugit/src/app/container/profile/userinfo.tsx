@@ -5,11 +5,13 @@ import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import IconCamera from "@/app/assets/icon/IconCamera";
 import { apiUrl } from "@/app/store/atoms";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import fireToast from "@/app/utils/fireToast";
+import FollowPopover from "./followpopover";
 
 const fetchUser = async (id: string | string[]) => {
   const response = await fetch(apiUrl + `/users/${id}/profiles/detail`, {
@@ -19,8 +21,6 @@ const fetchUser = async (id: string | string[]) => {
 };
 
 export default function UserInfo() {
-  const locale = useLocale();
-  const router = useRouter();
   const params = useParams();
   const t = useTranslations("Profile");
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +36,7 @@ export default function UserInfo() {
     followerCount: "0",
     followingCount: "0",
   });
+
   useEffect(() => {
     fetchUser(params.id).then((data) => {
       setUserInfo(data);
@@ -94,28 +95,44 @@ export default function UserInfo() {
           ? response.list[0].path
           : userInfo.profileImagePath,
       }),
-    }).then((response) => {
-      setUser({
-        id: String(Cookies.get("userID")),
-        isLogined: String(Cookies.get("isLogined")),
-        nickName: String(Cookies.get("nickName")),
-        profileImagePath: String(Cookies.get("profileImage")),
-        profileText: String(Cookies.get("profileText")),
-        followerCount: String(Cookies.get("followers")),
-        followingCount: String(Cookies.get("followings")),
+    })
+      .then(() => {
+        setUser({
+          id: String(Cookies.get("userId")),
+          isLogined: String(Cookies.get("isLogined")),
+          nickName: String(Cookies.get("nickName")),
+          profileImagePath: String(Cookies.get("profileImagePath")),
+          profileText: String(Cookies.get("profileText")),
+          followerCount: String(Cookies.get("followers")),
+          followingCount: String(Cookies.get("followings")),
+        });
+      })
+      .then(() => {
+        fetchUser(params.id).then((data) => {
+          setUserInfo(data);
+          setNewImage(data.profileImagePath);
+          setNewNickName(data.nickName);
+          setNewProfileText(data.profileText);
+        });
+        setIsOpen(!isOpen);
       });
-      clickModal;
-    });
   }
 
   function follow() {
-    fetch(apiUrl + `/users/${params.id}/follows`, {
-      method: userInfo.isFollower ? "DELETE" : "POST",
-    }).then(() => {
-      fetchUser(params.id).then((data) => {
-        setUserInfo(data);
+    if (user.isLogined === "true") {
+      fetch(apiUrl + `/users/${params.id}/follows`, {
+        method: userInfo.isFollower ? "DELETE" : "POST",
+      }).then(() => {
+        fetchUser(params.id).then((data) => {
+          setUserInfo(data);
+        });
       });
-    });
+    } else {
+      fireToast({
+        type: "경고",
+        title: "로그인이 필요합니다.",
+      });
+    }
   }
   return (
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
@@ -132,13 +149,18 @@ export default function UserInfo() {
           <p className="pb-3 text-4xl">{userInfo.nickName}</p>
           <p className="pb-3 text-xl">{userInfo.profileText}</p>
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
-            <div className="pr-5">
+            <div className="pr-5 text-center">
               <p>{t("followers")}</p>
-              <p className="text-2xl">{userInfo.followerCount}</p>
+              {/* <p className="text-2xl">{userInfo.followerCount}</p> */}
+              <FollowPopover number={userInfo.followerCount} type="followers" />
             </div>
-            <div className="pl-5">
+            <div className="pl-5 text-center">
               <p>{t("followings")}</p>
-              <p className="text-2xl">{userInfo.followingCount}</p>
+              {/* <p className="text-2xl">{userInfo.followingCount}</p> */}
+              <FollowPopover
+                number={userInfo.followerCount}
+                type="followings"
+              />
             </div>
           </div>
           <div>
@@ -157,12 +179,6 @@ export default function UserInfo() {
                 {userInfo.isFollower ? t("unfollow") : t("follow")}
               </button>
             )}
-            <button
-              className="mx-4 rounded border-2 border-black px-2 py-1"
-              onClick={() => router.push(`/${locale}/note`)}
-            >
-              Note생성
-            </button>
           </div>
         </div>
       </div>

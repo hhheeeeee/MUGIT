@@ -6,7 +6,8 @@
     "search": "검색",
     "browseGenres": "장르들에 따른 검색을 해보세요",
     "title": "트렌드",
-    "searchSound": "       원하는 Sound를 검색하기"
+    "searchSound": "       원하는 Sound를 검색하기",
+    "noResult": "검색 결과가 없습니다."
   },
   "Support": {
     "title": "Mugit이란?"
@@ -30,7 +31,9 @@
     "details": "Details",
     "tree": "음악 트리",
     "comments": "댓글",
-    "writeComments": "댓글을 입력해주세요"
+    "writeComments": "댓글을 입력해주세요",
+    "newNote": "Note 생성하기",
+    "edit": "수정하기"
   },
   "Form": {
     "note": "Note 이름",
@@ -61,5 +64,34 @@
     "edit": "수정",
     "cancel": "취소",
     "save": "저장"
+  },
+  "Mugitory": {
+    "jan": "1월",
+    "feb": "2월",
+    "mar": "3월",
+    "apr": "4월",
+    "may": "5월",
+    "jun": "6월",
+    "jul": "7월",
+    "aug": "8월",
+    "sep": "9월",
+    "oct": "10월",
+    "nov": "11월",
+    "dec": "12월",
+    "sun": "일",
+    "mon": "월",
+    "tue": "화",
+    "wed": "수",
+    "thu": "목",
+    "fri": "금",
+    "sat": "토",
+    "date": "날짜",
+    "count": "횟수"
+  },
+  "Notification": {
+    "notice": "알림",
+    "read": "읽음",
+    "readall": "모두 읽음",
+    "noContent": "안 읽은 알림이 없습니다."
   }
 }

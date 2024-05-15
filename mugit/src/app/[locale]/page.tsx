@@ -3,6 +3,8 @@ import { unstable_setRequestLocale } from "next-intl/server";
 import Line from "../container/landing/line";
 import Footer from "../components/footer";
 import TextAnimation from "../components/text-animation";
+import LandingHelp from "../container/landing/landingHelp";
+import ScrollDown from "../container/landing/scrollDown";
 
 export default function IndexPage({
   params: { locale },
@@ -34,7 +36,9 @@ export default function IndexPage({
             {t("title")}
           </p>
         </div>
+        <ScrollDown />
       </main>
+      <LandingHelp />
       <Footer />
     </>
   );

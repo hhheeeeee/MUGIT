@@ -6,7 +6,8 @@
     "search": "Search",
     "browseGenres": "Browse Genres",
     "title": "Trends",
-    "searchSound": "        Search any Sound"
+    "searchSound": "        Search any Sound",
+    "noResult": "No Results"
   },
   "Support": {
     "title": "What is Mugit?"
@@ -30,7 +31,9 @@
     "details": "Details",
     "tree": "Tree",
     "comments": "comments",
-    "writeComments": "Write a comment"
+    "writeComments": "Write a comment",
+    "newNote": "Create New Note",
+    "edit": "Edit"
   },
   "Form": {
     "note": "Note Name",
@@ -61,5 +64,34 @@
     "edit": "Edit",
     "cancel": "Cancel",
     "save": "Save"
+  },
+  "Mugitory": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec",
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "date": "date",
+    "count": "count"
+  },
+  "Notification": {
+    "notice": "Notice",
+    "read": "Read",
+    "readall": "Read All",
+    "noContent": "There're no unread notifications"
   }
 }
