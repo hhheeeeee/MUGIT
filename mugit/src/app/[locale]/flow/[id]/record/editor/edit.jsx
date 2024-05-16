@@ -20,17 +20,21 @@ import * as Tone from "tone";
 import { useAtomValue, useAtom } from "jotai";
 import { fileToEdit } from "@/app/store/atoms/editfile";
 import { send } from "process";
+
+// Edit 컴포넌트 정의
 const Edit = ({ uploadedFiles }) => {
+  // 테마 설정을 위한 커스텀 훅 사용
   const { theme, setEventEmitter, podcast, showAnnotations, setDialogBox } =
     useThemeSettings();
-
   const { backgroundColor, textColor } = theme;
 
+  // 리듀서 액션 타입 정의
   const SETBUTTONS = "SETBUTTONS";
   const SETENABLECUT = "SETENABLECUT";
   const SETENEABLESPLIT = "SETENEABLESPLIT";
   const PLAYLIST = "PLAYLIST";
 
+  // 리듀서 초기 상태 정의
   const initialState = {
     ee: new EventEmitter(),
     toneCtx: Tone.getContext(),
@@ -43,6 +47,7 @@ const Edit = ({ uploadedFiles }) => {
     playlist: () => {},
   };
 
+  // 리듀서 함수 정의
   function reducer(state, action) {
     const { type, payload } = action;
     switch (type) {
@@ -59,15 +64,14 @@ const Edit = ({ uploadedFiles }) => {
     }
   }
 
+  // 리듀서 및 상태 초기화
   const [state, dispatch] = useReducer(reducer, initialState);
   const [tracks, setTracks] = useState([]);
   const { ee, toneCtx, setUpChain, uploadRef } = state;
-  let sendFile = useAtomValue(fileToEdit);
-  console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
-  useEffect(() => {
-    console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
-  }, [sendFile]);
+  const sendFile = useAtomValue(fileToEdit);
   const [myMusicArray, setMyMusicArray] = useAtom(fileToEdit);
+
+  // 오디오 편집기 초기화
   const container = useCallback(
     (node) => {
       if (node !== null && toneCtx !== null) {
@@ -104,6 +108,8 @@ const Edit = ({ uploadedFiles }) => {
           type: PLAYLIST,
           payload: playlist,
         });
+
+        // 이벤트 리스너 설정
         ee.on("audiorenderingstarting", function (offlineCtx, a) {
           const offlineContext = new Tone.OfflineContext(offlineCtx);
           Tone.setContext(offlineContext);
@@ -161,23 +167,7 @@ const Edit = ({ uploadedFiles }) => {
     [ee, toneCtx]
   );
 
-  useEffect(() => {
-    const addedFiles = new Set();
-    uploadedFiles.forEach((file) => {
-      if (!addedFiles.has(file.name)) {
-        const newTrack = {
-          file: file,
-          name: file.name,
-          id: uuidv4(),
-        };
-        ee.emit("newtrack", newTrack);
-        setTracks((prevTracks) => [...prevTracks, newTrack]);
-        addedFiles.add(file.name);
-        console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
-      }
-    });
-  }, [uploadedFiles, ee]);
-
+  // 파일 업로드 핸들러
   function handleUpload(event) {
     const file = event.target.files[0];
     if (!file) {
@@ -193,6 +183,7 @@ const Edit = ({ uploadedFiles }) => {
     uploadRef.current.value = "";
   }
 
+  // 버튼 클릭 핸들러
   function handleClick(event) {
     const { name } = event.target;
 
@@ -237,6 +228,7 @@ const Edit = ({ uploadedFiles }) => {
     }
   }
 
+  // 트랙 다운로드 핸들러
   const handleDownloadTracks = () => {
     tracks.forEach((track, index) => {
       const { file, name } = track;
@@ -275,6 +267,7 @@ const Edit = ({ uploadedFiles }) => {
     });
   };
 
+  // AudioBuffer를 WAV 파일로 변환하는 함수
   const bufferToWave = (buffer) => {
     let numOfChan = buffer.numberOfChannels,
       length = buffer.length * numOfChan * 2 + 44,
@@ -287,32 +280,32 @@ const Edit = ({ uploadedFiles }) => {
       pos = 0;
 
     setUint32(0x46464952); // "RIFF"
-    setUint32(length - 8); // file length - 8
+    setUint32(length - 8); // 파일 길이 - 8
     setUint32(0x45564157); // "WAVE"
 
-    setUint32(0x20746d66); // "fmt " chunk
-    setUint32(16); // length = 16
-    setUint16(1); // PCM (uncompressed)
+    setUint32(0x20746d66); // "fmt " 청크
+    setUint32(16); // 길이 = 16
+    setUint16(1); // PCM (압축되지 않음)
     setUint16(numOfChan);
     setUint32(buffer.sampleRate);
-    setUint32(buffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
-    setUint16(numOfChan * 2); // block-align
-    setUint16(16); // 16-bit (hardcoded in this demo)
+    setUint32(buffer.sampleRate * 2 * numOfChan); // avg. 바이트/초
+    setUint16(numOfChan * 2); // 블록 정렬
+    setUint16(16); // 16비트 (하드코딩)
 
-    setUint32(0x61746164); // "data" - chunk
-    setUint32(length - pos - 4); // chunk length
+    setUint32(0x61746164); // "data" - 청크
+    setUint32(length - pos - 4); // 청크 길이
 
     for (i = 0; i < buffer.numberOfChannels; i++)
       channels.push(buffer.getChannelData(i));
 
     while (pos < length) {
       for (i = 0; i < numOfChan; i++) {
-        sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
-        sample = (0.5 + sample * 0.5) * 65535.0; // scale to 16-bit unsigned int
-        view.setInt16(pos, sample, true); // write 16-bit sample
+        sample = Math.max(-1, Math.min(1, channels[i][offset])); // 클램프
+        sample = (0.5 + sample * 0.5) * 65535.0; // 16비트 부호 없는 정수로 스케일링
+        view.setInt16(pos, sample, true); // 16비트 샘플 쓰기
         pos += 2;
       }
-      offset++; // next source sample
+      offset++; // 다음 소스 샘플
     }
 
     return new Blob([bufferArray], { type: "audio/wav" });
@@ -328,6 +321,7 @@ const Edit = ({ uploadedFiles }) => {
     }
   };
 
+  // URL에서 오디오 파일을 가져오는 함수
   const getAudioFilesFromUrl = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const audioFilesParam = searchParams.get("audioFiles");
@@ -336,13 +330,15 @@ const Edit = ({ uploadedFiles }) => {
       : [];
   };
 
+  // URL을 파싱하여 오디오 파일 객체로 변환하는 함수
   const parseURLs = (urls) => {
     return urls.map((url, index) => ({
       file: url,
-      name: `example${index + 1}`,
+      name: `demo${index + 1}`,
     }));
   };
 
+  // 컴포넌트 마운트 시 오디오 파일 설정
   useEffect(() => {
     const audioFiles = getAudioFilesFromUrl();
     const parsedURLs = parseURLs(audioFiles);
@@ -356,17 +352,22 @@ const Edit = ({ uploadedFiles }) => {
       });
     });
   }, []);
-
+  // downloadTracks, Upload to Edit 위해 필요
   useEffect(() => {
-    myMusicArray.map((item) => {
-      ee.emit("newtrack", {
-        file: item.file,
-        name: item.name,
-        id: uuidv4(),
+    if (uploadedFiles && uploadedFiles.length > 0) {
+      uploadedFiles.forEach((file) => {
+        const newTrack = {
+          file: file,
+          name: file.name,
+          id: uuidv4(),
+        };
+        ee.emit("newtrack", newTrack);
+        setTracks((prevTracks) => [...prevTracks, newTrack]);
       });
-    });
-  }, []);
+    }
+  }, [uploadedFiles]);
 
+  // JSX 반환
   return (
     <>
       <Box
