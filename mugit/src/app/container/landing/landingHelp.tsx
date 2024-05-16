@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import GoogleButton from "../google/googlebutton";
 import { useTranslations } from "next-intl";
+import { userAtom } from "@/app/store/atoms/user";
+import { useAtomValue } from "jotai";
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
@@ -17,6 +19,7 @@ export default function LandingHelp() {
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations("Landing");
+  const user = useAtomValue(userAtom);
 
   useEffect(() => {
     AOS.init();
@@ -139,7 +142,19 @@ export default function LandingHelp() {
         <p className="mb-6 text-2xl text-white" data-aos="fade-up">
           {t("join")}
         </p>
-        <GoogleButton />
+        {user.isLogined == "true" ? (
+          <button
+            className="mr-3 w-[10%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
+     text-white transition duration-300 hover:bg-[#0831d6]"
+            onClick={() => router.push(`/${locale}/trends`)}
+          >
+            <span className="mx-1 text-base font-semibold">
+              {t("gotoTrend")}
+            </span>
+          </button>
+        ) : (
+          <GoogleButton />
+        )}
       </div>
     </>
   );
