@@ -28,6 +28,7 @@ export default function GoogleButton() {
         width={150}
         height={32}
         style={{ width: 150, height: 32 }}
+        priority
       />
     </a>
   );
