@@ -209,16 +209,6 @@ const dummymessage = [
     title: "Added band session recordings",
     data: "2024-02-25",
   },
-  {
-    id: 2,
-    title: "Added Chorus",
-    data: "2024-03-24",
-  },
-  {
-    id: 3,
-    title: "Added Keyboard Session",
-    data: "2024-04-11",
-  },
 ];
 
 const getRecords = async (id: string | string[]) => {
@@ -243,7 +233,7 @@ export default function RecordPage() {
   const userInfo = useAtomValue(userAtom);
   const t = useTranslations("Form");
   const [message, setMessage] = useState("");
-  const [records, setRecords] = useState({ list: dummymessage });
+  const [records, setRecords] = useState({});
   const [audioFiles, setAudioFiles] = useState<File[]>([]);
   const [fileResponse, setFileResponse] = useState([]);
   const [recordResponse, setRecordResponse] = useState([]);
