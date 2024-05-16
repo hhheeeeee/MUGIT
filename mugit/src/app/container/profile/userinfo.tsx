@@ -151,16 +151,16 @@ export default function UserInfo() {
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5 text-center">
               <p>{t("followers")}</p>
-              {/* <p className="text-2xl">{userInfo.followerCount}</p> */}
-              <FollowPopover number={userInfo.followerCount} type="followers" />
+              <p className="text-2xl">{userInfo.followerCount}</p>
+              {/* <FollowPopover number={userInfo.followerCount} type="followers" /> */}
             </div>
             <div className="pl-5 text-center">
               <p>{t("followings")}</p>
-              {/* <p className="text-2xl">{userInfo.followingCount}</p> */}
-              <FollowPopover
-                number={userInfo.followerCount}
+              <p className="text-2xl">{userInfo.followingCount}</p>
+              {/* <FollowPopover
+                number={userInfo.followingCount}
                 type="followings"
-              />
+              /> */}
             </div>
           </div>
           <div>

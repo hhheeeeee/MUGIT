@@ -21,6 +21,12 @@ export default function Searchbar() {
     }
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      router.push(`/trends/${searchInput}`);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col">
       <div className="relative h-12 w-full rounded-full border-2 border-solid bg-white p-0">
@@ -29,6 +35,7 @@ export default function Searchbar() {
           placeholder={t("searchSound")}
           className=" h-full w-[85%] rounded-full p-0 pl-4 outline-none"
           onChange={(event) => handleInput(event)}
+          onKeyUp={(event) => handleKeyUp(event)}
           value={searchInput}
         />
         <button

@@ -23,6 +23,12 @@ export default function Page({ params }: { params: { keyword: string } }) {
     setSearchInput(e.target.value);
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      router.push(`/trends/${searchInput}`);
+    }
+  };
+
   const [state, refetch] = useAsync(
     () => getSearchResult(apiPage, params.keyword),
     [apiPage]
@@ -42,6 +48,7 @@ export default function Page({ params }: { params: { keyword: string } }) {
           type="text"
           className=" h-full w-[70%] rounded-full bg-gray-200 p-0 pl-4 outline-none"
           onChange={(event) => handleInput(event)}
+          onKeyUp={handleKeyUp}
           value={searchInput}
         />
         <button

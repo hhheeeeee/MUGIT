@@ -43,6 +43,7 @@ export default function NotePage() {
     imageFormData.append("image", imagefile);
 
     let audioFormData = new FormData();
+    console.log("file", file);
     audioFormData.append("source", file);
 
     const [userPic, audioFile] = await Promise.all([
@@ -58,7 +59,9 @@ export default function NotePage() {
       }).then((response) => response.json()),
     ]);
 
-    router.push(`${locale}/profile/${userInfo.id}`);
+    console.log("audioFile", audioFile);
+
+    router.push(`/${locale}/profile/${userInfo.id}`);
 
     fetch("https://mugit.site/api/flows/note", {
       method: "POST",

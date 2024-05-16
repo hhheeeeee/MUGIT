@@ -28,26 +28,6 @@ export default function Page() {
   const [sessionId, setSessionID] = useAtom(SessionID);
   const setUser = useSetAtom(userAtom);
 
-  // functions
-  const connectHandler = function (e: any) {
-    console.log("connect : 연결됨", e);
-  };
-  const errorHandler = function (e: any) {
-    console.log("에러", e);
-  };
-  const openHandler = function (e: any) {
-    console.log("open : 연결", e);
-  };
-  const followHandler = function (e: any) {
-    console.log(JSON.parse(e.data).message);
-    const data = JSON.parse(e.data);
-    fireToast({
-      type: "정보",
-      title: data.message.type,
-      text: data.message.description,
-    });
-  };
-
   const onSubmit = async (): Promise<void> => {
     const response = await fetch(apiUrl + `/users/mocks/login?pk=${pk}`);
     response.json().then((data: MockLoginResponseType) => {
@@ -61,19 +41,6 @@ export default function Page() {
         followerCount: String(data.followers),
         followingCount: String(data.followings),
       });
-      const SSE_CONNECT_API_PATH = "/sse/subscribe";
-
-      const eventSource = new EventSource(
-        "https://mugit.site" + SSE_CONNECT_API_PATH,
-        {
-          withCredentials: true,
-        }
-      );
-
-      eventSource.addEventListener("connect", connectHandler);
-      eventSource.addEventListener("error", errorHandler);
-      eventSource.addEventListener("open", openHandler);
-      eventSource.addEventListener("follow", followHandler);
     });
   };
 
@@ -105,7 +72,7 @@ export default function Page() {
         onChange={(event) => setPk(event.target.value)}
       />
       <button onClick={onSubmit}>/users/mocks/login?pk= 로 요청임</button>
-      <hr />
+      <br />
       <button onClick={logout}>로그아웃</button>
     </div>
   );
