@@ -102,10 +102,13 @@ public class SseService {
     }
 
     public SseEmitter complete(Long userId) {
-        SseQueueContainer sseQueueContainer = sseQueueContainerRepository.findById(userId);
-        SseEmitter sseEmitter = sseQueueContainer.getSseEmitter();
-        sseEmitter.complete();
-        return sseEmitter;
+        SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
+        SseEmitter sseEmitter = sseContainer.getSseEmitter();
+        if (sseEmitter != null) {
+            sseEmitter.complete();
+            return sseEmitter;
+        }
+        else throw new SseException(SSE_EMITTER_NOT_FOUND);
     }
 
     private void addHandler(long userId, SseEmitter emitter) {
