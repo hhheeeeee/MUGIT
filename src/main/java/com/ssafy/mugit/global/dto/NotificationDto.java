@@ -18,4 +18,5 @@ public class NotificationDto {
     private Class<?> causeEntityClass;
     private NotificationType type;
     private String description;
+    private String createAt;
 }
