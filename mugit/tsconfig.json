@@ -27,9 +27,14 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/[locale]/flow/[id]/record/editor/edit.jsx",
-    "src/app/[locale]/flow/[id]/record/editor/page.jsx",
-    "src/app/[locale]/flow/[id]/record/editor/components/DragnDrop.jsx"
+    "src/app/[locale]/flow/[id]/record/editor/Edit.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/page.tsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/DragnDrop.tsx",
+    "src/app/components/DragnDrop.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/synth/Synth.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/source/DragnDrop.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/source/DragnDrop.jsx",
+    "src/app/[locale]/flow/[id]/record/editor/components/source/DragnDrop.jsx"
   ],
   "exclude": ["node_modules"]
 }
