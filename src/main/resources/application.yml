@@ -31,7 +31,7 @@ spring:
 # emitter
 emitter:
   timeout:
-    60000
+    30000
 
 server:
   error:
