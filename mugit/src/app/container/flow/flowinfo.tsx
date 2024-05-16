@@ -44,13 +44,13 @@ export default function FlowInfo({ page }: PropType) {
               className="mr-5 h-48 w-48 rounded object-cover"
               priority
             />
-            <div className="relative">
+            <div className="relative w-4/5">
               <div className="mb-3 flex">
                 {flowDetail.hashtags.map((tag) => (
                   <a
                     href={`/${locale}/trends/${tag}`}
                     key={tag}
-                    className=" mr-0.5 rounded-lg border-2 border-solid border-slate-300 px-1 text-sm text-slate-700 hover:cursor-pointer hover:border-slate-700 hover:font-semibold"
+                    className="mr-0.5 rounded-lg border-2 border-solid border-slate-300 px-1 text-sm text-slate-700 hover:cursor-pointer hover:border-slate-700 hover:font-semibold"
                   >
                     {tag}
                   </a>
