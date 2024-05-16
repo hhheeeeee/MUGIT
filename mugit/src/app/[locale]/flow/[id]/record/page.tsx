@@ -193,7 +193,7 @@
 // }
 
 "use client";
-
+import { useAtom } from "jotai";
 import { SetStateAction, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
@@ -203,6 +203,8 @@ import RecordMessage from "./recordMessage";
 import DragnDrop from "./editor/components/source/DragnDrop.jsx";
 import { releaseFlowAtom } from "@/app/store/atoms";
 import { FlowType } from "@/app/types/flowtype";
+import { fileToEdit } from "@/app/store/atoms/editfile";
+
 const dummymessage = [
   {
     id: 1,
@@ -238,6 +240,7 @@ export default function RecordPage() {
   const [fileResponse, setFileResponse] = useState([]);
   const [recordResponse, setRecordResponse] = useState([]);
 
+  const [sendFile, setSendFile] = useAtom(fileToEdit);
   const params = useParams();
 
   const handleChangeMessage = (event: {
@@ -306,20 +309,35 @@ export default function RecordPage() {
     router.push(`/${locale}/profile/${userInfo.id}`);
   }
 
-  async function goEdit() {
+  const goEdit = async () => {
+    if (audioFiles.length === 0) {
+      console.log("편집할 파일이 없습니다");
+      return;
+    }
+
+    let audioFormData = new FormData();
+
+    audioFiles.forEach((f) => {
+      audioFormData.append("source", f.file);
+    });
+
+    const filePost = await fetch("https://mugit.site/files", {
+      method: "POST",
+      credentials: "include",
+      body: audioFormData,
+    }).then((response) => response.json());
+
+    setFileResponse(filePost);
+    setSendFile(filePost.list.map((f) => f.path));
+
+    console.log("sendFile:", sendFile);
     const audioFilesString = encodeURIComponent(
-      JSON.stringify(
-        audioFiles.map((file) => ({
-          name: file.name,
-          lastModified: file.lastModified,
-          type: file.type,
-          size: file.size,
-        }))
-      )
+      JSON.stringify(filePost.list.map((f) => f.path))
     );
+
     router.push(`editor?audioFiles=${audioFilesString}`);
     fetchUpdatedRecords();
-  }
+  };
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -331,9 +349,9 @@ export default function RecordPage() {
     console.log("audio-files: ", audioFiles);
     console.log("fileResponse: ", fileResponse);
     console.log("recordResponse: ", recordResponse);
-
+    console.log("sendFile:", sendFile);
     fetchRecords();
-  }, [params.id, audioFiles, fileResponse, recordResponse]);
+  }, [params.id, audioFiles, fileResponse, recordResponse, sendFile]);
 
   const setReleaseFlow = useSetAtom(releaseFlowAtom);
   const handleClickRelease = (id: string | string[]) => {

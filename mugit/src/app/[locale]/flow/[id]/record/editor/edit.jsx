@@ -1,3 +1,4 @@
+"use client";
 import React, {
   useCallback,
   useEffect,
@@ -16,7 +17,9 @@ import { useThemeSettings } from "./hooks";
 import EditorButtons from "./components/editorButtons/EditorButtons";
 import ModeSwitch from "./components/ModeSwitch";
 import * as Tone from "tone";
-
+import { useAtomValue, useAtom } from "jotai";
+import { fileToEdit } from "@/app/store/atoms/editfile";
+import { send } from "process";
 const Edit = ({ uploadedFiles }) => {
   const { theme, setEventEmitter, podcast, showAnnotations, setDialogBox } =
     useThemeSettings();
@@ -59,7 +62,12 @@ const Edit = ({ uploadedFiles }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [tracks, setTracks] = useState([]);
   const { ee, toneCtx, setUpChain, uploadRef } = state;
-
+  let sendFile = useAtomValue(fileToEdit);
+  console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
+  useEffect(() => {
+    console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
+  }, [sendFile]);
+  const [myMusicArray, setMyMusicArray] = useAtom(fileToEdit);
   const container = useCallback(
     (node) => {
       if (node !== null && toneCtx !== null) {
@@ -131,9 +139,7 @@ const Edit = ({ uploadedFiles }) => {
             })
         );
 
-        ee.on("audiosourceserror", (e) =>
-          alert(e.message + " " + "please only use type mp3")
-        );
+        ee.on("audiosourceserror", (e) => alert(e.message));
         ee.on("enableCut", (fact) =>
           dispatch({
             type: SETENABLECUT,
@@ -167,6 +173,7 @@ const Edit = ({ uploadedFiles }) => {
         ee.emit("newtrack", newTrack);
         setTracks((prevTracks) => [...prevTracks, newTrack]);
         addedFiles.add(file.name);
+        console.log("$$$$$$$$$$$$$$$sendFile : ", sendFile);
       }
     });
   }, [uploadedFiles, ee]);
@@ -234,11 +241,20 @@ const Edit = ({ uploadedFiles }) => {
     tracks.forEach((track, index) => {
       const { file, name } = track;
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const arrayBuffer = e.target.result;
-        const audioContext = new (window.AudioContext ||
-          window.webkitAudioContext)();
-        audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+      reader.onload = async (e) => {
+        try {
+          const arrayBuffer = e.target.result;
+
+          let audioContext;
+
+          try {
+            audioContext = new (window.AudioContext || window.AudioContext)();
+            console.log("AudioContext successfully initialized.");
+          } catch (e) {
+            console.error("Web Audio API is not supported in this browser", e);
+          }
+
+          const buffer = await audioContext.decodeAudioData(arrayBuffer);
           const offlineContext = new OfflineAudioContext(
             buffer.numberOfChannels,
             buffer.length,
@@ -248,11 +264,12 @@ const Edit = ({ uploadedFiles }) => {
           source.buffer = buffer;
           source.connect(offlineContext.destination);
           source.start(0);
-          offlineContext.startRendering().then((renderedBuffer) => {
-            const wavBlob = bufferToWave(renderedBuffer);
-            saveAs(wavBlob, `${name || "track"}_${index}.wav`);
-          });
-        });
+          const renderedBuffer = await offlineContext.startRendering();
+          const wavBlob = bufferToWave(renderedBuffer);
+          saveAs(wavBlob, `${name || "track"}_${index}.wav`);
+        } catch (error) {
+          console.error("Error decoding audio data:", error);
+        }
       };
       reader.readAsArrayBuffer(file);
     });
@@ -310,6 +327,45 @@ const Edit = ({ uploadedFiles }) => {
       pos += 4;
     }
   };
+
+  const getAudioFilesFromUrl = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const audioFilesParam = searchParams.get("audioFiles");
+    return audioFilesParam
+      ? JSON.parse(decodeURIComponent(audioFilesParam))
+      : [];
+  };
+
+  const parseURLs = (urls) => {
+    return urls.map((url, index) => ({
+      file: url,
+      name: `example${index + 1}`,
+    }));
+  };
+
+  useEffect(() => {
+    const audioFiles = getAudioFilesFromUrl();
+    const parsedURLs = parseURLs(audioFiles);
+    setMyMusicArray(parsedURLs);
+
+    parsedURLs.forEach((item) => {
+      ee.emit("newtrack", {
+        file: item.file,
+        name: item.name,
+        id: uuidv4(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    myMusicArray.map((item) => {
+      ee.emit("newtrack", {
+        file: item.file,
+        name: item.name,
+        id: uuidv4(),
+      });
+    });
+  }, []);
 
   return (
     <>

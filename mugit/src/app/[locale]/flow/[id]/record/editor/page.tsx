@@ -122,7 +122,7 @@
 // Editor.jsx
 "use client";
 import React, { useEffect, useState } from "react";
-import Edit from "./Edit"; // Edit 컴포넌트를 import합니다.
+import Edit from "./edit"; // Edit 컴포넌트를 import합니다.
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
 import LiveRecord from "./components/record/Liverecord";
@@ -136,31 +136,31 @@ export default function Editor() {
   const [audioFiles, setAudioFiles] = useState<File[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
-  useEffect(() => {
-    const audioFilesParam = searchParams.get("audioFiles");
-    if (audioFilesParam) {
-      try {
-        const parsedAudioFiles = JSON.parse(
-          decodeURIComponent(audioFilesParam)
-        );
-        const files = parsedAudioFiles.map(
-          (fileData: { name: string; data: string; type: string }) => {
-            const byteString = atob(fileData.data.split(",")[1]);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const blob = new Blob([ab], { type: fileData.type });
-            return new File([blob], fileData.name);
-          }
-        );
-        setAudioFiles(files);
-      } catch (error) {
-        console.error("Failed to parse audioFiles from URL", error);
-      }
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const audioFilesParam = searchParams.get("audioFiles");
+  //   if (audioFilesParam) {
+  //     try {
+  //       const parsedAudioFiles = JSON.parse(
+  //         decodeURIComponent(audioFilesParam)
+  //       );
+  //       const files = parsedAudioFiles.map(
+  //         (fileData: { name: string; data: string; type: string }) => {
+  //           const byteString = atob(fileData.data.split(",")[1]);
+  //           const ab = new ArrayBuffer(byteString.length);
+  //           const ia = new Uint8Array(ab);
+  //           for (let i = 0; i < byteString.length; i++) {
+  //             ia[i] = byteString.charCodeAt(i);
+  //           }
+  //           const blob = new Blob([ab], { type: fileData.type });
+  //           return new File([blob], fileData.name);
+  //         }
+  //       );
+  //       setAudioFiles(files);
+  //     } catch (error) {
+  //       console.error("Failed to parse audioFiles from URL", error);
+  //     }
+  //   }
+  // }, [searchParams]);
 
   const handleFileUpload = (files: File[]) => {
     setUploadedFiles(files);
