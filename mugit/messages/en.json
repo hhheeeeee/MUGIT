@@ -28,19 +28,10 @@
   "Support": {
     "title": "What is Mugit?"
   },
-  "SupportDescription": {
-    "Royalty": {
-      "title": "100% royalty free",
-      "value": "Use your sounds everywhere, they're cleared for commercial use"
-    },
-    "Edit": {
-      "title": "Edit your Music",
-      "value": "The World's most easiest Music Editor"
-    },
-    "Share": {
-      "title": "Share",
-      "value": "Share your Sounds with Other people"
-    }
+  "Feed": {
+    "feedtitle": "This is your feed",
+    "feedExp": "Follow your favorite artists on MUGIT and see every track they post right here.",
+    "feedExp1": "Hear the latest posts from the people you’re following:"
   },
   "Flow": {
     "newFlow": "New Flow",
@@ -70,7 +61,8 @@
   "Navbar": {
     "trends": "Trends",
     "profile": "Profile",
-    "support": "Support"
+    "support": "Support",
+    "feed": "Feed"
   },
   "Profile": {
     "followers": "Followers",

@@ -25,22 +25,10 @@
     "searchSound": "       원하는 Sound를 검색하기",
     "noResult": "검색 결과가 없습니다."
   },
-  "Support": {
-    "title": "Mugit이란?"
-  },
-  "SupportDescription": {
-    "Royalty": {
-      "title": "사용료 없이 사용 가능한 음악",
-      "value": "어디서나 사용가능한 음악! 상업적으로 사용할 수 있습니다"
-    },
-    "Edit": {
-      "title": "음악을 편집해보세요",
-      "value": "다른 사람의 Flow를 확장시킬 수 있습니다. "
-    },
-    "Share": {
-      "title": "공유",
-      "value": "다른 사람들과 Flow를 공유해보세요."
-    }
+  "Feed": {
+    "feedtitle": "여기는 피드입니다",
+    "feedExp": "MUGIT에서 좋아하는 아티스트를 팔로우하고 그들이 올리는 모든 트랙을 여기서 확인하세요.",
+    "feedExp1": "팔로우하는 사람들의 최신 게시물을 확인해보세요:"
   },
   "Flow": {
     "newFlow": "새로운 플로우 만들기",
@@ -70,7 +58,8 @@
   "Navbar": {
     "trends": "트렌드",
     "profile": "프로필",
-    "support": "도움말"
+    "support": "도움말",
+    "feed": "피드"
   },
   "Profile": {
     "followers": "팔로워",
