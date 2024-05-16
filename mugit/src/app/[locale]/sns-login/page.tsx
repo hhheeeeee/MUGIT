@@ -15,23 +15,23 @@ export default function Page() {
   const prevpath = useAtomValue(prevpathAtom);
 
   // functions
-  const connectHandler = function (e: any) {
-    console.log("connect : 연결됨", e);
-  };
-  const errorHandler = function (e: any) {
-    console.log("에러", e);
-  };
-  const openHandler = function (e: any) {
-    console.log("open : 연결", e);
-  };
-  const followHandler = function (e: any) {
-    const data = JSON.parse(e.data);
-    fireToast({
-      type: "정보",
-      title: data.message.type,
-      text: data.message.description,
-    });
-  };
+  // const connectHandler = function (e: any) {
+  //   console.log("connect : 연결됨", e);
+  // };
+  // const errorHandler = function (e: any) {
+  //   console.log("에러", e);
+  // };
+  // const openHandler = function (e: any) {
+  //   console.log("open : 연결", e);
+  // };
+  // const followHandler = function (e: any) {
+  //   const data = JSON.parse(e.data);
+  //   fireToast({
+  //     type: "정보",
+  //     title: data.message.type,
+  //     text: data.message.description,
+  //   });
+  // };
 
   useEffect(() => {
     const accessToken = window.location.hash.split("=")[1].split("&")[0];
@@ -55,19 +55,19 @@ export default function Page() {
             });
 
             if (prevpath) {
-              const SSE_CONNECT_API_PATH = "/sse/subscribe";
+              // const SSE_CONNECT_API_PATH = "/sse/subscribe";
 
-              const eventSource = new EventSource(
-                "https://mugit.site" + SSE_CONNECT_API_PATH,
-                {
-                  withCredentials: true,
-                }
-              );
+              // const eventSource = new EventSource(
+              //   "https://mugit.site" + SSE_CONNECT_API_PATH,
+              //   {
+              //     withCredentials: true,
+              //   }
+              // );
 
-              eventSource.addEventListener("connect", connectHandler);
-              eventSource.addEventListener("error", errorHandler);
-              eventSource.addEventListener("open", openHandler);
-              eventSource.addEventListener("follow", followHandler);
+              // eventSource.addEventListener("connect", connectHandler);
+              // eventSource.addEventListener("error", errorHandler);
+              // eventSource.addEventListener("open", openHandler);
+              // eventSource.addEventListener("follow", followHandler);
 
               location.href = prevpath;
             }
