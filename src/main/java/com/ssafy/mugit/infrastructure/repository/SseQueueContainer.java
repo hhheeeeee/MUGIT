@@ -1,6 +1,6 @@
 package com.ssafy.mugit.infrastructure.repository;
 
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

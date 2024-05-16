@@ -1,10 +1,8 @@
 package com.ssafy.mugit.sse.service;
 
-import com.ssafy.mugit.domain.exception.SseException;
-import com.ssafy.mugit.domain.exception.error.SseError;
-import com.ssafy.mugit.domain.message.dto.NotificationDto;
+import com.ssafy.mugit.global.dto.NotificationDto;
 import com.ssafy.mugit.domain.sse.service.SseService;
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainer;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import org.junit.jupiter.api.BeforeEach;

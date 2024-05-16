@@ -1,4 +1,4 @@
-package com.ssafy.mugit.infrastructure.dto;
+package com.ssafy.mugit.global.dto;
 
 import com.ssafy.mugit.domain.sse.service.SseEvent;
 import lombok.AllArgsConstructor;

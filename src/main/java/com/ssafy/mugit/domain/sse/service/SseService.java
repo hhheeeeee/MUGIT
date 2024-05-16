@@ -2,7 +2,7 @@ package com.ssafy.mugit.domain.sse.service;
 
 import com.ssafy.mugit.domain.exception.SseException;
 import com.ssafy.mugit.infrastructure.dto.ConnectionDto;
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainer;
 import com.ssafy.mugit.infrastructure.repository.SseQueueContainerRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +29,13 @@ public class SseService {
         this.sseQueueContainerRepository = sseQueueContainerRepository;
     }
 
-    public SseEmitter subscribe(long userId) throws IOException {
-        SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
+    public SseEmitter subscribe(Long userId) throws IOException {
 
         // SSE 연결이 만료 전이면 기존연결 완료하기
-        if (sseContainer != null && sseContainer.getSseEmitter() != null && sseContainer.getSseEmitter().getTimeout() != null)
-            sseContainer.getSseEmitter().complete();
+        if (sseQueueContainerRepository.existsById(userId)) {
+            SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
+            if (sseContainer.getSseEmitter() != null) sseContainer.getSseEmitter().complete();
+        }
 
         SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
         SseQueueContainer sseQueueContainer = sseQueueContainerRepository.save(userId, emitter);
@@ -68,6 +69,7 @@ public class SseService {
             }
             sseQueueContainer.getMessageQueue().offer(message);
         } catch (IOException e) {
+            sseQueueContainer.getMessageQueue().offer(message);
             throw new RuntimeException();
         }
     }
@@ -76,12 +78,17 @@ public class SseService {
         SseQueueContainer sseContainer = sseQueueContainerRepository.findById(userId);
 
         // 예외처리 : SSE Container를 찾지 못했을 때 오류 출력
-        if (sseContainer == null)
+        if (sseContainer == null) {
+            SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
+            SseQueueContainer sseQueueContainer = sseQueueContainerRepository.save(userId, emitter);
             throw new SseException(SSE_QUEUE_CONTAINER_NOT_FOUND);
+        }
 
             // 예외처리 2 : SSE를 찾지 못했을 때 Queue에 저장
-        else if (sseContainer.getSseEmitter() == null || sseContainer.getSseEmitter().getTimeout() == null || System.currentTimeMillis() - sseContainer.getLastEmitterCreateTime() > sseContainer.getSseEmitter().getTimeout())
+        else if (sseContainer.getSseEmitter() == null || sseContainer.getSseEmitter().getTimeout() == null) {
             sseContainer.getMessageQueue().offer(message);
+            log.info("SSE 연결 없음, 메시지 큐에 저장 완료");
+        }
 
             // 전송
         else send(userId, sseContainer, message);
@@ -103,8 +110,7 @@ public class SseService {
 
     private void addHandler(long userId, SseEmitter emitter) {
         emitter.onCompletion(() -> {
-            log.info("user{}'s emitter complete, left : {}", userId, sseQueueContainerRepository.size());
-            sseQueueContainerRepository.deleteEmitterById(userId);
+            log.info("user{}'s emitter complete", userId);
         });
         emitter.onTimeout(() -> {
             log.info("user{}'s emitter timeout", userId);

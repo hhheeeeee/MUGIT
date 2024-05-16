@@ -1,4 +1,4 @@
-package com.ssafy.mugit.domain.message.dto;
+package com.ssafy.mugit.global.dto;
 
 import com.ssafy.mugit.domain.message.NotificationType;
 import lombok.AllArgsConstructor;

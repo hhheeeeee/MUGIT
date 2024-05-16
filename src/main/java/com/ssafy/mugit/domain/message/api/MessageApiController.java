@@ -1,7 +1,7 @@
 package com.ssafy.mugit.domain.message.api;
 
 import com.ssafy.mugit.domain.message.service.RedisMessageService;
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import com.ssafy.mugit.presentation.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

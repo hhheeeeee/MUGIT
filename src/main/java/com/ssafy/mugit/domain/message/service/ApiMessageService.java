@@ -1,6 +1,6 @@
 package com.ssafy.mugit.domain.message.service;
 
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import com.ssafy.mugit.domain.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

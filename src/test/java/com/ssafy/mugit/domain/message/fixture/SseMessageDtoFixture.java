@@ -1,7 +1,7 @@
 package com.ssafy.mugit.domain.message.fixture;
 
-import com.ssafy.mugit.domain.message.dto.NotificationDto;
-import com.ssafy.mugit.infrastructure.dto.SseMessageDto;
+import com.ssafy.mugit.global.dto.NotificationDto;
+import com.ssafy.mugit.global.dto.SseMessageDto;
 import com.ssafy.mugit.domain.sse.service.SseEvent;
 import lombok.AllArgsConstructor;
 

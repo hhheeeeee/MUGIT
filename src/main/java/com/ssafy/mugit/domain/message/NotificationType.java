@@ -6,8 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum NotificationType {
-    FOLLOW("팔로우 메시지가 전송되었습니다."),
-    LIKE("좋아요를 눌렀습니다."),
-    FLOW_RELEASE("플로우가 릴리즈되었습니다.");
+    FOLLOW("follow"),
+    LIKE("like"),
+    FLOW_RELEASE("flow_release"),
+    REVIEW("review");
     private final String message;
 }
