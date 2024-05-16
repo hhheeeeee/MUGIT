@@ -54,21 +54,21 @@ export default function Page() {
               followingCount: String(Cookies.get("followings")),
             });
 
-            const SSE_CONNECT_API_PATH = "/sse/subscribe";
-
-            const eventSource = new EventSource(
-              "https://mugit.site" + SSE_CONNECT_API_PATH,
-              {
-                withCredentials: true,
-              }
-            );
-
-            eventSource.addEventListener("connect", connectHandler);
-            eventSource.addEventListener("error", errorHandler);
-            eventSource.addEventListener("open", openHandler);
-            eventSource.addEventListener("follow", followHandler);
-
             if (prevpath) {
+              const SSE_CONNECT_API_PATH = "/sse/subscribe";
+
+              const eventSource = new EventSource(
+                "https://mugit.site" + SSE_CONNECT_API_PATH,
+                {
+                  withCredentials: true,
+                }
+              );
+
+              eventSource.addEventListener("connect", connectHandler);
+              eventSource.addEventListener("error", errorHandler);
+              eventSource.addEventListener("open", openHandler);
+              eventSource.addEventListener("follow", followHandler);
+
               location.href = prevpath;
             }
             break;
