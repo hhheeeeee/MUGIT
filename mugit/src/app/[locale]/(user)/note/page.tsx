@@ -58,7 +58,7 @@ export default function NotePage() {
       }).then((response) => response.json()),
     ]);
 
-    router.push(`${locale}/profile/${userInfo.id}`);
+    router.push(`/${locale}/profile/${userInfo.id}`);
 
     fetch("https://mugit.site/api/flows/note", {
       method: "POST",
