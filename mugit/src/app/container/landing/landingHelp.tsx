@@ -3,15 +3,18 @@ import AOS from "aos";
 import { useEffect } from "react";
 import "aos/dist/aos.css";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 import Image from "next/image";
-import useRefFocusEffect from "@/app/hooks/useRefFocusEffect";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import GoogleButton from "../google/googlebutton";
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
 
 export default function LandingHelp() {
+  const locale = useLocale();
+  const router = useRouter();
   useEffect(() => {
     AOS.init();
   }, []);
@@ -33,6 +36,7 @@ export default function LandingHelp() {
           <button
             className="mr-3 w-[22%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
           text-white transition duration-300 hover:bg-[#0831d6]"
+            onClick={() => router.push(`/${locale}/trends`)}
           >
             <span className="mx-1 text-base font-semibold">
               Trends 보러가기
@@ -145,16 +149,17 @@ export default function LandingHelp() {
       </div>
 
       <div className="flex min-h-[40%] w-full flex-col items-center justify-center  bg-pointblack">
-        <p className="text-2xl text-white" data-aos="fade-up">
+        <p className="mb-6 text-2xl text-white" data-aos="fade-up">
           Thank you for listening. Now Join in!
         </p>
-        <button
+        <GoogleButton />
+        {/* <button
           data-aos="fade-up"
-          className="mt-6 w-[15%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
+          className="w-[15%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
           text-white transition duration-300 hover:bg-[#0831d6]"
         >
           <span className="mx-1 text-base font-semibold">Create Account</span>
-        </button>
+        </button> */}
       </div>
     </>
   );
