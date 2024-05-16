@@ -1,7 +1,23 @@
 {
   "Landing": {
-    "title": "Make your own Flow"
+    "title": "Make Your Own Music Flow",
+    "trends": "Trends",
+    "trendsExp": "Explore the most popular music from around the world.",
+    "trendsExp1": "By listening to a variety of music, you can discover the perfect music that suits your taste.",
+    "gotoTrend": "Explore Trends",
+    "note": "Note",
+    "noteExp": "Create your own music graph.",
+    "noteExp1": "You can create a new Flow starting from the Note.",
+    "noteExp2": "And you can add your own music sources to develop the original Note.",
+    "record": "Record",
+    "recordExp": "A single Flow can contain multiple Records.",
+    "recordExp1": "For example, you can add a guitar sound source and then add a drum sound source.",
+    "recordExp2": "You can record messages whenever changes are made.",
+    "release": "Release",
+    "releaseExp": "The completed Flow, built up from multiple Records, can be Released and publicly shared.",
+    "join": "Thank you for listening. Now Join in!"
   },
+
   "Trends": {
     "search": "Search",
     "browseGenres": "Browse Genres",
