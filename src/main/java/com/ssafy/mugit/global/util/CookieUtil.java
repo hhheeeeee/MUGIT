@@ -25,7 +25,7 @@ public class CookieUtil {
 
     public String getSessionIdInHeader(HttpServletRequest request) {
         String jSessionId = request.getHeader("Authorization");
-        if(jSessionId == null) {
+        if (jSessionId == null) {
             throw new CustomException(FileError.SESSIONID_NOT_EXISTED);
         }
         return jSessionId;

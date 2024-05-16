@@ -25,7 +25,7 @@ public class FileDeleteService {
         for (String path : getNotExistedList(list, getFilePath())) {
             log.info("[Not Existed File] {}", path);
             File file = new File(path);
-            if(!file.delete()) {
+            if (!file.delete()) {
                 log.error("[File Delete Error] 삭제 실패 : {}", path);
             }
         }
@@ -34,6 +34,7 @@ public class FileDeleteService {
     private List<String> getFilePath() {
         try (Stream<Path> stream = Files.walk(Paths.get(UPLOAD_PATH))) {
             return stream.filter(Files::isRegularFile)
+                    .filter(path -> !path.startsWith(Paths.get(UPLOAD_PATH + "default")))
                     .map(Path::toAbsolutePath)
                     .map(Path::toString)
                     .collect(Collectors.toList());
