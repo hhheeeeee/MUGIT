@@ -61,6 +61,7 @@ export default function Page() {
         followerCount: String(data.followers),
         followingCount: String(data.followings),
       });
+
       const SSE_CONNECT_API_PATH = "/sse/subscribe";
 
       const eventSource = new EventSource(
