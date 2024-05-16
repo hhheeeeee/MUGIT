@@ -28,7 +28,7 @@ export default function LandingHelp() {
   return (
     <>
       <div className="relative flex min-h-[100%] w-full items-center justify-evenly bg-pointblack pt-10">
-        <div className="flex w-[80%] items-center justify-center">
+        <div className="flex w-[80%] items-center justify-center sm:flex-col md:flex-col lg:flex-row">
           <div
             data-aos="fade-right"
             className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
@@ -63,7 +63,7 @@ export default function LandingHelp() {
       </div>
 
       <div className="relative flex min-h-[100%] w-full items-center justify-evenly bg-pointblack pt-10">
-        <div className="flex w-[80%] items-center justify-center">
+        <div className="flex w-[80%] items-center justify-center sm:flex-col md:flex-col lg:flex-row">
           <div
             data-aos="fade-right"
             className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
@@ -89,7 +89,7 @@ export default function LandingHelp() {
       </div>
 
       <div className="relative flex min-h-[100%] w-full items-center justify-evenly bg-pointblack pt-10">
-        <div className="flex w-[80%] items-center justify-center">
+        <div className="flex w-[80%] items-center justify-center sm:flex-col md:flex-col lg:flex-row">
           <div
             data-aos="fade-right"
             className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
@@ -115,7 +115,7 @@ export default function LandingHelp() {
       </div>
 
       <div className="relative flex min-h-[100%] w-full items-center justify-evenly bg-pointblack pt-10">
-        <div className="flex w-[80%] items-center justify-center">
+        <div className="flex w-[80%] items-center justify-center ">
           <div
             data-aos="fade-right"
             className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
@@ -144,8 +144,8 @@ export default function LandingHelp() {
         </p>
         {user.isLogined == "true" ? (
           <button
-            className="mr-3 w-[10%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
-     text-white transition duration-300 hover:bg-[#0831d6]"
+            className="mr-3 w-[10%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] text-white 
+     transition duration-300 hover:bg-[#0831d6]"
             onClick={() => router.push(`/${locale}/trends`)}
           >
             <span className="mx-1 text-base font-semibold">

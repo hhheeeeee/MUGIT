@@ -24,15 +24,15 @@ export default function IndexPage({
       bg-pointblack"
       >
         <div
-          className="flex items-center justify-between bg-pointblack text-[14rem]
-    font-extrabold italic text-pointyellow"
+          className="flex items-center  justify-between bg-pointblack text-[5rem]
+    font-extrabold italic text-pointyellow sm:text-[5rem] md:text-[10rem] lg:text-[14rem]"
         >
           <TextAnimation inputText="MUGIT" />
         </div>
 
         <div className="w-full items-center justify-between bg-pointblack">
           <Line />
-          <p className="mt-5 text-center text-[2rem] font-bold text-pointyellow">
+          <p className="mt-5 text-center font-bold text-pointyellow md:text-[1rem] lg:text-[2rem]">
             {t("title")}
           </p>
         </div>
