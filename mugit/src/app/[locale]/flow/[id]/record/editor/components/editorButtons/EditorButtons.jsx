@@ -206,6 +206,17 @@ const EditorButtons = ({
         />
       ),
     },
+    {
+      name: "downloadTracks",
+      icon: (
+        <DownloadDoneRounded
+          onClick={() => {
+            const event = { target: { name: "downloadTracks" } };
+            handleClick(event);
+          }}
+        />
+      ),
+    },
   ];
 
   return (
