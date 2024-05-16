@@ -106,7 +106,7 @@ export default function Page() {
         onChange={(event) => setPk(event.target.value)}
       />
       <button onClick={onSubmit}>/users/mocks/login?pk= 로 요청임</button>
-      <hr />
+      <br />
       <button onClick={logout}>로그아웃</button>
     </div>
   );

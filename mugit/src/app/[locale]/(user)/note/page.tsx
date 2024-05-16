@@ -43,6 +43,7 @@ export default function NotePage() {
     imageFormData.append("image", imagefile);
 
     let audioFormData = new FormData();
+    console.log("file", file);
     audioFormData.append("source", file);
 
     const [userPic, audioFile] = await Promise.all([
@@ -57,6 +58,8 @@ export default function NotePage() {
         body: audioFormData,
       }).then((response) => response.json()),
     ]);
+
+    console.log("audioFile", audioFile);
 
     router.push(`/${locale}/profile/${userInfo.id}`);
 

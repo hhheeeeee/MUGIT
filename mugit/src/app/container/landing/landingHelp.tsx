@@ -12,103 +12,149 @@ const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
 });
 
 export default function LandingHelp() {
-  const scrollHandler = () => {
-    window.scrollTo({
-      top: window.innerHeight * 2,
-      behavior: "smooth",
-    });
-  };
-
-  const examplefetch = () => {
-    scrollHandler();
-  };
-
-  const { elementRef } = useRefFocusEffect<HTMLDivElement>(examplefetch, []);
-
   useEffect(() => {
     AOS.init();
   }, []);
 
   return (
     <>
-      <div className="relative flex min-h-[100%] w-full flex-col items-center bg-pointblack pt-10">
-        {/* <div className="relative flex w-full flex-col items-center">
-          <div className="z-4 flex w-full items-center justify-around gap-4">
-            <Image src="/flow.gif" alt="note-flow" width={500} height={500} />
-            <div className=" flex w-[45%] flex-col justify-around">
-              <p className="text-bold text-6xl italic text-gray-100">Note</p>
-              <span className="text-bold mt-4  text-3xl text-gray-100">
-                Note : Note에 대한 설명
-              </span>
-
-              <WavesurferComp
-                musicname="note"
-                musicPath="/sound/note.mp3"
-                type="?"
-              />
-            </div>
-          </div>
-        </div> */}
-      </div>
-      <div
-        ref={elementRef}
-        className="h-4 border-2 border-solid border-pointblack bg-pointblack"
-      >
-        {" "}
-      </div>
-      <div className="flex  min-h-[100%] w-full bg-pointblack">
-        {/* <div
-          className=" flex w-[30%] flex-col items-center justify-center"
+      <div className="relative flex min-h-[100%] w-full items-center justify-evenly bg-pointblack pt-10">
+        <div
           data-aos="fade-right"
-          data-aos-offset="500"
+          data-aos-offset="300"
           data-aos-duration="500"
+          className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
+        >
+          <p className="pb-4 text-4xl font-bold">Trends</p>
+          <p className="pb-4 text-2xl">
+            전 세계에서 지금 가장 인기 있는 음악들을 둘러볼 수 있다. 음악들을
+            둘러보면서 자신의 취향에 맞는 음악을 digging할 수 있다.
+          </p>
+          <button
+            className="mr-3 w-[22%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
+          text-white transition duration-300 hover:bg-[#0831d6]"
+          >
+            <span className="mx-1 text-base font-semibold">
+              Trends 보러가기
+            </span>
+          </button>
+        </div>
+        <div
+          data-aos="fade-left"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] justify-center "
         >
           <Image
-            src="/blueVinyl.png"
-            alt="note-flow"
             width={600}
-            height={600}
+            height={200}
+            alt="Trend"
+            priority
+            src="/trend.png"
           />
-          <p className="text-5xl font-bold text-gray-100 ">Flow</p>
-          <p className="text-2xl font-bold text-gray-100 ">Flow에 대한 설명</p>
         </div>
-        <div className="flex w-[70%] flex-col items-center justify-center">
-          {[1, 2, 3].map((item) => {
-            return (
-              <>
-                <div
-                  key={item}
-                  className="my-6 flex w-[100%] items-center justify-center gap-6 "
-                  data-aos="fade-left"
-                  data-aos-offset="100"
-                  data-aos-duration="500"
-                >
-                  <p className="text-2xl text-gray-100">record</p>
-                  <div className="w-[60%]">
-                    <WavesurferComp
-                      musicname="note"
-                      musicPath="/sound/note.mp3"
-                      type="?"
-                    />
-                  </div>
-                </div>
-                {item < 3 && (
-                  <p
-                    className="text-2xl text-white"
-                    data-aos="fade-left"
-                    data-aos-offset="100"
-                    data-aos-duration="500"
-                  >
-                    +
-                  </p>
-                )}
-              </>
-            );
-          })}
-        </div> */}
       </div>
-      <div className="min-h-[90%] w-full bg-blue-100">
-        여기 설명 들어갈 거임
+
+      <div className="flex min-h-[100%] w-full items-center justify-center  bg-pointblack">
+        <div
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
+        >
+          <p className="pb-4 text-4xl font-bold">Note</p>
+          <p className="pb-4 text-2xl">
+            나만의 음악 그래프의 시작점을 만들 수 있다. 시작점인 Note에서 새로운
+            Flow를 생성한 뒤, 나만의 소스를 추가하여 원래 Note를 발전시킬 수
+            있다.
+          </p>
+        </div>
+        <div
+          data-aos="fade-left"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] justify-center "
+        >
+          <Image
+            width={600}
+            height={200}
+            alt="Trend"
+            priority
+            src="/note.png"
+          />
+        </div>
+      </div>
+
+      <div className="flex min-h-[90%] w-full items-center justify-center bg-pointblack">
+        <div
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] justify-center "
+        >
+          <Image
+            width={600}
+            height={200}
+            alt="Trend"
+            priority
+            src="/record.png"
+          />
+        </div>
+        <div
+          data-aos="fade-left"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] flex-col justify-center  py-10 pr-20 text-white"
+        >
+          <p className="pb-4 text-right text-4xl font-bold">Record</p>
+          <p className="pb-4 text-right text-2xl">
+            하나의 Flow 안에는 여러 개의 Record가 있다. <br></br>예를 들어, 기타
+            소스를 추가하고 그 뒤에 드럼 소스도 추가할 수 있다.
+            <br></br>변경 사항이 있을 때마다 메시지를 기록할 수 있다.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex min-h-[90%] w-full items-center justify-center  bg-pointblack">
+        <div
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] flex-col justify-center  p-10 text-white"
+        >
+          <p className="pb-4 text-4xl font-bold">Release</p>
+          <p className="pb-4 text-2xl">
+            여러개의 레코드가 쌓여 내가 만든 Flow가 완성되었다면 Release하여
+            전체 공개로 할 수 있다.
+          </p>
+        </div>
+        <div
+          data-aos="fade-left"
+          data-aos-offset="300"
+          data-aos-duration="500"
+          className="flex h-full w-[50%] justify-center "
+        >
+          <Image
+            width={600}
+            height={200}
+            alt="Release"
+            priority
+            src="/release.png"
+          />
+        </div>
+      </div>
+
+      <div className="flex min-h-[40%] w-full flex-col items-center justify-center  bg-pointblack">
+        <p className="text-2xl text-white" data-aos="fade-up">
+          Thank you for listening. Now Join in!
+        </p>
+        <button
+          data-aos="fade-up"
+          className="mt-6 w-[15%] self-center rounded border-2 border-pointblue bg-pointblue px-2 py-[4px] 
+          text-white transition duration-300 hover:bg-[#0831d6]"
+        >
+          <span className="mx-1 text-base font-semibold">Create Account</span>
+        </button>
       </div>
     </>
   );
