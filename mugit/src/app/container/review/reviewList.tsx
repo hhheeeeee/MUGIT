@@ -83,7 +83,7 @@ export default function ReviewList() {
     setReviews(newReviews);
   };
 
-  const handlePostReview = () => {
+  const handlePostReview = async () => {
     if (userInfo.id == "") {
       fireToast({
         type: "경고",
@@ -100,16 +100,15 @@ export default function ReviewList() {
       setTimeline("00:00");
       return;
     }
-    console.log(content);
     if (content.length === 0) {
-      fireToast({
-        type: "경고",
-        title: "한 글자 이상을 적어주세요",
-      });
+      // fireToast({
+      //   type: "경고",
+      //   title: "한 글자 이상을 적어주세요",
+      // });
       return;
     }
     addReviewOptimistically();
-    postFlowReview(params.id, { content: content, timeline: timeline });
+    await postFlowReview(params.id, { content: content, timeline: timeline });
     setTimeline("00:00");
     setContent("");
   };
@@ -125,6 +124,11 @@ export default function ReviewList() {
     deleteFlowReview(reviewID);
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      handlePostReview();
+    }
+  };
   return (
     <div>
       <div className="my-5 flex justify-evenly">
@@ -148,6 +152,7 @@ export default function ReviewList() {
             className="mr-2 w-full rounded-full border-4 border-gray-200 pl-5 focus:outline-none"
             value={content}
             onChange={(event) => setContent(event.target.value)}
+            onKeyUp={handleKeyUp}
           />
           <button onClick={handlePostReview}>
             <svg
