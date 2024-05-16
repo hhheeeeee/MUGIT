@@ -30,7 +30,7 @@ export default function PlayHover({ item, css }: PlayHoverPropsType) {
         tailwindCSS={
           css
             ? css
-            : "absolute top-[30%] left-[35%] hidden group-hover:block z-10 cursor-pointer"
+            : "absolute top-[40%] left-[40%] hidden group-hover:block z-10 cursor-pointer"
         }
       />
     </div>
