@@ -17,6 +17,7 @@ export default function Notification() {
       description: "",
     },
   ]);
+  const [notiRemain, setNotiRemain] = useState(false);
 
   const getNotifications = () => {
     fetch(apiUrl + "/users/notifications", {
@@ -26,6 +27,7 @@ export default function Notification() {
       .then((data) => {
         if (data.list) {
           setNotifications(data.list);
+          setNotiRemain(true);
         } else {
           setNotifications([
             {
@@ -37,6 +39,7 @@ export default function Notification() {
               description: "",
             },
           ]);
+          setNotiRemain(false);
         }
       });
   };
@@ -64,6 +67,8 @@ export default function Notification() {
   };
 
   useEffect(() => {
+    getNotifications();
+
     const connectHandler = function (e: any) {
       console.log("connect : 연결됨", e);
     };
@@ -74,6 +79,7 @@ export default function Notification() {
       console.log("open : 연결", e);
     };
     const notiHandler = function (e: any) {
+      setNotiRemain(true);
       const data = JSON.parse(e.data);
       fireToast({
         type: "정보",
@@ -110,15 +116,15 @@ export default function Notification() {
           >
             <svg
               viewBox="0 0 24 24"
-              fill="lightgrey"
+              fill={notiRemain ? "#F1F609" : "lightgrey"}
               height="1.3em"
               width="1.3em"
             >
               <path d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 012-2 2 2 0 012 2v.29c2.97.88 5 3.61 5 6.71v6l2 2m-7 2a2 2 0 01-2 2 2 2 0 01-2-2" />
             </svg>
           </Popover.Button>
-          <Popover.Panel className="absolute right-0 top-[100%] z-10">
-            <div className="h-60 w-60 overflow-auto rounded-lg bg-white p-3">
+          <Popover.Panel className="absolute right-0 top-[120%] z-10">
+            <div className="h-64 w-56 overflow-auto rounded-lg border border-solid border-slate-500 bg-white p-3">
               <div className="flex justify-between border-b-2 border-solid border-slate-500 text-xl">
                 <h1 className="font-bold">{t("notice")}</h1>
                 <p
