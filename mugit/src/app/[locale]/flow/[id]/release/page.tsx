@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useInput } from "@/app/hooks/useInput";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import SelectTags from "@/app/components/selectTags";
-import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
 const dummymessage = [
   {
     id: 1,
@@ -38,6 +38,8 @@ export default function NotePage() {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://mugit.site/files/default/flow.png"
   );
+  const locale = useLocale();
+  const router = useRouter();
 
   const [records, setRecords] = useState({ list: dummymessage });
   const [tags, setTags] = useState<string[]>([]);
@@ -74,7 +76,7 @@ export default function NotePage() {
   return (
     <main className="relative flex min-h-[90%] w-full flex-col px-52 py-10">
       <h1 className="relative border-b-2 border-solid border-gray-300 pl-5 text-5xl font-bold italic">
-        Release Note
+        Release Flow
       </h1>
       <Description target="release" />
 
@@ -113,7 +115,7 @@ export default function NotePage() {
           <textarea
             value={description}
             onChange={handleChangeDescription}
-            placeholder={t("descriptionPlaceholder")}
+            placeholder={"Flow에 대한 설명을 적어주세요"}
             className="h-52 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 p-4"
           />
 
@@ -121,7 +123,10 @@ export default function NotePage() {
             <button className="rounded-lg border-2 border-solid bg-gray-100 px-10 py-3 text-gray-600">
               {t("cancel")}
             </button>
-            <button className="rounded-lg bg-pointblue px-10 py-3 text-white">
+            <button
+              className="rounded-lg bg-pointblue px-10 py-3 text-white"
+              onClick={() => router.push(`/${locale}/flow/${params.id}`)}
+            >
               {t("save")}
             </button>
           </div>

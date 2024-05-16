@@ -234,14 +234,12 @@ export default function RecordPage() {
   const t = useTranslations("Form");
   const [message, setMessage] = useState("");
   const [records, setRecords] = useState({});
-  const [audioFiles, setAudioFiles] = useState<File[]>([]);
+  const [audioFiles, setAudioFiles] = useState([]);
   const [fileResponse, setFileResponse] = useState([]);
   const [recordResponse, setRecordResponse] = useState([]);
 
   const params = useParams();
-  const handleUploadFromDragnDrop = (file: File) => {
-    setAudioFiles((prevFiles) => [...prevFiles, file]);
-  };
+
   const handleChangeMessage = (event: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -254,9 +252,11 @@ export default function RecordPage() {
       return;
     }
 
-    const audioFormData = new FormData();
-    audioFiles.forEach((file) => audioFormData.append("source", file));
+    let audioFormData = new FormData();
 
+    audioFiles.forEach((f) => {
+      audioFormData.append("source", f.file);
+    });
     const filePost = await fetch("https://mugit.site/files", {
       method: "POST",
       credentials: "include",
