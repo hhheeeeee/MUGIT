@@ -97,7 +97,7 @@ export default function Editor() {
                     />
                   </Tab.Panel>
                   <Tab.Panel>
-                    <LiveRecord />
+                    <LiveRecord onFileUpload={handleFileUpload} />
                   </Tab.Panel>
                   <Tab.Panel>
                     <main className="flex flex-col justify-center bg-gray-800 p-4 text-white">
@@ -109,9 +109,6 @@ export default function Editor() {
             </div>
           </div>
         </div>
-        <button className="m-10 mb-[20%] h-12 w-[15%] rounded-full bg-pointyellow text-3xl font-bold italic text-black">
-          Submit
-        </button>
       </div>
     </div>
   );

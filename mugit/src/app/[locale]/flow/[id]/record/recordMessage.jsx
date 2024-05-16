@@ -19,7 +19,9 @@ const RecordMessage = ({ records }) => {
                 <IconRecord />
                 <div>
                   <p className="mb-1"> {item.message}</p>
-                  <p className="te text-xs text-gray-500">{item.data}</p>
+                  <p className="te text-xs text-gray-500">
+                    {item.sources ? item.sources.length : 0} tracks
+                  </p>
                 </div>
               </div>
             </div>

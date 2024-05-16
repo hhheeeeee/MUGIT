@@ -9,29 +9,12 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import SelectTags from "@/app/components/selectTags";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
-const dummymessage = [
-  {
-    id: 1,
-    title: "Added band session recordings",
-    data: "2024-02-25",
-  },
-  {
-    id: 2,
-    title: "Added Chorus",
-    data: "2024-03-24",
-  },
-  {
-    id: 3,
-    title: "Added Keyboard Session",
-    data: "2024-04-11",
-  },
-];
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
 
-export default function NotePage() {
+export default function ReleasePage() {
   const t = useTranslations("Form");
   const [name, handleChangeName] = useInput("");
   const [description, handleChangeDescription] = useInput("");
@@ -41,10 +24,12 @@ export default function NotePage() {
   const locale = useLocale();
   const router = useRouter();
 
-  const [records, setRecords] = useState({ list: dummymessage });
+  const [records, setRecords] = useState({});
   const [tags, setTags] = useState<string[]>([]);
   const [imagefile, setImageFile] = useState<any>(null);
   const params = useParams();
+  const [flowFile, setFlowFile] = useState(null);
+  const [recordFiles, setRecordFiles] = useState([]);
 
   const getRecords = async (id: string | string[]) => {
     try {
@@ -72,6 +57,71 @@ export default function NotePage() {
       );
     }
   }, [params.id]);
+
+  // useEffect(() => {
+  //   if (params.id) {
+  //     getRecords(params.id).then((fetchedRecords) =>
+  //       setRecords(fetchedRecords)
+  //     );
+  //   }
+
+  //   if (records.list) {
+  //     setRecordFiles(
+  //       records.list.map((file) => file.sources.map((src) => src.path))
+  //     );
+  //     console.log(
+  //       "records&&&&&&&&&&&&&&&&:",
+  //       records.list.map((file) => file.sources.map((src) => src.path))
+  //     );
+  //   }
+  // }, [params.id]);
+
+  // // 처음에 완성된 플로우 파일 가져오기
+  // useEffect(() => {
+  //   setFlowFile(
+  //     "https://mugit.site/files/efc94627-899d-4765-a10f-fda58598b1de.mp3"
+  //   );
+  // }, []);
+
+  const releaseFlow = async () => {
+    let imageFormData = new FormData();
+    imageFormData.append("image", imagefile);
+
+    let audioFormData = new FormData();
+    // audioFormData.append("source", flowFile);
+
+    const [flowPic, flowAudio] = await Promise.all([
+      fetch("https://mugit.site/files", {
+        method: "POST",
+        credentials: "include",
+        body: imageFormData,
+      }).then((response) => response.json()),
+      fetch("https://mugit.site/files", {
+        method: "POST",
+        credentials: "include",
+        body: audioFormData,
+      }).then((response) => response.json()),
+    ]);
+
+    await fetch(`https://mugit.site/api/flows/${params.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        title: name,
+        message: description,
+        authority: "PUBLIC",
+        files: [flowPic.list[0], flowAudio.list[0]],
+        hashtags: tags,
+      }),
+    }).then((res) => {
+      console.log(res);
+    });
+
+    router.push(`/${locale}/flow/${params.id}`);
+  };
 
   return (
     <main className="relative flex min-h-[90%] w-full flex-col px-52 py-10">
@@ -125,7 +175,7 @@ export default function NotePage() {
             </button>
             <button
               className="rounded-lg bg-pointblue px-10 py-3 text-white"
-              onClick={() => router.push(`/${locale}/flow/${params.id}`)}
+              onClick={releaseFlow}
             >
               {t("save")}
             </button>

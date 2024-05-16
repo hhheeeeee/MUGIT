@@ -20,9 +20,12 @@ import * as Tone from "tone";
 import { useAtomValue, useAtom } from "jotai";
 import { fileToEdit } from "@/app/store/atoms/editfile";
 import { send } from "process";
+import { useParams, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 
 // Edit 컴포넌트 정의
 const Edit = ({ uploadedFiles }) => {
+  const router = useRouter();
   // 테마 설정을 위한 커스텀 훅 사용
   const { theme, setEventEmitter, podcast, showAnnotations, setDialogBox } =
     useThemeSettings();
@@ -70,7 +73,8 @@ const Edit = ({ uploadedFiles }) => {
   const { ee, toneCtx, setUpChain, uploadRef } = state;
   const sendFile = useAtomValue(fileToEdit);
   const [myMusicArray, setMyMusicArray] = useAtom(fileToEdit);
-
+  const locale = useLocale();
+  const params = useParams();
   // 오디오 편집기 초기화
   const container = useCallback(
     (node) => {
@@ -367,6 +371,12 @@ const Edit = ({ uploadedFiles }) => {
     }
   }, [uploadedFiles]);
 
+  const submit = () => {
+    console.log("클릭했음");
+    router.push(`/${locale}/flow/${params.id}/record`);
+    ee.emit("startaudiorendering", "wav");
+    handleDownloadTracks();
+  };
   // JSX 반환
   return (
     <>
@@ -453,6 +463,12 @@ const Edit = ({ uploadedFiles }) => {
             />
           </Box>
         </Box>
+        <button
+          className="m-10 mb-[20%] h-12 w-[15%] rounded-full bg-pointyellow text-3xl font-bold italic text-black"
+          onClick={submit}
+        >
+          Submit
+        </button>
         <CustomAudioBar bottom={!state.allbuttons ? 0 : -100} ee={ee} />
       </Box>
       <style jsx>{`
