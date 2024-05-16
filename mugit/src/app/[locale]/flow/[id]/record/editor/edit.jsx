@@ -1,5 +1,10 @@
-// "use client";
-// import React, { useCallback, useEffect, useReducer, useRef } from "react";
+// import React, {
+//   useCallback,
+//   useEffect,
+//   useReducer,
+//   useRef,
+//   useState,
+// } from "react";
 // import ReactStudio from "react-studio-js";
 // import EventEmitter from "event-emitter";
 // import { saveAs } from "file-saver";
@@ -52,6 +57,7 @@
 //   }
 
 //   const [state, dispatch] = useReducer(reducer, initialState);
+//   const [tracks, setTracks] = useState([]);
 //   const { ee, toneCtx, setUpChain, uploadRef } = state;
 
 //   const container = useCallback(
@@ -153,11 +159,13 @@
 //     const addedFiles = new Set();
 //     uploadedFiles.forEach((file) => {
 //       if (!addedFiles.has(file.name)) {
-//         ee.emit("newtrack", {
+//         const newTrack = {
 //           file: file,
 //           name: file.name,
 //           id: uuidv4(),
-//         });
+//         };
+//         ee.emit("newtrack", newTrack);
+//         setTracks((prevTracks) => [...prevTracks, newTrack]);
 //         addedFiles.add(file.name);
 //       }
 //     });
@@ -168,16 +176,18 @@
 //     if (!file) {
 //       return;
 //     }
-//     ee.emit("newtrack", {
+//     const newTrack = {
 //       file: file,
 //       name: file.name,
 //       id: uuidv4(),
-//     });
+//     };
+//     ee.emit("newtrack", newTrack);
+//     setTracks((prevTracks) => [...prevTracks, newTrack]);
 //     uploadRef.current.value = "";
 //   }
 
 //   function handleClick(event) {
-//     const { name, trackInfo } = event.target;
+//     const { name } = event.target;
 
 //     switch (name) {
 //       case "play":
@@ -219,17 +229,88 @@
 //         break;
 //     }
 //   }
+
 //   const handleDownloadTracks = () => {
-//     const tracks = ee.emit("getalltracks");
 //     tracks.forEach((track, index) => {
-//       ee.emit("startaudiorendering", {
-//         format: "wav",
-//         track: track,
-//         callback: (blob) =>
-//           saveAs(blob, `${track.name || "track"}_${index}.wav`),
-//       });
+//       const { file, name } = track;
+//       const reader = new FileReader();
+//       reader.onload = (e) => {
+//         const arrayBuffer = e.target.result;
+//         const audioContext = new (window.AudioContext ||
+//           window.webkitAudioContext)();
+//         audioContext.decodeAudioData(arrayBuffer, (buffer) => {
+//           const offlineContext = new OfflineAudioContext(
+//             buffer.numberOfChannels,
+//             buffer.length,
+//             buffer.sampleRate
+//           );
+//           const source = offlineContext.createBufferSource();
+//           source.buffer = buffer;
+//           source.connect(offlineContext.destination);
+//           source.start(0);
+//           offlineContext.startRendering().then((renderedBuffer) => {
+//             const wavBlob = bufferToWave(renderedBuffer);
+//             saveAs(wavBlob, `${name || "track"}_${index}.wav`);
+//           });
+//         });
+//       };
+//       reader.readAsArrayBuffer(file);
 //     });
 //   };
+
+//   const bufferToWave = (buffer) => {
+//     let numOfChan = buffer.numberOfChannels,
+//       length = buffer.length * numOfChan * 2 + 44,
+//       bufferArray = new ArrayBuffer(length),
+//       view = new DataView(bufferArray),
+//       channels = [],
+//       i,
+//       sample,
+//       offset = 0,
+//       pos = 0;
+
+//     setUint32(0x46464952); // "RIFF"
+//     setUint32(length - 8); // file length - 8
+//     setUint32(0x45564157); // "WAVE"
+
+//     setUint32(0x20746d66); // "fmt " chunk
+//     setUint32(16); // length = 16
+//     setUint16(1); // PCM (uncompressed)
+//     setUint16(numOfChan);
+//     setUint32(buffer.sampleRate);
+//     setUint32(buffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
+//     setUint16(numOfChan * 2); // block-align
+//     setUint16(16); // 16-bit (hardcoded in this demo)
+
+//     setUint32(0x61746164); // "data" - chunk
+//     setUint32(length - pos - 4); // chunk length
+
+//     for (i = 0; i < buffer.numberOfChannels; i++)
+//       channels.push(buffer.getChannelData(i));
+
+//     while (pos < length) {
+//       for (i = 0; i < numOfChan; i++) {
+//         sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+//         sample = (0.5 + sample * 0.5) * 65535.0; // scale to 16-bit unsigned int
+//         view.setInt16(pos, sample, true); // write 16-bit sample
+//         pos += 2;
+//       }
+//       offset++; // next source sample
+//     }
+
+//     return new Blob([bufferArray], { type: "audio/wav" });
+
+//     function setUint16(data) {
+//       view.setUint16(pos, data, true);
+//       pos += 2;
+//     }
+
+//     function setUint32(data) {
+//       view.setUint32(pos, data, true);
+//       pos += 4;
+//     }
+//   };
+
 //   return (
 //     <>
 //       <Box
@@ -347,6 +428,7 @@
 // };
 
 // export default Edit;
+
 import React, {
   useCallback,
   useEffect,
@@ -365,11 +447,13 @@ import { useThemeSettings } from "./hooks";
 import EditorButtons from "./components/editorButtons/EditorButtons";
 import ModeSwitch from "./components/ModeSwitch";
 import * as Tone from "tone";
+import { useRouter } from "next/navigation";
 
 const Edit = ({ uploadedFiles }) => {
   const { theme, setEventEmitter, podcast, showAnnotations, setDialogBox } =
     useThemeSettings();
 
+  const router = useRouter();
   const { backgroundColor, textColor } = theme;
 
   const SETBUTTONS = "SETBUTTONS";
@@ -571,93 +655,24 @@ const Edit = ({ uploadedFiles }) => {
         return uploadRef.current.click();
       case "download":
         return ee.emit("startaudiorendering", "wav");
-      case "downloadTracks":
-        return handleDownloadTracks();
-
+      case "saveTracks":
+        return saveTracks();
       default:
         break;
     }
   }
 
-  const handleDownloadTracks = () => {
-    tracks.forEach((track, index) => {
-      const { file, name } = track;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const arrayBuffer = e.target.result;
-        const audioContext = new (window.AudioContext ||
-          window.webkitAudioContext)();
-        audioContext.decodeAudioData(arrayBuffer, (buffer) => {
-          const offlineContext = new OfflineAudioContext(
-            buffer.numberOfChannels,
-            buffer.length,
-            buffer.sampleRate
-          );
-          const source = offlineContext.createBufferSource();
-          source.buffer = buffer;
-          source.connect(offlineContext.destination);
-          source.start(0);
-          offlineContext.startRendering().then((renderedBuffer) => {
-            const wavBlob = bufferToWave(renderedBuffer);
-            saveAs(wavBlob, `${name || "track"}_${index}.wav`);
-          });
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const bufferToWave = (buffer) => {
-    let numOfChan = buffer.numberOfChannels,
-      length = buffer.length * numOfChan * 2 + 44,
-      bufferArray = new ArrayBuffer(length),
-      view = new DataView(bufferArray),
-      channels = [],
-      i,
-      sample,
-      offset = 0,
-      pos = 0;
-
-    setUint32(0x46464952); // "RIFF"
-    setUint32(length - 8); // file length - 8
-    setUint32(0x45564157); // "WAVE"
-
-    setUint32(0x20746d66); // "fmt " chunk
-    setUint32(16); // length = 16
-    setUint16(1); // PCM (uncompressed)
-    setUint16(numOfChan);
-    setUint32(buffer.sampleRate);
-    setUint32(buffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
-    setUint16(numOfChan * 2); // block-align
-    setUint16(16); // 16-bit (hardcoded in this demo)
-
-    setUint32(0x61746164); // "data" - chunk
-    setUint32(length - pos - 4); // chunk length
-
-    for (i = 0; i < buffer.numberOfChannels; i++)
-      channels.push(buffer.getChannelData(i));
-
-    while (pos < length) {
-      for (i = 0; i < numOfChan; i++) {
-        sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
-        sample = (0.5 + sample * 0.5) * 65535.0; // scale to 16-bit unsigned int
-        view.setInt16(pos, sample, true); // write 16-bit sample
-        pos += 2;
-      }
-      offset++; // next source sample
-    }
-
-    return new Blob([bufferArray], { type: "audio/wav" });
-
-    function setUint16(data) {
-      view.setUint16(pos, data, true);
-      pos += 2;
-    }
-
-    function setUint32(data) {
-      view.setUint32(pos, data, true);
-      pos += 4;
-    }
+  const saveTracks = () => {
+    const modifiedTracks = tracks.map((track) => ({
+      name: track.name,
+      lastModified: track.file.lastModified,
+      type: track.file.type,
+      size: track.file.size,
+    }));
+    const modifiedTracksString = encodeURIComponent(
+      JSON.stringify(modifiedTracks)
+    );
+    router.push(`/record?modifiedTracks=${modifiedTracksString}`);
   };
 
   return (
