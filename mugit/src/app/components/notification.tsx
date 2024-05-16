@@ -73,7 +73,7 @@ export default function Notification() {
     const openHandler = function (e: any) {
       console.log("open : 연결", e);
     };
-    const followHandler = function (e: any) {
+    const notiHandler = function (e: any) {
       const data = JSON.parse(e.data);
       fireToast({
         type: "정보",
@@ -94,7 +94,10 @@ export default function Notification() {
     eventSource.addEventListener("connect", connectHandler);
     eventSource.addEventListener("error", errorHandler);
     eventSource.addEventListener("open", openHandler);
-    eventSource.addEventListener("follow", followHandler);
+    eventSource.addEventListener("follow", notiHandler);
+    eventSource.addEventListener("flow_release", notiHandler);
+    eventSource.addEventListener("like", notiHandler);
+    eventSource.addEventListener("review", notiHandler);
   }, []);
 
   return (
