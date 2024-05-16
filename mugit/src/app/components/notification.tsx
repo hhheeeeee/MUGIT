@@ -17,6 +17,7 @@ export default function Notification() {
       description: "",
     },
   ]);
+  const [notiRemain, setNotiRemain] = useState(false);
 
   const getNotifications = () => {
     fetch(apiUrl + "/users/notifications", {
@@ -26,6 +27,7 @@ export default function Notification() {
       .then((data) => {
         if (data.list) {
           setNotifications(data.list);
+          setNotiRemain(true);
         } else {
           setNotifications([
             {
@@ -37,6 +39,7 @@ export default function Notification() {
               description: "",
             },
           ]);
+          setNotiRemain(false);
         }
       });
   };
@@ -64,6 +67,8 @@ export default function Notification() {
   };
 
   useEffect(() => {
+    getNotifications();
+
     const connectHandler = function (e: any) {
       console.log("connect : 연결됨", e);
     };
@@ -74,6 +79,7 @@ export default function Notification() {
       console.log("open : 연결", e);
     };
     const notiHandler = function (e: any) {
+      setNotiRemain(true);
       const data = JSON.parse(e.data);
       fireToast({
         type: "정보",
@@ -110,7 +116,7 @@ export default function Notification() {
           >
             <svg
               viewBox="0 0 24 24"
-              fill="lightgrey"
+              fill={notiRemain ? "#F1F609" : "lightgrey"}
               height="1.3em"
               width="1.3em"
             >
