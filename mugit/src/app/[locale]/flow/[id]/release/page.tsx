@@ -1,13 +1,31 @@
 "use client";
 import Description from "@/app/components/Description";
 import UploadPicture from "@/app/components/fileUpload/UploadPicture";
-import RecordMessage from "@/app/container/flow/release/recordMessage";
+import RecordMessage from "../record/recordMessage";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInput } from "@/app/hooks/useInput";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import SelectTags from "@/app/components/selectTags";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+const dummymessage = [
+  {
+    id: 1,
+    title: "Added band session recordings",
+    data: "2024-02-25",
+  },
+  {
+    id: 2,
+    title: "Added Chorus",
+    data: "2024-03-24",
+  },
+  {
+    id: 3,
+    title: "Added Keyboard Session",
+    data: "2024-04-11",
+  },
+];
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
@@ -20,8 +38,39 @@ export default function NotePage() {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://mugit.site/files/default/flow.png"
   );
+
+  const [records, setRecords] = useState({ list: dummymessage });
   const [tags, setTags] = useState<string[]>([]);
   const [imagefile, setImageFile] = useState<any>(null);
+  const params = useParams();
+
+  const getRecords = async (id: string | string[]) => {
+    try {
+      const response = await fetch(
+        `https://mugit.site/api/flows/${id}/records`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Failed to fetch records:", error);
+      return []; // 실패 시 빈 배열 반환
+    }
+  };
+
+  useEffect(() => {
+    if (params.id) {
+      getRecords(params.id).then((fetchedRecords) =>
+        setRecords(fetchedRecords)
+      );
+    }
+  }, [params.id]);
+
   return (
     <main className="relative flex min-h-[90%] w-full flex-col px-52 py-10">
       <h1 className="relative border-b-2 border-solid border-gray-300 pl-5 text-5xl font-bold italic">
@@ -58,7 +107,7 @@ export default function NotePage() {
           <WavesurferComp musicPath="" musicname="" type="source" />
 
           <h2 className="mt-6 text-lg">{t("recordMessages")}</h2>
-          <RecordMessage />
+          <RecordMessage records={records} />
 
           <h2 className="mt-4 text-lg">{t("description")}</h2>
           <textarea

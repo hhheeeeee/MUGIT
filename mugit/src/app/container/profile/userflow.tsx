@@ -46,10 +46,10 @@ export default function UserFlow() {
     }
   }, []);
 
-  const handleClickRelease = (flow: FlowType) => {
-    setReleaseFlow(flow);
-    router.push(`/${locale}/flow/${flow.id}/release`);
-  };
+  // const handleClickRelease = (flow: FlowType) => {
+  //   setReleaseFlow(flow);
+  //   router.push(`/${locale}/flow/${flow.id}/release`);
+  // };
 
   return (
     <div className="relative mx-auto mt-10 w-2/3 pb-10">
@@ -211,7 +211,7 @@ export default function UserFlow() {
                           Edit
                         </span>
                       </button>
-                      <button
+                      {/* <button
                         className=" mr-3 rounded border-2 border-pointblue bg-white p-1 
                     text-pointblue transition duration-300 hover:bg-pointblue hover:text-white"
                         // transition duration-300 hover:scale-105 hover:bg-[#0831d6]
@@ -220,7 +220,7 @@ export default function UserFlow() {
                         <span className="mx-1 text-base font-semibold">
                           Release
                         </span>
-                      </button>
+                      </button> */}
                     </div>
                     <div className="absolute bottom-0 w-full">
                       <WavesurferComp
