@@ -35,8 +35,7 @@ const getRecords = async (id: string | string[]) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const records = await response.json();
-    return records.slice(1);
+    return response.json();
   } catch (error) {
     console.error("Failed to fetch records:", error);
     return []; // 실패 시 빈 배열 반환
@@ -121,7 +120,12 @@ export default function RecordPage() {
       )
     );
     router.push(`editor?audioFiles=${audioFilesString}`);
+    fetchUpdatedRecords();
   }
+  const fetchUpdatedRecords = async () => {
+    const fetchedRecords = await getRecords(params.id);
+    setRecords(fetchedRecords);
+  };
 
   useEffect(() => {
     const fetchRecords = async () => {
