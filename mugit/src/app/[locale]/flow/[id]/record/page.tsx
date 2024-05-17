@@ -248,6 +248,7 @@ import { noteIcon } from "./editor/constants/icons";
 interface AudioFile {
   file: File;
   id: string;
+  url: string;
 }
 
 const dummymessage = [
@@ -426,20 +427,18 @@ export default function RecordPage() {
         <div className="flex w-full flex-col ">
           <div className="mt-4 flex">
             {noteIcon}
-            <div>
-              <p className="px-4 text-2xl font-bold  text-gray-700">
-                Record History
-              </p>
-            </div>
+
+            <p className="px-4 text-2xl font-bold  text-gray-700">
+              Record History
+            </p>
           </div>
           <RecordMessage records={records} />
           <div className="mt-8 flex">
             {noteIcon}
-            <div>
-              <p className="px-4 text-2xl font-bold  text-gray-700">
-                Latest Version
-              </p>
-            </div>
+
+            <p className="px-4 text-2xl font-bold  text-gray-700">
+              Latest Version
+            </p>
           </div>
           <div className="m-4">
             <WavesurferComp
@@ -449,6 +448,13 @@ export default function RecordPage() {
             />
           </div>
           <CustomizedAccordions />
+          <div className="mt-8 flex">
+            {noteIcon}
+
+            <p className="px-4 text-2xl font-bold  text-gray-700">
+              Define New Source File
+            </p>
+          </div>
           <DragnDropRecord
             audioFiles={audioFiles}
             setAudioFiles={setAudioFiles}
@@ -462,14 +468,13 @@ export default function RecordPage() {
 
           <div className="mt-8 flex">
             {noteIcon}
-            <div>
-              <p className="px-4 text-2xl font-bold  text-gray-700">
-                Record Message
-              </p>
-            </div>
+
+            <p className="px-4 text-2xl font-bold  text-gray-700">
+              Record Message
+            </p>
           </div>
 
-          <div className="mt-4 flex">
+          <div className="mt-4 flex-col">
             <input
               value={message}
               onChange={handleChangeMessage}
@@ -477,7 +482,7 @@ export default function RecordPage() {
               className="h-10 w-full rounded-md border-2 border-solid border-gray-300 px-4 focus:border-pointblue"
             />
             <button
-              className="mx-4 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+              className="mt-8 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
               onClick={addRecord}
             >
               Record

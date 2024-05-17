@@ -170,7 +170,7 @@ export default function Editor() {
             </SettingsContext>
             <div className="mx-auto my-10 w-4/5">
               <Tab.Group>
-                <Tab.List className="flex space-x-4 border-b-2 border-gray-300">
+                <Tab.List className="flex space-x-4 ">
                   <Tab
                     className={({ selected }) =>
                       selected

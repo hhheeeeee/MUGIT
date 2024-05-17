@@ -208,7 +208,7 @@ const LiveRecord: React.FC<LiveRecordProps> = ({ onFileUpload }) => {
       <div className="mb-4 flex items-center">
         <button
           id="record"
-          className="mr-4 flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          className="flex h-[45px] w-[150px] items-center justify-center rounded-full bg-black text-lg font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
           onClick={handleRecordClick}
         >
           {isRecording ? stopIcon : recordIcon}
@@ -226,7 +226,7 @@ const LiveRecord: React.FC<LiveRecordProps> = ({ onFileUpload }) => {
         </button> */}
         <select
           id="mic-select"
-          className="rounded-md border border-gray-300 px-4 py-2"
+          className="mx-4 rounded-md border border-gray-300 px-4 py-2"
           onChange={handleDeviceChange}
           value={selectedDeviceId}
         >

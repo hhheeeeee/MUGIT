@@ -179,7 +179,7 @@ const DragnDropEdit: React.FC<DragnDropEditProps> = ({
 
   return (
     <div
-      className={`drop-area rounded-lg border-2 border-dashed p-6 text-center ${
+      className={`drop-area rounded-lg border-2  p-6 text-center ${
         dragOver ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-gray-100"
       }`}
       onDragOver={handleDragOver}
@@ -195,7 +195,7 @@ const DragnDropEdit: React.FC<DragnDropEditProps> = ({
       />
       <label
         htmlFor="file-input"
-        className="upload-label cursor-pointer font-semibold text-blue-600"
+        className="upload-label cursor-pointer font-semibold text-black"
       >
         Drag and drop files here or click to upload
       </label>
@@ -208,7 +208,7 @@ const DragnDropEdit: React.FC<DragnDropEditProps> = ({
             >
               <span className="file-name text-gray-900">{file.name}</span>
               <button
-                className="upload-button rounded-md bg-green-600 px-3 py-1 text-white hover:bg-green-700"
+                className="h-[45px] w-[150px] rounded-full bg-black text-lg font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
                 onClick={() => onFileUpload([file])}
               >
                 Upload to Edit

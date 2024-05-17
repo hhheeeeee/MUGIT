@@ -12,7 +12,7 @@ import { saveAs } from "file-saver";
 import { v4 as uuidv4 } from "uuid";
 import { Box, Paper } from "@mui/material";
 import CustomAudioBar from "./components/CUSTOM/audioBar/CustomAudioBar";
-import { dark } from "./theme";
+import { dark } from "./theme/theme";
 import { useThemeSettings } from "./hooks";
 import EditorButtons from "./components/editorButtons/EditorButtons";
 
@@ -463,7 +463,7 @@ const Edit = ({ uploadedFiles }) => {
         </Box>
         <div className="flex w-full">
           <button
-            className="mx-4 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+            className="h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
             onClick={submit}
           >
             Submit
