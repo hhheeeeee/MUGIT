@@ -158,12 +158,12 @@ export default function Editor() {
     setUploadedFiles(files);
   };
   return (
-    <div className="h-full bg-gray-100 px-20">
+    <div className="h-full bg-gray-100 px-20 pb-[20%]">
       <h1 className="pb-10 pt-20 text-4xl font-bold text-gray-800">
         Record Edit
       </h1>
       <div>
-        <div className="rounded-xl bg-white p-10 shadow-md">
+        <div className=" rounded-xl bg-white p-10 shadow-md">
           <div className="source-file">
             <SettingsContext>
               <Edit uploadedFiles={uploadedFiles} />

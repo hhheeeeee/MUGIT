@@ -462,12 +462,14 @@ const Edit = ({ uploadedFiles }) => {
             />
           </Box>
         </Box>
-        <button
-          className="m-10 mb-[20%] h-12 w-[15%] rounded-full bg-pointyellow text-3xl font-bold italic text-black"
-          onClick={submit}
-        >
-          Submit
-        </button>
+        <div className="flex w-full">
+          <button
+            className="h-12  min-w-max justify-items-center rounded-full bg-pointyellow text-3xl font-bold italic text-black"
+            onClick={submit}
+          >
+            Submit
+          </button>
+        </div>
         <CustomAudioBar bottom={!state.allbuttons ? 0 : -100} ee={ee} />
       </Box>
       <style jsx>{`
