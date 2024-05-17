@@ -15,7 +15,7 @@ import CustomAudioBar from "./components/CUSTOM/audioBar/CustomAudioBar";
 import { dark } from "./theme";
 import { useThemeSettings } from "./hooks";
 import EditorButtons from "./components/editorButtons/EditorButtons";
-import ModeSwitch from "./components/ModeSwitch";
+
 import * as Tone from "tone";
 import { useAtomValue, useAtom } from "jotai";
 import { fileToEdit } from "@/app/store/atoms/editfile";
@@ -390,7 +390,6 @@ const Edit = ({ uploadedFiles }) => {
         }}
       >
         <Box>
-          {/* <ModeSwitch /> */}
           <EditorButtons
             handleClick={handleClick}
             cutButton={state.enableCut}
@@ -464,7 +463,7 @@ const Edit = ({ uploadedFiles }) => {
         </Box>
         <div className="flex w-full">
           <button
-            className="h-12  min-w-max justify-items-center rounded-full bg-pointyellow text-3xl font-bold italic text-black"
+            className="mx-4 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
             onClick={submit}
           >
             Submit

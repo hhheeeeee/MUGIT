@@ -237,16 +237,14 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
-import DragnDrop from "./editor/components/source/DragnDrop";
+
 import { fileToEdit, fileToRelease } from "@/app/store/atoms/editfile";
 import WavesurferComp from "@/app/components/wavesurfer";
-import WaveSurferComp from "./WaveSurferComp";
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import CustomizedAccordions from "./SourceComponent";
+import DragnDropRecord from "./editor/components/source/DragnDropRecord";
+import IconRecord from "@/app/assets/icon/IconRecord";
+import { noteIcon } from "./editor/constants/icons";
 interface AudioFile {
   file: File;
   id: string;
@@ -425,11 +423,24 @@ export default function RecordPage() {
         </div>
       </div>
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
-        <div className="flex w-full flex-col md:mt-4 md:w-full lg:w-full">
+        <div className="flex w-full flex-col ">
+          <div className="mt-4 flex">
+            {noteIcon}
+            <div>
+              <p className="px-4 text-2xl font-bold  text-gray-700">
+                Record History
+              </p>
+            </div>
+          </div>
           <RecordMessage records={records} />
-          <h2 className="mt-4 text-lg  font-semibold text-gray-700">
-            Latest Version
-          </h2>
+          <div className="mt-8 flex">
+            {noteIcon}
+            <div>
+              <p className="px-4 text-2xl font-bold  text-gray-700">
+                Latest Version
+              </p>
+            </div>
+          </div>
           <div className="m-4">
             <WavesurferComp
               musicPath={editedFile[0].flow}
@@ -438,16 +449,26 @@ export default function RecordPage() {
             />
           </div>
           <CustomizedAccordions />
-          <DragnDrop audioFiles={audioFiles} setAudioFiles={setAudioFiles} />
+          <DragnDropRecord
+            audioFiles={audioFiles}
+            setAudioFiles={setAudioFiles}
+          />
           <button
             className="h-[45px] w-[150px] rounded-full bg-black px-10 text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
             onClick={goEdit}
           >
             Edit
           </button>
-          <h2 className="mt-4 text-lg font-semibold text-gray-700">
-            Record Message
-          </h2>
+
+          <div className="mt-8 flex">
+            {noteIcon}
+            <div>
+              <p className="px-4 text-2xl font-bold  text-gray-700">
+                Record Message
+              </p>
+            </div>
+          </div>
+
           <div className="mt-4 flex">
             <input
               value={message}

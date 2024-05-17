@@ -48,36 +48,28 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = React.useState<string | false>("panel1");
+  const [expanded, setExpanded] = React.useState<boolean>(false);
   const editedFile = useAtomValue(fileToRelease);
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
-    };
+  const handleToggle = () => {
+    setExpanded(!expanded);
+  };
 
   return (
-    <>
-      <div>
-        {editedFile[0].source.map((src) => (
-          <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
+    <div>
+      {editedFile[0].source.map((src, index) => (
+        <Accordion key={index} expanded={expanded} onChange={handleToggle}>
+          <AccordionSummary
+            aria-controls={`panel${index}d-content`}
+            id={`panel${index}d-header`}
           >
-            <AccordionSummary
-              aria-controls="panel1d-content"
-              id="panel1d-header"
-            >
-              <Typography>{src}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                <WaveSurferComp musicPath={src} musicname={""} type="source" />
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </div>
-    </>
+            <Typography>{src}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <WaveSurferComp musicPath={src} musicname={""} type="source" />
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </div>
   );
 }
