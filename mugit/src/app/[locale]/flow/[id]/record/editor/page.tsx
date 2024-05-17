@@ -119,13 +119,13 @@ import Edit from "./edit"; // Edit 컴포넌트를 import합니다.
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
 import LiveRecord from "./components/record/Liverecord";
-import DragnDropEdit from "./components/source/DragnDropEdit.jsx";
+import DragnDropEdit from "./components/source/DragnDropEdit";
 import { useSearchParams } from "next/navigation";
 import FMKeyboard from "./components/synth/FmKeyboard";
 
 export default function Editor() {
   const searchParams = useSearchParams();
-  const [audioFiles, setAudioFiles] = useState([]);
+  const [audioFiles, setAudioFiles] = useState<File[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   useEffect(() => {

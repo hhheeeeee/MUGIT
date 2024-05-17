@@ -1,8 +1,6 @@
 // "use client";
 // import React, { useState } from "react";
-// import ReactDOM from "react-dom";
 // import WaveSurfer from "wavesurfer.js";
-// import styles from "./liverecord.module.css";
 // import RecordPlugin from "wavesurfer.js/dist/plugins/record.esm.js";
 // import {
 //   recordIcon,
@@ -12,16 +10,19 @@
 //   downloadIcon,
 // } from "../../constants/icons";
 
-// const LiveRecord: React.FC = () => {
+// interface LiveRecordProps {
+//   onFileUpload: (files: File[]) => void;
+// }
+
+// const LiveRecord: React.FC<LiveRecordProps> = ({ onFileUpload }) => {
 //   const [wavesurfer, setWaveSurfer] = useState<WaveSurfer | null>(null);
 //   const [record, setRecord] = useState<any | null>(null);
 //   const [scrollingWaveform, setScrollingWaveform] = useState(false);
 //   const [isRecording, setIsRecording] = useState(false);
 //   const [isPlaying, setIsPlaying] = useState(false);
-//   const [recordedUrl, setRecordedUrl] = useState(null);
+//   const [recordedUrl, setRecordedUrl] = useState<string | null>(null);
 
 //   const createWaveSurfer = () => {
-//     // Create an instance of WaveSurfer
 //     if (wavesurfer) {
 //       wavesurfer.destroy();
 //     }
@@ -43,9 +44,10 @@
 //       );
 //       setRecord(rec);
 
-//       // 끝난 레코드로 웨이브서퍼 만듦
 //       rec.on("record-end", (blob: Blob) => {
 //         const recordedUrl = URL.createObjectURL(blob);
+//         setRecordedUrl(recordedUrl);
+
 //         const wsRecorded = WaveSurfer.create({
 //           container: "#recordings",
 //           waveColor: "white",
@@ -56,14 +58,13 @@
 //           cursorColor: "#567FFF",
 //           url: recordedUrl,
 //         });
-//         // Play button
+
 //         const button = container.appendChild(document.createElement("button"));
 //         button.textContent = "Play";
 //         button.onclick = () => wsRecorded.playPause();
 //         wsRecorded.on("pause", () => (button.textContent = "Play"));
 //         wsRecorded.on("play", () => (button.textContent = "Pause"));
 
-//         // Download link
 //         const link = container.appendChild(document.createElement("a"));
 //         Object.assign(link, {
 //           href: recordedUrl,
@@ -71,6 +72,18 @@
 //             "recording." + blob.type.split(";")[0].split("/")[1] || "webm",
 //           textContent: "Download",
 //         });
+
+//         // Upload to Edit 버튼 추가
+//         const uploadButton = container.appendChild(
+//           document.createElement("button")
+//         );
+//         uploadButton.textContent = "Upload to Edit";
+//         uploadButton.onclick = () => {
+//           const file = new File([blob], "recording.webm", {
+//             type: blob.type,
+//           });
+//           onFileUpload([file]);
+//         };
 //       });
 
 //       rec.on("record-progress", (time: number) => {
@@ -79,7 +92,6 @@
 //     }
 //   };
 
-//   // 시간 적용되는 부분
 //   const updateProgress = (time: number) => {
 //     const formattedTime = [
 //       Math.floor((time % 3600000) / 60000),
@@ -94,7 +106,6 @@
 //     }
 //   };
 
-//   // play/pause 버튼
 //   const togglePlay = () => {
 //     setIsPlaying(!isPlaying);
 //   };
@@ -109,7 +120,6 @@
 //     }
 //   };
 
-//   // record 버튼
 //   const toggleRecord = () => {
 //     setIsRecording(!isRecording);
 //   };
@@ -128,7 +138,7 @@
 //       }
 //     }
 //   };
-//   // 녹음시작 버튼
+
 //   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //     setScrollingWaveform(e.target.checked);
 //     createWaveSurfer();
@@ -161,7 +171,7 @@
 //       <p id="progress">00:00</p>
 //       <div id="mic" className="mt-4 rounded-md border border-black"></div>
 
-//       <div id="recordings" className={`mt-4`}></div>
+//       <div id="recordings" className="mt-4"></div>
 //     </div>
 //   );
 // };
