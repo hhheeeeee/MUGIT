@@ -5,13 +5,14 @@ import FlowDetail from "./flowdetail";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import ButtonGroup from "./flowbutton";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useAsync from "@/app/hooks/useAsync";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import { getFlowDetail } from "@/app/libs/flowReadApi";
 import Loading from "@/app/components/loading";
 import Error from "@/app/components/error";
+import { useLocale } from "next-intl";
 
 const Tree = dynamic(() => import("./tree"), { ssr: false });
 interface PropType {
@@ -19,6 +20,8 @@ interface PropType {
 }
 
 export default function FlowInfo({ page }: PropType) {
+  const router = useRouter();
+  const locale = useLocale();
   const params = useParams<{ id: string }>();
   const [state, refetch] = useAsync(() => getFlowDetail(params.id), []);
   const userInfo = useAtomValue(userAtom);
@@ -38,23 +41,29 @@ export default function FlowInfo({ page }: PropType) {
               height={254}
               alt="cover image"
               src={flowDetail.coverPath}
-              className="mr-5 h-48 w-48 rounded"
+              className="mr-5 h-48 w-48 rounded object-cover"
               priority
             />
-            <div className="relative w-full">
+            <div className="relative w-4/5">
               <div className="mb-3 flex">
                 {flowDetail.hashtags.map((tag) => (
-                  <span
+                  <a
+                    href={`/${locale}/trends/${tag}`}
                     key={tag}
-                    className="mr-0.5 rounded-lg border-2 border-solid border-slate-300 px-1 text-sm text-slate-700"
+                    className="mr-0.5 rounded-lg border-2 border-solid border-slate-300 px-1 text-sm text-slate-700 hover:cursor-pointer hover:border-slate-700 hover:font-semibold"
                   >
                     {tag}
-                  </span>
+                  </a>
                 ))}
               </div>
 
               <p className="text-5xl font-semibold">{flowDetail.title}</p>
-              <p className="text-2xl">{flowDetail.user.nickName}</p>
+              <a
+                href={`/${locale}/profile/${flowDetail.user.id}`}
+                className="block text-2xl hover:font-bold hover:underline"
+              >
+                {flowDetail.user.nickName}
+              </a>
               <ButtonGroup item={flowDetail} page={page} />
             </div>
           </div>

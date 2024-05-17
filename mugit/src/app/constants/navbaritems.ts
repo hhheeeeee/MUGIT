@@ -6,7 +6,7 @@ export const navbaritems = [
   },
   {
     id: 2,
-    name: "support",
-    to: "/support",
+    name: "feed",
+    to: "/feed",
   },
 ];

@@ -23,11 +23,12 @@ export default function GoogleButton() {
       onClick={onClick}
     >
       <Image
-        src="/google/web_dark_sq_ctn@4x.png"
+        src="/google/web_dark_sq_ctn@2x.png"
         alt=""
         width={150}
         height={32}
         style={{ width: 150, height: 32 }}
+        priority
       />
     </a>
   );

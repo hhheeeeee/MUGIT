@@ -32,6 +32,7 @@ export default function UserFlow() {
   const [flows, setFlows] = useState([]);
   const [likes, setLikes] = useState([]);
   const [works, setWorks] = useState([]);
+  const [done, setDone] = useState(false);
   const setReleaseFlow = useSetAtom(releaseFlowAtom);
 
   useEffect(() => {
@@ -39,12 +40,14 @@ export default function UserFlow() {
       setFlows(data.list)
     );
     fetchFlows(String(params.id), "likes").then((data) => setLikes(data.list));
-    if (params.id === user.id) {
-      fetchFlows(String(params.id), "unreleased").then((data) =>
-        setWorks(data.list)
-      );
-    }
   }, []);
+
+  if (user.id && !done && params.id === user.id) {
+    fetchFlows(String(params.id), "unreleased").then((data) => {
+      setWorks(data.list);
+      setDone(true);
+    });
+  }
 
   // const handleClickRelease = (flow: FlowType) => {
   //   setReleaseFlow(flow);
@@ -102,16 +105,17 @@ export default function UserFlow() {
         <Tab.Panels>
           <Tab.Panel>
             {flows.map((flow: FlowType) => (
-              <div key={flow.id} className="my-5 flex w-full">
-                <Image
-                  src={flow.coverPath}
-                  alt=""
-                  width={150}
-                  height={150}
-                  className="hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
-                />
-                <div className="relative ml-5 w-full">
+              <div key={flow.id} className="my-5 flex w-full justify-between">
+                <div className="relative h-[150px] w-[150px]">
+                  <Image
+                    src={flow.coverPath}
+                    alt=""
+                    fill
+                    className="object-cover hover:cursor-pointer hover:shadow-lg"
+                    onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                  />
+                </div>
+                <div className="relative ml-5 w-4/5">
                   <a
                     href={`/${locale}/flow/${flow.id}`}
                     className="block text-xl font-semibold hover:font-black hover:underline"
@@ -137,16 +141,17 @@ export default function UserFlow() {
           </Tab.Panel>
           <Tab.Panel>
             {likes.map((flow: FlowType) => (
-              <div key={flow.id} className="my-5 flex w-full">
-                <Image
-                  src={flow.coverPath}
-                  alt=""
-                  width={150}
-                  height={150}
-                  className="hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
-                />
-                <div className="relative ml-5 w-full">
+              <div key={flow.id} className="my-5 flex w-full justify-between">
+                <div className="relative h-[150px] w-[150px]">
+                  <Image
+                    src={flow.coverPath}
+                    alt=""
+                    fill
+                    className="object-cover hover:cursor-pointer hover:shadow-lg"
+                    onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                  />
+                </div>
+                <div className="relative ml-5 w-4/5">
                   <a
                     href={`/${locale}/flow/${flow.id}`}
                     className="block text-xl font-semibold hover:font-black hover:underline"
@@ -173,16 +178,17 @@ export default function UserFlow() {
           {params.id === user.id ? (
             <Tab.Panel>
               {works.map((flow: FlowType) => (
-                <div key={flow.id} className="my-5 flex w-full">
-                  <Image
-                    src={flow.coverPath}
-                    alt=""
-                    width={150}
-                    height={150}
-                    className="hover:cursor-pointer hover:shadow-lg"
-                    onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
-                  />
-                  <div className="relative ml-5 flex w-full justify-between">
+                <div key={flow.id} className="my-5 flex w-full justify-between">
+                  <div className="relative h-[150px] w-[150px]">
+                    <Image
+                      src={flow.coverPath}
+                      alt=""
+                      fill
+                      className="object-cover hover:cursor-pointer hover:shadow-lg"
+                      onClick={() => router.push(`/${locale}/flow/${flow.id}`)}
+                    />
+                  </div>
+                  <div className="relative ml-5 flex w-4/5 justify-between">
                     <div>
                       <a
                         href={`/${locale}/flow/${flow.id}`}
