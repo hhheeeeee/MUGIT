@@ -32,6 +32,7 @@ export default function UserFlow() {
   const [flows, setFlows] = useState([]);
   const [likes, setLikes] = useState([]);
   const [works, setWorks] = useState([]);
+  const [done, setDone] = useState(false)
   const setReleaseFlow = useSetAtom(releaseFlowAtom);
 
   useEffect(() => {
@@ -39,12 +40,14 @@ export default function UserFlow() {
       setFlows(data.list)
     );
     fetchFlows(String(params.id), "likes").then((data) => setLikes(data.list));
-    if (params.id === user.id) {
-      fetchFlows(String(params.id), "unreleased").then((data) =>
-        setWorks(data.list)
-      );
-    }
   }, []);
+
+  if (user.id && !done && params.id === user.id) {
+    fetchFlows(String(params.id), "unreleased").then((data) => {
+      setWorks(data.list);
+      setDone(true);
+    });
+  }
 
   // const handleClickRelease = (flow: FlowType) => {
   //   setReleaseFlow(flow);
