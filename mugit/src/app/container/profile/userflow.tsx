@@ -32,7 +32,7 @@ export default function UserFlow() {
   const [flows, setFlows] = useState([]);
   const [likes, setLikes] = useState([]);
   const [works, setWorks] = useState([]);
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
   const setReleaseFlow = useSetAtom(releaseFlowAtom);
 
   useEffect(() => {
