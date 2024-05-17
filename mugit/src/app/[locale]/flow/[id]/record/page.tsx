@@ -235,11 +235,18 @@ import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
+import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
 import DragnDrop from "./editor/components/source/DragnDrop";
-import { releaseFlowAtom } from "@/app/store/atoms";
-import { fileToEdit } from "@/app/store/atoms/editfile";
-
+import { fileToEdit, fileToRelease } from "@/app/store/atoms/editfile";
+import WavesurferComp from "@/app/components/wavesurfer";
+import WaveSurferComp from "./WaveSurferComp";
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CustomizedAccordions from "./SourceComponent";
 interface AudioFile {
   file: File;
   id: string;
@@ -279,8 +286,8 @@ export default function RecordPage() {
   const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
   const [fileResponse, setFileResponse] = useState<any[]>([]);
   const [recordResponse, setRecordResponse] = useState<any[]>([]);
-
-  const [sendFile, setSendFile] = useAtom(fileToEdit);
+  const [toEditFile, setToEditFile] = useAtom(fileToEdit);
+  const editedFile = useAtomValue(fileToRelease);
   const params = useParams();
 
   const handleChangeMessage = (event: {
@@ -369,9 +376,8 @@ export default function RecordPage() {
     }).then((response) => response.json());
 
     setFileResponse(filePost);
-    setSendFile(filePost.list.map((f: { path: any }) => f.path));
+    setToEditFile(filePost.list.map((f: { path: any }) => f.path));
 
-    console.log("sendFile:", sendFile);
     const audioFilesString = encodeURIComponent(
       JSON.stringify(filePost.list.map((f: { path: any }) => f.path))
     );
@@ -386,64 +392,80 @@ export default function RecordPage() {
       setRecords(fetchedRecords);
     };
 
-    console.log("params : ", params.id);
-    console.log("audio-files: ", audioFiles);
+    console.log("드래그앤드롭으로 들어온 파일: ", audioFiles);
+    console.log("에디터로 보낸파일:", toEditFile);
     console.log("fileResponse: ", fileResponse);
     console.log("recordResponse: ", recordResponse);
-    console.log("sendFile:", sendFile);
     fetchRecords();
-  }, [params.id, audioFiles, fileResponse, recordResponse, sendFile]);
+  }, [params.id, audioFiles, fileResponse, recordResponse, toEditFile]);
 
-  const setReleaseFlow = useSetAtom(releaseFlowAtom);
   const handleClickRelease = (id: string | string[]) => {
     router.push(`/${locale}/flow/${id}/release`);
   };
 
   return (
     <main className="relative flex min-h-[90%] w-full flex-col bg-gray-100 px-8 py-10">
-      <h1 className="pb-10 pt-20 text-4xl font-bold italic leading-6 text-gray-800">
-        Record
-      </h1>
+      <div className="w-full flex-row">
+        <h1 className="pb-10 pt-20 text-6xl font-bold italic text-gray-800">
+          Record
+        </h1>
+        <div className="w-full">
+          <button
+            className="h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+            onClick={goBack}
+          >
+            Cancel
+          </button>
+          <button
+            className="h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+            onClick={() => handleClickRelease(params.id)}
+          >
+            Release
+          </button>
+        </div>
+      </div>
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
         <div className="flex w-full flex-col md:mt-4 md:w-full lg:w-full">
           <RecordMessage records={records} />
-          <h2 className="mt-4 text-lg text-gray-700">Record Message</h2>
-          <input
-            value={message}
-            onChange={handleChangeMessage}
-            type="text"
-            className="mb-4 mt-2 h-10 w-full rounded-md border-2 border-solid border-gray-300 px-4 focus:border-blue-500 focus:outline-none"
-          />
+          <h2 className="mt-4 text-lg  font-semibold text-gray-700">
+            Latest Version
+          </h2>
+          <div className="m-4">
+            <WavesurferComp
+              musicPath={editedFile[0].flow}
+              musicname={""}
+              type="source"
+            />
+          </div>
+          <CustomizedAccordions />
           <DragnDrop audioFiles={audioFiles} setAudioFiles={setAudioFiles} />
+          <button
+            className="h-[45px] w-[150px] rounded-full bg-black px-10 text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+            onClick={goEdit}
+          >
+            Edit
+          </button>
+          <h2 className="mt-4 text-lg font-semibold text-gray-700">
+            Record Message
+          </h2>
+          <div className="mt-4 flex">
+            <input
+              value={message}
+              onChange={handleChangeMessage}
+              type="text"
+              className="h-10 w-full rounded-md border-2 border-solid border-gray-300 px-4 focus:border-pointblue"
+            />
+            <button
+              className="mx-4 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+              onClick={addRecord}
+            >
+              Record
+            </button>
+          </div>
 
           <div className="mt-5 flex w-full justify-end gap-x-4">
             <div className="flex flex-col gap-y-4">
-              <div className="flex gap-x-4">
-                <button
-                  className="rounded-md bg-blue-600 px-10 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700"
-                  onClick={goEdit}
-                >
-                  Edit
-                </button>
-                <button
-                  className="rounded-md bg-gray-600 px-10 py-3 font-semibold text-white transition duration-200 hover:bg-gray-700"
-                  onClick={goBack}
-                >
-                  Cancel
-                </button>
-              </div>
-              <button
-                className="rounded-md bg-green-600 px-10 py-3 font-semibold text-white transition duration-200 hover:bg-green-700"
-                onClick={addRecord}
-              >
-                Record
-              </button>
-              <button
-                className="rounded-md border-2 border-blue-600 bg-white px-10 py-3 font-semibold text-blue-600 transition duration-200 hover:bg-blue-600 hover:text-white"
-                onClick={() => handleClickRelease(params.id)}
-              >
-                Release
-              </button>
+              <div className="flex gap-x-4"></div>
             </div>
           </div>
         </div>
