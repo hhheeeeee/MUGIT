@@ -1,10 +1,11 @@
 import { Popover } from "@headlessui/react";
 import { apiUrl } from "../store/atoms";
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import fireToast from "../utils/fireToast";
 
 export default function Notification() {
+  const locale = useLocale()
   const t = useTranslations("Notification");
 
   const [notifications, setNotifications] = useState([
@@ -154,7 +155,7 @@ export default function Notification() {
                       <></>
                     )}
                   </div>
-                  <p className="text-sm">{noti.description}</p>
+                  <a href={noti.type == "FOLLOW" ? `/${locale}/profile/${noti.causeEntityId}` : `/${locale}/flow/${noti.causeEntityId}`} className="text-sm">{noti.description}</a>
                 </div>
               ))}
             </div>
