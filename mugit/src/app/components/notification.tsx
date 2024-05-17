@@ -155,7 +155,7 @@ export default function Notification() {
                       <></>
                     )}
                   </div>
-                  <a href={noti.type == "FOLLOW" ? `/${locale}/profile/${noti.causeEntityId}` : `/${locale}/flow/${noti.causeEntityId}`} className="text-sm">{noti.description}</a>
+                  <a onClick={() => markRead(noti.id)} href={noti.type == "FOLLOW" ? `/${locale}/profile/${noti.causeEntityId}` : `/${locale}/flow/${noti.causeEntityId}`} className="text-sm">{noti.description}</a>
                 </div>
               ))}
             </div>
