@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import fireToast from "../utils/fireToast";
 
 export default function Notification() {
-  const locale = useLocale()
+  const locale = useLocale();
   const t = useTranslations("Notification");
 
   const [notifications, setNotifications] = useState([
@@ -155,7 +155,17 @@ export default function Notification() {
                       <></>
                     )}
                   </div>
-                  <a onClick={() => markRead(noti.id)} href={noti.type == "FOLLOW" ? `/${locale}/profile/${noti.causeEntityId}` : `/${locale}/flow/${noti.causeEntityId}`} className="text-sm">{noti.description}</a>
+                  <a
+                    onClick={() => markRead(noti.id)}
+                    href={
+                      noti.type == "FOLLOW"
+                        ? `/${locale}/profile/${noti.causeEntityId}`
+                        : `/${locale}/flow/${noti.causeEntityId}`
+                    }
+                    className="text-sm"
+                  >
+                    {noti.description}
+                  </a>
                 </div>
               ))}
             </div>
