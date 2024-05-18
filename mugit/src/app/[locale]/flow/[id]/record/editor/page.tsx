@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Edit from "./edit"; // Edit 컴포넌트를 import합니다.
+import Edit from "./edit2"; // Edit 컴포넌트를 import합니다.
 import { SettingsContext } from "./context/settingsContext";
 import { Tab } from "@headlessui/react";
 import LiveRecord from "./components/record/Liverecord";
