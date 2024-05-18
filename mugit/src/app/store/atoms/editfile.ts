@@ -1,16 +1,16 @@
 import { atom } from "jotai";
 
 // 편집기로 보낼 파일
-export const fileInitialValue = [
-  {
-    file: "/note.mp3",
-    name: "example1",
-  },
-  {
-    file: "/note.mp3",
-    name: "example2",
-  },
-];
+// export const fileInitialValue = [
+//   {
+//     file: "/note.mp3",
+//     name: "example1",
+//   },
+//   {
+//     file: "/note.mp3",
+//     name: "example2",
+//   },
+// ];
 
 // export const fileInitialValue2 = {
 //   preSources: [
@@ -98,17 +98,17 @@ export const fileToEdit = atom(fileInitialValue2);
 
 // 최종적으로 릴리즈할 플로우
 
-export const flowInitialValue = [
-  {
-    flow: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
-    source: [
-      "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
-      "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
-      "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
-      "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
-    ],
-  },
-];
+// export const flowInitialValue = [
+//   {
+//     flow: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+//     source: [
+//       "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+//       "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+//       "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+//       "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+//     ],
+//   },
+// ];
 
 // export const flowInitialValue2 = [
 //   {
@@ -139,29 +139,61 @@ export const flowInitialValue = [
 // ];
 
 export const flowInitialValue2 = {
-  flow: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+  flow: "말도안되는플로우",
   source: [
     {
-      file: new File([], "good life.mp3"),
+      file: new File([], "어디.mp3"),
       name: "good life",
-      url: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+      url: URL.createObjectURL(new File([], "good life.mp3")),
     },
     {
-      file: new File([], "good life.mp3"),
-      name: "is to eat",
-      url: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+      file: new File([], "보자.mp3"),
+      name: "good life",
+      url: URL.createObjectURL(new File([], "good life.mp3")),
     },
     {
-      file: new File([], "good life.mp3"),
-      name: "proper foods",
-      url: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+      file: new File([], "되나.mp3"),
+      name: "good life",
+      url: URL.createObjectURL(new File([], "good life.mp3")),
     },
     {
-      file: new File([], "good life.mp3"),
-      name: "as many as we can",
-      url: "https://mugit.site/files/36e523db-e317-4c32-80fa-aaed0cbb4658.mp3",
+      file: new File([], "안되나.mp3"),
+      name: "good life",
+      url: URL.createObjectURL(new File([], "good life.mp3")),
     },
   ],
 };
 
-export const fileToRelease = atom(flowInitialValue2);
+// 형식 또는 샘플 값으로 initialValue 지정
+export const flowInitialValue3 = {
+  flow: "",
+  source: [] as AudioFile[],
+};
+
+export const flowInitialValue4 = {
+  flow: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  source: [
+    {
+      file: null,
+      name: "SoundHelix Song 1",
+      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    },
+    {
+      file: null,
+      name: "SoundHelix Song 1",
+      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    },
+    {
+      file: null,
+      name: "SoundHelix Song 1",
+      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    },
+    {
+      file: null,
+      name: "SoundHelix Song 1",
+      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    },
+  ],
+};
+
+export const fileToRelease = atom(flowInitialValue3);
