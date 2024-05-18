@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { minusCircleIcon } from "../../constants/icons";
+import { minusCircleIcon, plusCircleIcon } from "../../constants/icons";
 import WaveSurferComp from "../../../WaveSurferComp";
+import { useAtom } from "jotai";
+import { fileToAdd } from "@/app/store/atoms/editfile";
 
 interface AudioFile {
   file: File;
@@ -22,6 +24,17 @@ export default function DragnDrop({
     document.body.ondrop = (e) => e.preventDefault();
   }, []);
 
+  const [addFile, setAddFile] = useAtom(fileToAdd);
+
+  const handleAddFile = (id: string) => {
+    const audio = audioFiles.find((audioFile) => audioFile.id === id);
+    if (audio) {
+      const prev = addFile;
+      setAddFile({ source: [...prev.source, audio] });
+    }
+    console.log("어케됨", audio, addFile);
+  };
+
   // const handleFilesDrop = (files: FileList) => {
   //   const newFiles = Array.from(files).map((file) => {
   //     const url = URL.createObjectURL(file);
@@ -39,12 +52,12 @@ export default function DragnDrop({
     setAudioFiles([...audioFiles, ...newFiles]);
   };
 
-  const handlePlayPause = (id: string) => {
-    const audio = audioFiles.find((audioFile) => audioFile.id === id);
-    if (audio) {
-      // Implement play/pause functionality here if needed
-    }
-  };
+  // const handlePlayPause = (id: string) => {
+  //   const audio = audioFiles.find((audioFile) => audioFile.id === id);
+  //   if (audio) {
+  //     // Implement play/pause functionality here if needed
+  //   }
+  // };
 
   return (
     <>
@@ -68,15 +81,25 @@ export default function DragnDrop({
             >
               {playIcon}
             </button> */}
-            <button
-              onClick={() => {
-                setAudioFiles(audioFiles.filter((x) => x.id !== id));
-                URL.revokeObjectURL(url); // Clean up the object URL
-              }}
-              className="h-fit"
-            >
-              {minusCircleIcon}
-            </button>
+            <div>
+              <button
+                onClick={() => {
+                  setAudioFiles(audioFiles.filter((x) => x.id !== id));
+                  URL.revokeObjectURL(url); // Clean up the object URL
+                }}
+                className="h-fit"
+              >
+                {minusCircleIcon}
+              </button>
+              <button
+                onClick={() => {
+                  handleAddFile(id);
+                }}
+                className="h-fit"
+              >
+                {plusCircleIcon}
+              </button>
+            </div>
             <p className="file-info">{file.name}</p>
           </div>
           <WaveSurferComp

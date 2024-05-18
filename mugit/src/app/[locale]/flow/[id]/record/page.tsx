@@ -9,16 +9,18 @@ import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
 
 import {
+  fileToAdd,
   fileToEdit,
   fileToRelease,
   flowInitialValue3,
 } from "@/app/store/atoms/editfile";
 import WavesurferComp from "@/app/components/wavesurfer";
 
-import CustomizedAccordions from "./SourceComponent";
 import DragnDropRecord from "./editor/components/source/DragnDropRecord";
 import IconRecord from "@/app/assets/icon/IconRecord";
 import { noteIcon } from "./editor/constants/icons";
+import Accordions from "./SourceComponent";
+import AddedAccordions from "./AddedSourceComponent";
 
 // 주고받을 오디오파일 형식
 interface AudioFile {
@@ -124,6 +126,8 @@ export default function RecordPage() {
   // 릴리즈 전 파일 수정 과정
   const [toEditFile, setToEditFile] = useAtom(fileToEdit);
   const [finalFile, setFinalFile] = useAtom(fileToRelease);
+  const [addFile, setAddFile] = useAtom(fileToAdd);
+  const addedFile = useAtomValue(fileToAdd);
   const params = useParams();
 
   // 유효한 오디오 URL인지 확인하는 함수
@@ -133,14 +137,17 @@ export default function RecordPage() {
 
   const [ancestorList, setAncestorList] = useState<Ancestor[]>([]);
   const [parentSource, setParentSource] = useState<Parent>([]);
+  const [isOrigin, setIfIsNotOrigin] = useState(true);
+
   // 제일 위에 띄울 것 세팅
-  // params에 맞는 History 딱 한번붙이기
+  // 제일처음 params에 맞는 History 딱 한번붙이기
   useEffect(() => {
     // 플로우 변화 감지시 레코드 새로 불러오기
     const fetchRecords = async () => {
       const fetchedRecords = await getRecords(params.id);
       // setRecordTimes(fetchedRecords.list.length);
       setRecords(fetchedRecords);
+      console.log(">>>>>>>>>>>>>>레코드 : ", fetchedRecords);
     };
     fetchRecords();
 
@@ -157,7 +164,58 @@ export default function RecordPage() {
       console.log(">>>>>>>>>>>>>>>부모 소스 : ", fetchedParent);
     };
     fetchParent();
-  }, [params.id]);
+  }, []);
+
+  // finalFile에 계속해서 업뎃
+  useEffect(() => {
+    // origin이면 history
+    if (ancestorList.length > 0) {
+      const getWave = async () => {
+        if (isOrigin) {
+          setFinalFile({
+            flow: ancestorList[0].musicPath,
+            source: parentSource.map((item) => ({
+              file: new File([], item.name),
+              id: item.id.toString(),
+              url: item.path,
+            })),
+          });
+        } else {
+          // 아니면 마지막 레코드 불러오기 + 합성
+          setFinalFile({
+            // 마지막 레코드 다 합친 파일
+            flow: ancestorList[0].musicPath,
+            // 마지막 레코드 소스들
+            source: parentSource.map((item) => ({
+              file: new File([], item.name),
+              id: item.id.toString(),
+              url: item.path,
+            })),
+          });
+        }
+      };
+      getWave();
+    }
+  }, [isOrigin]);
+
+  useEffect(() => {}, []);
+  // isOrigin은 제일 처음 레코드 후 계속 false
+  useEffect(() => {
+    if (records.length > 0) {
+      setIfIsNotOrigin(false);
+    }
+  }, [records]);
+
+  // 추가해보며 비교할 파일
+  useEffect(() => {
+    // 컴포넌트에서 버튼 누르면 같이 재생하는 모임에 끼워줌
+    // 누른애들 = addFile
+    // setFinalFile(원래+addFile)
+  }, [addFile]);
+
+  useEffect(() => {
+    console.log("레코드들", records);
+  }, [records]);
 
   // 레코드 메시지 세팅하는 함수
   const handleChangeMessage = (event: {
@@ -302,42 +360,42 @@ export default function RecordPage() {
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
         <div className="flex w-full flex-col ">
           {/* 릴리즈 전 최종 버전의 레코드 */}
-          {isValidAudioUrl(finalFile.flow) && (
-            <div className="latest-version rounded-md border-2 border-solid border-gray-300 bg-gray-100">
-              <div className="latest-version-title m-8 flex">
-                {noteIcon}
-                <p className=" px-4 text-2xl font-bold  text-gray-700">
-                  Latest Version
-                </p>
+
+          <div className="latest-version rounded-md border-2 border-solid border-gray-300 bg-gray-100">
+            <div className="latest-version-title m-8 flex">
+              {noteIcon}
+              <p className=" px-4 text-2xl font-bold  text-gray-700">
+                {isOrigin ? "Origin" : "Latest Version"}
+              </p>
+            </div>
+            <div className="m-4">
+              <div className="mt-8">
+                <WavesurferComp
+                  musicPath={finalFile.flow}
+                  musicname={""}
+                  type="source"
+                />
               </div>
-              <div className="m-4">
-                <div className="mt-8">
-                  <WavesurferComp
-                    musicPath={finalFile.flow}
-                    musicname={""}
-                    type="source"
-                  />
-                </div>
-                <div className="mt-8">
-                  <CustomizedAccordions />
-                </div>
-              </div>
-              <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
-                <button
-                  className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
-                  onClick={goBack}
-                >
-                  Cancel
-                </button>
-                <button
-                  className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
-                  onClick={() => handleClickRelease(params.id)}
-                >
-                  Release
-                </button>
+              <div className="mt-8">
+                <Accordions />
+                <AddedAccordions />
               </div>
             </div>
-          )}
+            <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
+              <button
+                className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+                onClick={goBack}
+              >
+                Cancel
+              </button>
+              <button
+                className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+                onClick={() => handleClickRelease(params.id)}
+              >
+                Release
+              </button>
+            </div>
+          </div>
 
           {/* 새 소스 파일 업로드 드롭다운 박스 */}
           <div className="define-source">

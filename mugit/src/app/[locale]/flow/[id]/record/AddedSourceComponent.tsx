@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
@@ -7,9 +7,10 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { useAtomValue } from "jotai";
-import { fileToRelease } from "@/app/store/atoms/editfile";
+import { useAtom, useAtomValue } from "jotai";
+import { fileToAdd, fileToRelease } from "@/app/store/atoms/editfile";
 import WaveSurferComp from "./WaveSurferComp";
+import { minusCircleIcon } from "./editor/constants/icons";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -47,17 +48,27 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function Accordions() {
-  const [expanded, setExpanded] = React.useState<boolean>(false);
+export default function AddedAccordions() {
+  const [expanded, setExpanded] = useState<boolean>(false);
   const toReleaseFile = useAtomValue(fileToRelease);
+  const [addedFile, setAddFile] = useAtom(fileToAdd);
 
   const handleToggle = () => {
     setExpanded(!expanded);
   };
+  const handleRemoveFile = (id: string) => {
+    const updatedFiles = addedFile.source.filter(
+      (audioFile) => audioFile.id !== id
+    );
+    setAddFile({ source: updatedFiles });
+  };
 
+  useEffect(() => {
+    console.log(addedFile);
+  }, []);
   return (
     <div>
-      {toReleaseFile.source.map((src, index) => (
+      {addedFile.source.map((src, index) => (
         <Accordion key={index} expanded={expanded} onChange={handleToggle}>
           <AccordionSummary
             aria-controls={`panel${index}d-content`}
@@ -66,6 +77,14 @@ export default function Accordions() {
             <Typography>{src.file.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
+            <button
+              onClick={() => {
+                handleRemoveFile(src.id);
+              }}
+              className="h-fit"
+            >
+              {minusCircleIcon}
+            </button>
             <WaveSurferComp
               musicPath={src.url}
               musicname={src.file.name}
