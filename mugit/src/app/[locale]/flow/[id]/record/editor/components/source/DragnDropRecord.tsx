@@ -612,7 +612,8 @@ export default function DragnDrop({
       <style jsx>{`
         .drop-area {
           height: 128px;
-          border: 4px dashed #999;
+          border: 2px dashed lightgray;
+          border-radius: 4px;
           margin: 2em 0;
           text-align: center;
           display: flex;
