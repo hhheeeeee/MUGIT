@@ -1,8 +1,9 @@
 import { createContext, useEffect, useReducer } from "react";
-import { dark, light } from "../theme";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import ContextMenu from "../components/ContextMenu";
 
+export const light = "";
+export const dark = "";
 // ======Imports============
 const THEME_DARK = "THEME_DARK";
 const THEME_LIGHT = "THEME_LIGHT";
@@ -19,7 +20,7 @@ const SETDIALOGBOX = "SETDIALOGBOX";
 const initialState = {
   podcast: "Podcast",
   theme: {
-    mode: "light", // 기본 모드를 light로 변경
+    mode: "light",
     backgroundColor: light,
     textColor: "black",
   },
