@@ -18,7 +18,7 @@ const SETENEABLEANNOTATIONS = "SETENEABLEANNOTATIONS";
 const ANNOTATIONS = "ANNOTATIONS";
 const SETDIALOGBOX = "SETDIALOGBOX";
 const initialState = {
-  podcast: "Podcast",
+  podcast: "Track",
   theme: {
     mode: "light",
     backgroundColor: light,

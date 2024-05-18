@@ -63,7 +63,10 @@ export default function CustomizedAccordions() {
             aria-controls={`panel${index}d-content`}
             id={`panel${index}d-header`}
           >
-            <Typography>{src.name}</Typography>
+            <Typography>
+              {src.name}
+              {src.url}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <WaveSurferComp

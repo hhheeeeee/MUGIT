@@ -78,6 +78,9 @@ const Edit = ({ uploadedFiles }) => {
   const [myMusicArray, setMyMusicArray] = useAtom(fileToEdit);
   const locale = useLocale();
   const params = useParams();
+  const audioFiles = useAtomValue(fileToEdit);
+  const [toReleaseFile, setToReleaseFile] = useAtom(fileToRelease);
+
   // 오디오 편집기 초기화
   const container = useCallback(
     (node) => {
@@ -166,7 +169,16 @@ const Edit = ({ uploadedFiles }) => {
             payload: fact,
           })
         );
-
+        ee.on("rendertrack", async (file, callback) => {
+          try {
+            console.log(`렌더트랙 이벤트 시작: ${file.name}`);
+            const data = await renderTrack(file);
+            callback(data);
+          } catch (error) {
+            console.error(`트랙 렌더링 오류: ${error.message}`);
+            callback(null);
+          }
+        });
         playlist.initExporter();
         setEventEmitter(ee);
       }
@@ -328,31 +340,31 @@ const Edit = ({ uploadedFiles }) => {
     }
   };
 
-  const audioFiles = useAtomValue(fileToEdit);
-
   useEffect(() => {
     // 전역 변수에서 가져온 파일 정보 로드
-    const allTracks = [...audioFiles.preSources, ...audioFiles.newSources];
+    if (ee) {
+      const allTracks = [...audioFiles.preSources, ...audioFiles.newSources];
 
-    const newTracks = allTracks.map((item) => ({
-      file: item.url,
-      name: item.name,
-      id: uuidv4(),
-    }));
+      const newTracks = allTracks.map((item) => ({
+        file: item.url,
+        name: item.name,
+        id: uuidv4(),
+      }));
 
-    setTracks(newTracks);
+      setTracks(newTracks);
 
-    allTracks.forEach((item) => {
-      if (item.url !== flowInitialValue3.flow) {
-        console.log("전역 변수에서 가져온 편집할 소스 목록 :", item.url);
-        ee.emit("newtrack", {
-          file: item.url,
-          name: item.name,
-          id: uuidv4(),
-        });
-      }
-    });
-  }, []);
+      allTracks.forEach((item) => {
+        if (item.url !== flowInitialValue3.flow) {
+          console.log("전역 변수에서 가져온 편집할 소스 목록 :", item.url);
+          ee.emit("newtrack", {
+            file: item.url,
+            name: item.name,
+            id: uuidv4(),
+          });
+        }
+      });
+    }
+  }, [ee, audioFiles]);
 
   // downloadTracks, Upload to Edit 위해 필요
   useEffect(() => {
@@ -370,8 +382,37 @@ const Edit = ({ uploadedFiles }) => {
   }, [uploadedFiles]);
 
   // 릴리즈 전 파일 수정 과정
-  const [toReleaseFile, setToReleaseFile] = useAtom(fileToRelease);
 
+  // Function to render an individual track by its ID
+  const renderTrack = (file) => {
+    return new Promise((resolve, reject) => {
+      console.log(`파일 렌더링 시작: ${file.name}`);
+      const reader = new FileReader();
+      reader.onload = () => {
+        console.log(`파일 읽기 완료: ${file.name}`);
+        resolve(new Blob([reader.result], { type: file.type }));
+      };
+      reader.onerror = (error) => {
+        console.error(`파일 읽기 오류: ${error}`);
+        reject(error);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const triggerRenderTrack = (trackId, file) => {
+    return new Promise((resolve, reject) => {
+      ee.emit("rendertrack", file, (data) => {
+        if (file) {
+          console.log(`렌더링되었습니다: ${file}`);
+          resolve({ trackId, data });
+        } else {
+          console.error("렌더링에 실패했습니다.");
+          reject("렌더링 실패");
+        }
+      });
+    });
+  };
   const submit = async () => {
     console.log("클릭했음");
 
@@ -395,48 +436,46 @@ const Edit = ({ uploadedFiles }) => {
       });
     });
 
-    // 각 트랙 url을 전역변수에 저장
-    const individualTrackUrls = [];
-    console.log("트랙렌더링시작");
-
+    // // 각 트랙 url을 전역변수에 저장
+    let individualTrackBlobs = [];
+    console.log("트랙 렌더링 시작");
     for (const track of tracks) {
-      console.log(`추가할 트랙: ${track.name}`);
-      // 렌더링 후
-      const trackBlob = await renderTrack(track.id, track.name);
-      // 트랙url 생성
-      const trackUrl = URL.createObjectURL(trackBlob);
-      // 트랙 url만든거 뿌림
-      individualTrackUrls.push({
-        file: new File([trackBlob], track.name),
-        name: track.name,
-        url: trackUrl,
-      });
+      console.log(`추가할 트랙: ${track.name} ${track.id}${track.file}`);
+      try {
+        const { trackId, data } = await triggerRenderTrack(
+          track.id,
+          track.file
+        );
+        const trackBlob = new Blob([data], { type: "audio/wav" });
+        individualTrackBlobs.push({
+          file: new File([trackBlob], track.name),
+          name: track.name,
+          url: URL.createObjectURL(new File([], track.name)),
+          // blob: trackBlob,
+        });
+        console.log("각 트랙 Blob 저장됨:", individualTrackBlobs);
+      } catch (error) {
+        console.error(`트랙 렌더링 오류: ${error}`);
+      }
     }
 
-    console.log("각 트랙 url 생성됨:", individualTrackUrls);
+    // console.log("각 트랙 url 생성됨:", individualTrackUrls);
 
     // 전역변수에 합친 트랙과 개별 트랙을 저장
     setToReleaseFile({
       flow: finalTrackUrl,
-      source: individualTrackUrls,
+      source: individualTrackBlobs,
     });
-    console.log("저장된 toReleaseFile : ", toReleaseFile);
+    console.log("$$$$$$$$$$$$$4저장된 toReleaseFile : ", toReleaseFile);
+    console.log("$$$$$$$$전역변수 값", fileToRelease);
 
     // 페이지 이동
     console.log("드디어 레코드 페이지로");
     router.push(`/${locale}/flow/${params.id}/record`);
   };
-
-  // Function to render an individual track by its ID
-  const renderTrack = (trackId, trackName) => {
-    return new Promise((resolve) => {
-      console.log(`렌더링중인 트랙: ${trackId}`);
-      ee.emit("rendertrack", trackId, "wav", (data) => {
-        console.log(`렌더링되었습니다: ${trackId}`);
-        resolve(new Blob([data], { type: "audio/wav" }));
-      });
-    });
-  };
+  useEffect(() => {
+    console.log("저장된 toReleaseFile : ", toReleaseFile);
+  }, [toReleaseFile]);
 
   // JSX 반환
   return (

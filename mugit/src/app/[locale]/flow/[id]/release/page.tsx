@@ -90,9 +90,12 @@ export default function ReleasePage() {
     imageFormData.append("image", imagefile);
 
     let audioFormData = new FormData();
-    // audioFormData.append("source", flowFile);
+    audioFormData.append("source", toReleaseFile.flow);
+    toReleaseFile.source.map((item) =>
+      audioFormData.append("source", item.file)
+    );
 
-    const [flowPic, flowAudio] = await Promise.all([
+    const [postPic, postAudio] = await Promise.all([
       fetch("https://mugit.site/files", {
         method: "POST",
         credentials: "include",
@@ -105,22 +108,33 @@ export default function ReleasePage() {
       }).then((response) => response.json()),
     ]);
 
-    await fetch(`https://mugit.site/api/flows/${params.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        title: name,
-        message: description,
-        authority: "PUBLIC",
-        files: [flowPic.list[0], fileToRelease],
-        hashtags: tags,
-      }),
-    }).then((res) => {
-      console.log(res);
+    const postRelease = await fetch(
+      `https://mugit.site/api/flows/${params.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          title: name,
+          message: description,
+          authority: "PUBLIC",
+          files: [postPic.list[0], postAudio.list[0]],
+          // files: [toReleaseFile.flow, ...toReleaseFile.source],
+          hashtags: tags,
+        }),
+      }
+    ).then((res) => {
+      console.log("반응?:", res);
     });
+
+    console.log(
+      "%%%%%%%%%%%%%%%%%%%%%%%%%%%postrelease : ",
+      postPic,
+      postAudio,
+      postRelease
+    );
 
     router.push(`/${locale}/flow/${params.id}`);
   };
@@ -158,11 +172,11 @@ export default function ReleasePage() {
 
           <SelectTags selected={tags} setSelected={setTags} />
 
-          {/* <WavesurferComp
-            musicPath={fileToRelease.flow}
-            musicname={fileToRelease}
+          <WavesurferComp
+            musicPath={toReleaseFile.flow}
+            musicname={""}
             type="source"
-          /> */}
+          />
 
           <h2 className="mt-6 text-lg">{t("recordMessages")}</h2>
           <RecordMessage records={records} />
