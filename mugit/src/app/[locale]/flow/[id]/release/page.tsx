@@ -9,6 +9,8 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import SelectTags from "@/app/components/selectTags";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
+import { useAtomValue } from "jotai";
+import { fileToRelease } from "@/app/store/atoms/editfile";
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
@@ -30,7 +32,7 @@ export default function ReleasePage() {
   const params = useParams();
   const [flowFile, setFlowFile] = useState(null);
   const [recordFiles, setRecordFiles] = useState([]);
-
+  const toReleaseFile = useAtomValue(fileToRelease);
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -113,7 +115,7 @@ export default function ReleasePage() {
         title: name,
         message: description,
         authority: "PUBLIC",
-        files: [flowPic.list[0], flowAudio.list[0]],
+        files: [flowPic.list[0], fileToRelease],
         hashtags: tags,
       }),
     }).then((res) => {
@@ -156,7 +158,11 @@ export default function ReleasePage() {
 
           <SelectTags selected={tags} setSelected={setTags} />
 
-          <WavesurferComp musicPath="" musicname="" type="source" />
+          {/* <WavesurferComp
+            musicPath={fileToRelease.flow}
+            musicname={fileToRelease}
+            type="source"
+          /> */}
 
           <h2 className="mt-6 text-lg">{t("recordMessages")}</h2>
           <RecordMessage records={records} />

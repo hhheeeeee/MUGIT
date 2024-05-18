@@ -553,10 +553,19 @@ export default function DragnDrop({
     document.body.ondrop = (e) => e.preventDefault();
   }, []);
 
+  // const handleFilesDrop = (files: FileList) => {
+  //   const newFiles = Array.from(files).map((file) => {
+  //     const url = URL.createObjectURL(file);
+  //     return { file, id: uuidv4(), url };
+  //   });
+  //   setAudioFiles([...audioFiles, ...newFiles]);
+  // };
+
   const handleFilesDrop = (files: FileList) => {
     const newFiles = Array.from(files).map((file) => {
       const url = URL.createObjectURL(file);
-      return { file, id: uuidv4(), url };
+      const newFile = new File([file], file.name, { type: file.type });
+      return { file: newFile, id: uuidv4(), url };
     });
     setAudioFiles([...audioFiles, ...newFiles]);
   };
