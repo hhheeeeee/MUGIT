@@ -63,15 +63,12 @@ export default function CustomizedAccordions() {
             aria-controls={`panel${index}d-content`}
             id={`panel${index}d-header`}
           >
-            <Typography>
-              {src.name}
-              {src.url}
-            </Typography>
+            <Typography>{src.file.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <WaveSurferComp
               musicPath={src.url}
-              musicname={src.name}
+              musicname={src.file.name}
               type="source"
             />
           </AccordionDetails>
