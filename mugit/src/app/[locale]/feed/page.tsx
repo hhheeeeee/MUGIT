@@ -8,12 +8,7 @@ import { Audio } from "react-loader-spinner";
 import useAsync from "@/app/hooks/useAsync";
 import { getFeed } from "@/app/libs/feedApi";
 import PlayHover from "@/app/container/trends/PlayHover";
-import { Link } from "@/navigation";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
-import { userAtom } from "@/app/store/atoms/user";
-import { useAtomValue } from "jotai";
-import GoogleButton from "@/app/container/google/googlebutton";
 
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
@@ -21,13 +16,11 @@ const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
 
 export default function SupportPage() {
   const t = useTranslations("Feed");
-  const router = useRouter();
   const locale = useLocale();
   const [page, setPage] = useState<number>(0);
   const [feedList, setFeedList] = useState<FeedContentType[]>([]);
   const [state, refetch] = useAsync(() => getFeed(page), [page]);
   const { data: feedlistresponse } = state;
-  const user = useAtomValue(userAtom);
 
   const [isloading, setIsLoading] = useState(false);
 
@@ -54,87 +47,69 @@ export default function SupportPage() {
 
   return (
     <>
-      {user.isLogined == "true" ? (
-        <div className="flex min-h-[90%] w-full  flex-col items-center bg-pointyellow p-10">
-          <div className="mx-auto flex min-h-[60%] w-[65%] flex-col rounded-md bg-white p-8">
-            <h2 className="text-2xl font-bold text-gray-700">
-              {t("feedtitle")}
-            </h2>
-            <p className="text-xl text-gray-700">{t("feedExp")}</p>
-            <p className="text-md mb-9 pt-4 text-gray-400">{t("feedExp1")}</p>
+      <div className="flex min-h-[90%] w-full  flex-col items-center bg-pointyellow p-10">
+        <div className="mx-auto flex min-h-[60%] w-[65%] flex-col rounded-md bg-white p-8">
+          <h2 className="text-2xl font-bold text-gray-700">{t("feedtitle")}</h2>
+          <p className="text-xl text-gray-700">{t("feedExp")}</p>
+          <p className="text-md mb-9 pt-4 text-gray-400">{t("feedExp1")}</p>
 
-            {feedList.map((item) => {
-              return (
-                <div key={item.id} className="flex w-full flex-col gap-2">
-                  <div>
-                    {/* <Link
-                  href={`/profile/${item.user.id}`}
-                  className="flex w-full items-center gap-2"
-                >
-                  <Image
-                    src={item.user.profileImagePath}
-                    className="h-[25px] w-[25px] rounded-full bg-gray-300"
-                    alt="Avatar"
-                    width={25}
-                    height={25}
-                  />
-                  <p>{item.user.nickName}</p>
-                </Link> */}
-                    <div className="flex">
-                      <div className="relative h-32 w-32 rounded-md">
-                        <Image
-                          className="h-32 w-32 rounded-md"
-                          src={item.coverPath}
-                          alt={item.title}
-                          priority
-                          style={{ objectFit: "cover" }}
-                          width={50}
-                          height={50}
+          {feedList.map((item) => {
+            return (
+              <div
+                key={item.id}
+                className="mb-4 flex w-full flex-col gap-2 border-b-2 border-solid border-gray-300 pb-4"
+              >
+                <div>
+                  <div className="flex">
+                    <div className="relative h-32 w-32 rounded-md">
+                      <Image
+                        className="h-32 w-32 rounded-md"
+                        src={item.coverPath}
+                        alt={item.title}
+                        priority
+                        style={{ objectFit: "cover" }}
+                        width={50}
+                        height={50}
+                      />
+                      <PlayHover
+                        item={item}
+                        css="absolute top-[20%] left-[20%] hidden group-hover:block z-10 cursor-pointer"
+                      />
+                    </div>
+                    <div className="relative ml-5 w-4/5">
+                      <a
+                        href={`/${locale}/flow/${item.id}`}
+                        className="block text-xl font-semibold hover:font-black hover:underline"
+                      >
+                        {item.title}
+                      </a>
+                      <a
+                        href={`/${locale}/profile/${item.user.id}`}
+                        className="block text-base hover:font-bold hover:underline"
+                      >
+                        {item.user.nickName}
+                      </a>
+                      <div className="absolute bottom-0 w-full">
+                        <WavesurferComp
+                          musicPath={item.musicPath}
+                          musicname={item.title}
+                          type="source"
                         />
-                        <PlayHover
-                          item={item}
-                          css="absolute top-[20%] left-[20%] hidden group-hover:block z-10 cursor-pointer"
-                        />
-                      </div>
-                      <div className="relative ml-5 w-4/5">
-                        <a
-                          href={`/${locale}/flow/${item.id}`}
-                          className="block text-xl font-semibold hover:font-black hover:underline"
-                        >
-                          {item.title}
-                        </a>
-                        <a
-                          href={`/${locale}/profile/${item.user.id}`}
-                          className="block text-base hover:font-bold hover:underline"
-                        >
-                          {item.user.nickName}
-                        </a>
-                        <div className="absolute bottom-0 w-full">
-                          <WavesurferComp
-                            musicPath={item.musicPath}
-                            musicname={item.title}
-                            type="source"
-                          />
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
 
-            {isloading && (
-              <Audio height="80" width="80" color="green" ariaLabel="loading" />
-            )}
+          {isloading && (
+            <Audio height="80" width="80" color="green" ariaLabel="loading" />
+          )}
 
-            <div ref={elementRef} className="mt-20"></div>
-          </div>
+          <div ref={elementRef} className="mt-20"></div>
         </div>
-      ) : (
-        <div className="flex min-h-[90%] w-full flex-col items-center justify-center bg-pointblack">
-          <GoogleButton />
-        </div>
-      )}
+      </div>
     </>
   );
 }

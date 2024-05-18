@@ -77,6 +77,9 @@ const Navbar = () => {
       <div className="flex w-full items-center justify-between">
         <div className="flex text-sm">
           {navbaritems.map((item) => {
+            if (user.isLogined !== "true" && item.name === "feed") {
+              return null;
+            }
             let activefonts;
             if (pathname.includes(item.to)) {
               activefonts = "text-white font-bold";
