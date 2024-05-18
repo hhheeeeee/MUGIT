@@ -120,8 +120,8 @@ export default function ReleasePage() {
           title: name,
           message: description,
           authority: "PUBLIC",
-          files: [postPic.list[0], postAudio.list[0]],
-          // files: [toReleaseFile.flow, ...toReleaseFile.source],
+          // files: [postPic.list[0], postAudio.list[0]],
+          files: [toReleaseFile.flow, ...toReleaseFile.source],
           hashtags: tags,
         }),
       }
