@@ -30,7 +30,7 @@
     "src/app/[locale]/flow/[id]/record/editor/Edit.jsx",
     "src/app/[locale]/flow/[id]/record/editor/page.tsx",
     "src/app/components/DragnDrop.jsx",
-    "src/app/[locale]/flow/[id]/record/editor/components/source/DragnDrop.tsx"
+    "src/app/[locale]/flow/[id]/record/editor/components/source/DragnDropRecord.tsx"
   ],
   "exclude": ["node_modules"]
 }
