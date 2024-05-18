@@ -2,12 +2,14 @@ import WavesurferComp from "@/app/components/wavesurfer";
 import { Disclosure } from "@headlessui/react";
 import { FlowDetailType } from "@/app/types/flowtype";
 import { sources } from "next/dist/compiled/webpack/webpack";
+import { useEffect } from "react";
 // import Image from "next/image";
 
 export default function FlowDetail({ item }: { item: FlowDetailType }) {
   if (item === undefined) {
     return <div>loading</div>;
   }
+
   return (
     <div className="">
       <div className="mb-5">

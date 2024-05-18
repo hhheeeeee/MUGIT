@@ -8,7 +8,11 @@ import { userAtom } from "@/app/store/atoms/user";
 import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
 
-import { fileToEdit, fileToRelease } from "@/app/store/atoms/editfile";
+import {
+  fileToEdit,
+  fileToRelease,
+  flowInitialValue3,
+} from "@/app/store/atoms/editfile";
 import WavesurferComp from "@/app/components/wavesurfer";
 
 import CustomizedAccordions from "./SourceComponent";
@@ -59,6 +63,11 @@ export default function RecordPage() {
   const [toEditFile, setToEditFile] = useAtom(fileToEdit);
   const toReleaseFile = useAtomValue(fileToRelease);
   const params = useParams();
+
+  // 유효한 오디오 URL인지 확인하는 함수
+  const isValidAudioUrl = (url: string) => {
+    return url && url !== flowInitialValue3.flow;
+  };
 
   // 레코드 메시지 세팅하는 함수
   const handleChangeMessage = (event: {
@@ -144,20 +153,6 @@ export default function RecordPage() {
       return;
     }
 
-    // // 전역 변수에 파일 정보를 저장
-    // setToEditFile({
-    //   preSources: toReleaseFile.map((item) => ({
-    //     file: item.source.file,
-    //     name: item.source.name,
-    //     url: URL.createObjectURL(item.source.file),
-    //   })), // 기존 소스가 있다면 설정
-    //   newSources: audioFiles.map((item) => ({
-    //     file: item.file,
-    //     name: item.file.name,
-    //     url: URL.createObjectURL(item.file),
-    //   })),
-    // });
-
     setToEditFile({
       preSources: toReleaseFile.source.map((item) => ({
         file: item.file,
@@ -172,17 +167,17 @@ export default function RecordPage() {
     });
 
     console.log(
-      "############",
-      audioFiles.map((file) => ({
-        file: file.file,
-        name: file.file.name,
-        url: URL.createObjectURL(file.file),
-      })),
       "%%%%%%%%%%%%%",
       toReleaseFile.source.map((item) => ({
         file: item.file,
         name: item.name,
         url: item.url,
+      })),
+      "############",
+      audioFiles.map((file) => ({
+        file: file.file,
+        name: file.file.name,
+        url: URL.createObjectURL(file.file),
       }))
     );
 
@@ -222,6 +217,7 @@ export default function RecordPage() {
       setRecords(fetchedRecords);
     };
     fetchRecords();
+    toReleaseFile;
   }, [params.id]);
 
   useEffect(() => {
@@ -229,7 +225,28 @@ export default function RecordPage() {
     console.log("에디터로 보내는 파일:", toEditFile);
     console.log("파일 서버 업로드 응답: ", fileResponse);
     console.log("레코드 서버 업로드 응답: ", recordResponse);
-  }, [params.id, audioFiles, fileResponse, recordResponse, toEditFile]);
+    console.log(
+      "############",
+      audioFiles.map((file) => ({
+        file: file.file,
+        name: file.file.name,
+        url: URL.createObjectURL(file.file),
+      })),
+      "%%%%%%%%%%%%%",
+      toReleaseFile.source.map((item) => ({
+        file: item.file,
+        name: item.name,
+        url: item.url,
+      }))
+    );
+  }, [
+    params.id,
+    audioFiles,
+    fileResponse,
+    recordResponse,
+    toEditFile,
+    toReleaseFile,
+  ]);
 
   // 릴리즈 페이지로 라우팅
   const handleClickRelease = (id: string | string[]) => {
@@ -246,40 +263,42 @@ export default function RecordPage() {
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
         <div className="flex w-full flex-col ">
           {/* 릴리즈 전 최종 버전의 레코드 */}
-          <div className="latest-version rounded-md border-2 border-solid border-gray-300 bg-gray-100">
-            <div className="latest-version-title m-8 flex">
-              {noteIcon}
-              <p className=" px-4 text-2xl font-bold  text-gray-700">
-                Latest Version
-              </p>
-            </div>
-            <div className="m-4">
-              <div className="mt-8">
-                <WavesurferComp
-                  musicPath={toReleaseFile.flow}
-                  musicname={""}
-                  type="source"
-                />
+          {isValidAudioUrl(toReleaseFile.flow) && (
+            <div className="latest-version rounded-md border-2 border-solid border-gray-300 bg-gray-100">
+              <div className="latest-version-title m-8 flex">
+                {noteIcon}
+                <p className=" px-4 text-2xl font-bold  text-gray-700">
+                  Latest Version
+                </p>
               </div>
-              <div className="mt-8">
-                <CustomizedAccordions />
+              <div className="m-4">
+                <div className="mt-8">
+                  <WavesurferComp
+                    musicPath={toReleaseFile.flow}
+                    musicname={""}
+                    type="source"
+                  />
+                </div>
+                <div className="mt-8">
+                  <CustomizedAccordions />
+                </div>
+              </div>
+              <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
+                <button
+                  className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+                  onClick={goBack}
+                >
+                  Cancel
+                </button>
+                <button
+                  className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+                  onClick={() => handleClickRelease(params.id)}
+                >
+                  Release
+                </button>
               </div>
             </div>
-            <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
-              <button
-                className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
-                onClick={goBack}
-              >
-                Cancel
-              </button>
-              <button
-                className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
-                onClick={() => handleClickRelease(params.id)}
-              >
-                Release
-              </button>
-            </div>
-          </div>
+          )}
 
           {/* 새 소스 파일 업로드 드롭다운 박스 */}
           <div className="define-source">
