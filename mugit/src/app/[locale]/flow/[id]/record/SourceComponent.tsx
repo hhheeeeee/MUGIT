@@ -49,7 +49,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function CustomizedAccordions() {
   const [expanded, setExpanded] = React.useState<boolean>(false);
-  const editedFile = useAtomValue(fileToRelease);
+  const toReleaseFile = useAtomValue(fileToRelease);
 
   const handleToggle = () => {
     setExpanded(!expanded);
@@ -57,16 +57,20 @@ export default function CustomizedAccordions() {
 
   return (
     <div>
-      {editedFile[0].source.map((src, index) => (
+      {toReleaseFile.source.map((src, index) => (
         <Accordion key={index} expanded={expanded} onChange={handleToggle}>
           <AccordionSummary
             aria-controls={`panel${index}d-content`}
             id={`panel${index}d-header`}
           >
-            <Typography>{src}</Typography>
+            <Typography>{src.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <WaveSurferComp musicPath={src} musicname={""} type="source" />
+            <WaveSurferComp
+              musicPath={src.url}
+              musicname={src.name}
+              type="source"
+            />
           </AccordionDetails>
         </Accordion>
       ))}
