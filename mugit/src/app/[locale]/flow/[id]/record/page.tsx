@@ -1,6 +1,6 @@
 "use client";
 import { useAtom } from "jotai";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -15,7 +15,6 @@ import {
   fileToRelease,
   flowInitialValue3,
 } from "@/app/store/atoms/editfile";
-import WavesurferComp from "@/app/components/wavesurfer";
 
 import DragnDropRecord from "./editor/components/source/DragnDropRecord";
 import IconRecord from "@/app/assets/icon/IconRecord";
@@ -23,6 +22,7 @@ import { noteIcon } from "./editor/constants/icons";
 import Accordions from "./SourceComponent";
 import AddedAccordions from "./AddedSourceComponent";
 import MultiAudioPlayer from "./MultiAudioPlayer";
+import WavesurferComp2 from "./WaveSurferComp2";
 //=======================인터페이스 지역===================//
 // 주고받을 오디오파일 형식
 interface AudioFile {
@@ -139,8 +139,8 @@ export default function RecordPage() {
 
   const mergedSources = [...addedFile.source, ...putFile.source];
   const params = useParams();
-
-  // 유효한 오디오 URL인지 확인하는 함수
+  const multiAudioPlayerRef = useRef<any>(null);
+  // 유효한 오디오 URL인지 확인하는 함수 -
   const isValidAudioUrl = (url: string) => {
     return url && url !== flowInitialValue3.flow;
   };
@@ -400,11 +400,24 @@ export default function RecordPage() {
             </div>
             <div className="m-4">
               <div className="mt-8">
-                <MultiAudioPlayer audioFiles={mergedSources} />
+                {/* <MultiAudioPlayer audioFiles={mergedSources} />
                 <WavesurferComp
                   musicPath={finalFile.flow}
                   musicname={""}
                   type="source"
+                /> */}
+                <WavesurferComp2
+                  musicname=""
+                  musicPath={
+                    mergedSources.length > 0 ? mergedSources[0].url : ""
+                  }
+                  type="source"
+                  onPlay={() => multiAudioPlayerRef.current.handlePlay()}
+                  onStop={() => multiAudioPlayerRef.current.handleStop()}
+                />
+                <MultiAudioPlayer
+                  ref={multiAudioPlayerRef}
+                  audioFiles={mergedSources}
                 />
               </div>
               <div className="mt-8">
