@@ -7,8 +7,10 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
+import { mergeTracks } from "./mergeTracks";
 
 import {
+  addInitialValue,
   fileToAdd,
   fileToEdit,
   fileToPut,
@@ -72,25 +74,6 @@ const getRecords = async (id: string | string[]) => {
   }
 };
 
-// 현재 플로우의 조상을 불러오는 함수
-const getAncestors = async (id: string | string[]) => {
-  try {
-    const response = await fetch(
-      `https://mugit.site/api/flows/${id}/ancestors`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  } catch (error) {
-    console.error("Failed to fetch records:", error);
-    return [];
-  }
-};
 // 현재 플로우의 정보를 불러오는 함수
 const getParent = async (id: string | string[]) => {
   try {
@@ -137,7 +120,7 @@ export default function RecordPage() {
   const [addFile, setAddFile] = useAtom(fileToAdd);
   const addedFile = useAtomValue(fileToAdd);
 
-  const mergedSources = [...addedFile.source, ...putFile.source];
+  const mergedSources = [...addedFile.source, ...puttFile.source];
   const params = useParams();
   const multiAudioPlayerRef = useRef<any>(null);
   // 유효한 오디오 URL인지 확인하는 함수 -
@@ -162,19 +145,27 @@ export default function RecordPage() {
     };
     fetchRecords();
 
-    const fetchAncenstors = async () => {
-      const fetchedAncestors = await getAncestors(params.id);
-      setAncestorList(fetchedAncestors.list);
-      console.log(">>>>>>>>>>>>>>>조상 : ", fetchedAncestors.list);
-    };
-    fetchAncenstors();
-
     const fetchParent = async () => {
       const fetchedParent = await getParent(params.id);
       setParentSource(fetchedParent);
       console.log(">>>>>>>>>>>>>>>부모 소스 : ", fetchedParent);
     };
     fetchParent();
+    const latestRecord =
+      records.list && records.list.length > 0
+        ? records.list[records.list.length - 1]
+        : null;
+    setPutFile({
+      source: latestRecord
+        ? latestRecord.sources.map(
+            (item: { name: string; id: any; path: any }) => ({
+              file: new File([], item.name),
+              id: item.id,
+              path: item.path,
+            })
+          )
+        : [],
+    });
   }, []);
   // finalFile을 계속 추적해서 재업
   useEffect(() => console.log(">>>>>>>>>웨이브 : ", finalFile), [finalFile]);
@@ -223,6 +214,7 @@ export default function RecordPage() {
         url: item.url,
       })),
     });
+    setAudioFiles(mergedSources);
   }, []);
 
   // isOrigin은 제일 처음 레코드 후 계속 false
@@ -232,14 +224,6 @@ export default function RecordPage() {
     }
     // console.log("레코드 개수 : ", records.list.length);
   }, [records]);
-
-  // 추가해보며 비교할 파일
-  useEffect(() => {
-    // 컴포넌트에서 버튼 누르면 같이 재생하는 모임에 끼워줌
-    // 누른애들 = addFile
-    // setFinalFile(원래+addFile)
-    // 빼면 같이 재생하는 모임에서 뺌
-  }, [addFile]);
 
   useEffect(() => {
     console.log("레코드들", records);
@@ -255,7 +239,8 @@ export default function RecordPage() {
   // 레코드 추가하는 함수
   const addRecord = async () => {
     // 레코드 메시지와 파일 모두 확인
-    if (audioFiles.length === 0 || message.length === 0) {
+
+    if (addedFile.source.length === 0 || message.length === 0) {
       window.alert("빈 항목이 있습니다");
       return;
     }
@@ -263,7 +248,12 @@ export default function RecordPage() {
     // 파일 서버에 저장
     let audioFormData = new FormData();
 
-    audioFiles.forEach((f) => {
+    // 새로 더한 파일
+    addFile.source.forEach((f) => {
+      audioFormData.append("source", f.file);
+    });
+
+    puttFile.source.forEach((f) => {
       audioFormData.append("source", f.file);
     });
 
@@ -282,6 +272,14 @@ export default function RecordPage() {
         path: file.path,
       })
     );
+
+    // const preSources = puttFile.source.map(
+    //   (item: { file: any; name: string; path: string }) => ({
+    //     file: item,
+    //     name: item.file.id,
+    //     path: item.url,
+    //   })
+    // );
 
     // record 서버에 저장
     const recordPost = await fetch(
@@ -308,6 +306,7 @@ export default function RecordPage() {
     // message와 audioFiles 상태를 초기화
     setMessage("");
     setAudioFiles([]);
+    setAddFile(addInitialValue);
   };
 
   // record 다시 업데이트
@@ -348,6 +347,7 @@ export default function RecordPage() {
   useEffect(() => {
     console.log("드래그앤드롭으로 들어온 파일: ", audioFiles);
     console.log("목록에 올린 파일: ", addedFile);
+    console.log("$$$$$$$$$$$$$$$$$$ 파일: ", puttFile);
     console.log("에디터로 보내는 파일:", toEditFile);
     console.log("파일 서버 업로드 응답: ", fileResponse);
     console.log("레코드 서버 업로드 응답: ", recordResponse);
@@ -374,9 +374,29 @@ export default function RecordPage() {
     finalFile,
     addedFile,
   ]);
+  const [mergedTrackUrl, setMergedTrackUrl] = useState("");
 
+  const merge = async () => {
+    const url = await mergeTracks(mergedSources);
+    setMergedTrackUrl(url);
+  };
   // 릴리즈 페이지로 라우팅
   const handleClickRelease = (id: string | string[]) => {
+    merge();
+    setAddFile(addInitialValue);
+    setFinalFile({
+      // 마지막 레코드 다 합친 파일
+      flow: mergedTrackUrl,
+      // 마지막 레코드 소스들로 시작해, 빼고 넣기 가능 (뻬고 넣을 때마다 재렌더)
+      source: records.list[records.list.length - 1]?.sources.map(
+        (item: { name: string; id: any; path: any }) => ({
+          file: new File([], item.name),
+          id: item.id,
+          url: item.path,
+        })
+      ),
+    });
+    console.log("###################결국보낸거", fileToRelease);
     router.push(`/${locale}/flow/${id}/release`);
   };
 
