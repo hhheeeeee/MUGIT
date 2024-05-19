@@ -86,6 +86,7 @@ export default function ReleasePage() {
       return [];
     }
   };
+
   const getNoteName = getAncestors(params.id);
   console.log(
     "노트이름:"
@@ -94,13 +95,13 @@ export default function ReleasePage() {
 
   // getNoteName[getNoteName.length - 1];
   // console.log("노트이름:", getNoteName);
-  // useEffect(() => {
-  //   if (params.id) {
-  //     getRecords(params.id).then((fetchedRecords) =>
-  //       setRecords(fetchedRecords)
-  //     );
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (params.id) {
+      getRecords(params.id).then((fetchedRecords) =>
+        setRecords(fetchedRecords)
+      );
+    }
+  }, []);
 
   const releaseFlow = async () => {
     let imageFormData = new FormData();
@@ -149,7 +150,7 @@ export default function ReleasePage() {
       console.log("반응?:", res);
     });
     console.log("일단 전부 :", imagefile);
-    console.log("굿:", toReleaseFile.flow);
+    console.log("합친거:", toReleaseFile.flow);
     if (postPic) {
       setImageSrc(imagefile.path);
     }

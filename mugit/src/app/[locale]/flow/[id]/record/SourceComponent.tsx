@@ -11,6 +11,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { fileToPut, fileToRelease } from "@/app/store/atoms/editfile";
 import WaveSurferComp from "./WaveSurferComp";
 import { minusCircleIcon } from "./editor/constants/icons";
+import { useParams } from "next/navigation";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -50,12 +51,50 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function Accordions() {
   const [expanded, setExpanded] = useState<boolean>(false);
-  const toReleaseFile = useAtomValue(fileToRelease);
-  const [putFile, setPutFile] = useAtom(fileToPut);
 
+  const [putFile, setPutFile] = useAtom(fileToPut);
+  const getRecords = async (id: string | string[]) => {
+    try {
+      const response = await fetch(
+        `https://mugit.site/api/flows/${id}/records`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Failed to fetch records:", error);
+      return [];
+    }
+  };
+  const [records, setRecords] = useState<any>({});
+  const params = useParams();
   useEffect(() => {
-    setPutFile(toReleaseFile);
-  }, [toReleaseFile, setPutFile]);
+    const fetchUpdatedRecords = async () => {
+      const fetchedRecords = await getRecords(params.id);
+      setRecords(fetchedRecords);
+    };
+    fetchUpdatedRecords();
+    const latestRecord =
+      records.list && records.list.length > 0
+        ? records.list[records.list.length - 1]
+        : null;
+    setPutFile({
+      source: latestRecord
+        ? latestRecord.sources.map(
+            (item: { name: string; id: any; path: any }) => ({
+              file: new File([], item.name),
+              id: item.id,
+              path: item.path,
+            })
+          )
+        : [],
+    });
+  }, [records]);
 
   const handleRemoveFile = (id: string) => {
     const updatedFiles = putFile.source.filter(
