@@ -70,17 +70,17 @@ const DragDrop = ({
   const handleChange = (e: any) => {
     const file = e.target.files ? e.target.files[0] : null;
 
-    if (file && isValidExtension(file)) {
-      onChangeFile(file);
-    } else {
-      fireToast({
-        type: "경고",
-        title: "잘못된 파일 형식",
-        text: "mp3, 어쩌고 한 파일들을 올려주세요",
-      });
-      e.target.value = "";
-      onChangeFile(null);
-    }
+    // if (file && isValidExtension(file)) {
+    //   onChangeFile(file);
+    // } else {
+    //   fireToast({
+    //     type: "경고",
+    //     title: "잘못된 파일 형식",
+    //     text: "mp3파일을 올려주세요",
+    //   });
+    //   e.target.value = "";
+    //   onChangeFile(null);
+    // }
 
     // input 요소의 값 초기화
     e.target.value = "";

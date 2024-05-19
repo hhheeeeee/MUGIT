@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
@@ -49,11 +49,14 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function Accordions() {
-  const [expanded, setExpanded] = React.useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const toReleaseFile = useAtomValue(fileToRelease);
   const [putFile, setPutFile] = useAtom(fileToPut);
 
-  setPutFile(toReleaseFile);
+  useEffect(() => {
+    setPutFile(toReleaseFile);
+  }, [toReleaseFile, setPutFile]);
+
   const handleRemoveFile = (id: string) => {
     const updatedFiles = putFile.source.filter(
       (audioFile) => audioFile.id !== id
@@ -67,7 +70,7 @@ export default function Accordions() {
 
   return (
     <div>
-      {toReleaseFile.source.map((src, index) => (
+      {putFile.source.map((src, index) => (
         <Accordion key={index} expanded={expanded} onChange={handleToggle}>
           <AccordionSummary
             aria-controls={`panel${index}d-content`}

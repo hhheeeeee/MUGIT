@@ -4,45 +4,34 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useWavesurfer } from "@wavesurfer/react";
 import IconPause from "@/app/assets/icon/IconPause";
 
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { playDuration, playTime } from "@/app/store/atoms";
 import IconPlay from "@/app/assets/icon/IconPlay";
-import {
-  pauseCircleIcon,
-  pauseIcon,
-  playCircleICon,
-  playIcon,
-} from "./editor/constants/icons";
 
 const formatTime = (seconds: number) =>
   [seconds / 60, seconds % 60]
     .map((v) => `0${Math.floor(v)}`.slice(-2))
     .join(":");
 
-// const formatTime = (seconds: number) => {
-//   const minutes = Math.floor(seconds / 60);
-//   const secondsRemainder = Math.round(seconds) % 60;
-//   const paddedSeconds = `0${secondsRemainder}`.slice(-2);
-//   return `${minutes}:${paddedSeconds}`;
-// };
-
-// const parseTimeToSeconds = (timeString: string) => {
-//   const [minutes, seconds] = timeString.split(":").map((v) => parseInt(v, 10));
-//   return minutes * 60 + seconds;
-// };
+const parseTimeToSeconds = (timeString: string) => {
+  const [minutes, seconds] = timeString.split(":").map((v) => parseInt(v, 10));
+  return minutes * 60 + seconds;
+};
 
 interface WavesurferCompPropType {
   musicname: string;
   musicPath: string;
   type: string;
-  onPlay?: () => void;
-  onStop?: () => void;
+  onPlay: () => void;
+  onStop: () => void;
 }
 
-export default function WaveSurferComp({
+export default function WavesurferComp2({
   musicname,
   musicPath,
   type,
+  onPlay,
+  onStop,
 }: WavesurferCompPropType) {
   const time = useAtomValue(playTime);
   const containerRef = useRef(null);
@@ -62,20 +51,24 @@ export default function WaveSurferComp({
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
     height: 75,
-    waveColor: "lightgray",
-    progressColor: "gray",
+    waveColor: "#f1f609",
+    progressColor: "#0033ff",
     url: musicPath,
-    // plugins: useMemo(() => [Timeline.create()], []),
     barWidth: 2,
     dragToSeek: true,
-    // barHeight: 0.75,
-    // barGap: 1,
-    // barRadius: 30,
   });
 
   const onPlayPause = useCallback(() => {
-    wavesurfer && wavesurfer.playPause();
-  }, [wavesurfer]);
+    if (wavesurfer) {
+      if (wavesurfer.isPlaying()) {
+        wavesurfer.pause();
+        onStop();
+      } else {
+        wavesurfer.play();
+        onPlay();
+      }
+    }
+  }, [wavesurfer, onPlay, onStop]);
 
   if (wavesurfer) {
     wavesurfer.on("decode", (duration) => {
@@ -87,8 +80,23 @@ export default function WaveSurferComp({
   return (
     <>
       <div className="relative flex justify-between">
-        <button onClick={onPlayPause} className="h-fit">
-          {isPlaying ? pauseCircleIcon : playCircleICon}
+        <button
+          onClick={onPlayPause}
+          className="h-[75px] w-[75px] rounded-full bg-pointyellow"
+        >
+          {isPlaying ? (
+            <IconPause
+              color="#0033ff"
+              size="3rem"
+              tailwindCSS="absolute top-4 left-3.5"
+            />
+          ) : (
+            <IconPlay
+              color="#0033ff"
+              size="3.2rem"
+              tailwindCSS="absolute top-4 left-3.5"
+            />
+          )}
         </button>
         <div className="relative z-0 inline-block w-[88%]">
           <div ref={containerRef} />
