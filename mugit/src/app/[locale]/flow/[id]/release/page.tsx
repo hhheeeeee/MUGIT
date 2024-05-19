@@ -15,6 +15,39 @@ import { fileToRelease } from "@/app/store/atoms/editfile";
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
+interface User {
+  id: number;
+  nickName: string;
+  profileImagePath: string;
+}
+interface Ancestor {
+  id: number;
+  user: User;
+  title: string;
+  authority: "PUBLIC";
+  musicPath: string;
+  coverPath: string;
+  createdAt: string;
+  hashtags: string[];
+}
+const getAncestors = async (id: string | string[]) => {
+  try {
+    const response = await fetch(
+      `https://mugit.site/api/flows/${id}/ancestors`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Failed to fetch records:", error);
+    return [];
+  }
+};
 
 export default function ReleasePage() {
   const t = useTranslations("Form");
@@ -31,8 +64,8 @@ export default function ReleasePage() {
   const [imagefile, setImageFile] = useState<any>(null);
   const params = useParams();
   const [flowFile, setFlowFile] = useState(null);
-  const [recordFiles, setRecordFiles] = useState([]);
   const toReleaseFile = useAtomValue(fileToRelease);
+  const [ancestorList, setAncestorList] = useState<Ancestor[]>([]);
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -48,41 +81,23 @@ export default function ReleasePage() {
       return response.json();
     } catch (error) {
       console.error("Failed to fetch records:", error);
-      return []; // 실패 시 빈 배열 반환
+      return [];
     }
   };
+  const getNoteName = getAncestors(params.id);
+  console.log(
+    "노트이름:"
+    // getNoteName.then((res) => res.json().list[res.json().list.length - 1].title)
+  );
 
-  useEffect(() => {
-    if (params.id) {
-      getRecords(params.id).then((fetchedRecords) =>
-        setRecords(fetchedRecords)
-      );
-    }
-  }, [params.id]);
-
+  // getNoteName[getNoteName.length - 1];
+  // console.log("노트이름:", getNoteName);
   // useEffect(() => {
   //   if (params.id) {
   //     getRecords(params.id).then((fetchedRecords) =>
   //       setRecords(fetchedRecords)
   //     );
   //   }
-
-  //   if (records.list) {
-  //     setRecordFiles(
-  //       records.list.map((file) => file.sources.map((src) => src.path))
-  //     );
-  //     console.log(
-  //       "records&&&&&&&&&&&&&&&&:",
-  //       records.list.map((file) => file.sources.map((src) => src.path))
-  //     );
-  //   }
-  // }, [params.id]);
-
-  // // 처음에 완성된 플로우 파일 가져오기
-  // useEffect(() => {
-  //   setFlowFile(
-  //     "https://mugit.site/files/efc94627-899d-4765-a10f-fda58598b1de.mp3"
-  //   );
   // }, []);
 
   const releaseFlow = async () => {
@@ -115,13 +130,13 @@ export default function ReleasePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify({
           title: name,
           message: description,
           authority: "PUBLIC",
           // files: [postPic.list[0], postAudio.list[0]],
-          files: [toReleaseFile.flow, ...toReleaseFile.source],
+          files: [imagefile, toReleaseFile.flow, ...toReleaseFile.source],
           hashtags: tags,
         }),
       }
@@ -129,13 +144,9 @@ export default function ReleasePage() {
       console.log("반응?:", res);
     });
 
-    console.log(
-      "%%%%%%%%%%%%%%%%%%%%%%%%%%%postrelease : ",
-      postPic,
-      postAudio,
-      postRelease
-    );
-
+    if (postPic) {
+      setImageSrc(imagefile.path);
+    }
     router.push(`/${locale}/flow/${params.id}`);
   };
 
@@ -157,11 +168,11 @@ export default function ReleasePage() {
         s
         <div className="flex w-9/12 flex-col">
           <h2 className=" text-lg">{t("note")}</h2>
-          <input
+          {/* <input
             type="text"
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
-          />
-
+          /> */}
+          <h2 className="mt-4 text-lg">{}</h2>
           <h2 className="mt-4 text-lg">{t("flow")}</h2>
           <input
             value={name}
