@@ -427,13 +427,13 @@ export default function RecordPage() {
             </div>
             <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
               <button
-                className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+                className="mx-4 h-[45px] w-[150px] rounded-full bg-black text-2xl  italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
                 onClick={goBack}
               >
                 Cancel
               </button>
               <button
-                className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+                className=" h-[45px] w-[150px] rounded-full bg-pointblue text-2xl italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
                 onClick={() => handleClickRelease(params.id)}
               >
                 Release
@@ -455,7 +455,7 @@ export default function RecordPage() {
             />
             <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
               <button
-                className="h-[45px] w-[150px] rounded-full bg-black px-10 text-2xl font-extrabold italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+                className="h-[45px] w-[150px] rounded-full bg-black px-10 text-2xl  italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
                 onClick={goEdit}
               >
                 Edit
@@ -493,7 +493,7 @@ export default function RecordPage() {
               />
               <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
                 <button
-                  className="mt-8 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl font-extrabold italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
+                  className="mt-8 h-[45px] w-[150px] rounded-full bg-pointblue text-2xl italic text-white transition duration-200 hover:bg-pointyellow hover:text-pointblue"
                   onClick={addRecord}
                 >
                   Record

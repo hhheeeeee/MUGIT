@@ -54,9 +54,9 @@
     "save": "Save"
   },
   "Information": {
-    "note": "Short Explanations about Note and How it works!",
+    "note": "You can create a new Flow starting from the Note.",
     "flow": "Short Explanations about Flow and How it works!",
-    "release": "What is Release?????"
+    "release": "The completed Flow, built up from multiple Records, can be Released and publicly shared."
   },
   "Navbar": {
     "trends": "Trends",
@@ -101,5 +101,9 @@
     "read": "Read",
     "readall": "Read All",
     "noContent": "There're no unread notifications"
+  },
+  "Note": {
+    "chooseFile": "Or choose files to upload",
+    "dragOrClick": "Drag and drop files here"
   }
 }

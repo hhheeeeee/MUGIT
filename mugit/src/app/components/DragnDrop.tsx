@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fireToast from "@/app/utils/fireToast";
+import { useTranslations } from "next-intl";
 
 interface DragDropProps {
   onChangeFile: (file: File | null) => void;
@@ -41,6 +41,8 @@ const DragnDrop: React.FC<DragDropProps> = ({
     }
   };
 
+  const t = useTranslations("Note");
+
   return (
     <div
       className={`dropzone ${dragging ? "dragging" : ""}`}
@@ -49,7 +51,7 @@ const DragnDrop: React.FC<DragDropProps> = ({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <p>{description || "Drag & Drop File Here"}</p>
+      <p>{description || t("dragOrClick")}</p>
       <style jsx>{`
         .dropzone {
           width: 100%;

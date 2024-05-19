@@ -51,9 +51,9 @@
     "save": "저장"
   },
   "Information": {
-    "note": "Note에 대한 간단한 설명",
-    "flow": "Flow에 대한 간단한 설명",
-    "release": "Release 에 대한 간단한 설명"
+    "note": "그래프의 시작점인 Note를 생성할 수 있습니다. 이 Note는 Flow 흐름들의 시작점이 됩니다.",
+    "flow": "그래프의 시작점인 Note에서 새로운 Flow를 생성할 수 있습니다. 새로운 Flow에 또 다른 Flow를 생성할 수 있습니다.",
+    "release": "여러 개의 Record가 쌓여 완성된 Flow는 Release하여 전체 공개할 수 있습니다."
   },
   "Navbar": {
     "trends": "트렌드",
@@ -98,5 +98,9 @@
     "read": "읽음",
     "readall": "모두 읽음",
     "noContent": "안 읽은 알림이 없습니다."
+  },
+  "Note": {
+    "chooseFile": "아니면 업로드할 파일은 선택해주세요",
+    "dragOrClick": "업로드하고 싶은 파일을 드래그앤드롭 해주세요"
   }
 }

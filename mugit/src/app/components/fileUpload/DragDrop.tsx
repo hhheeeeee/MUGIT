@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import fireToast from "@/app/utils/fireToast";
+import { useTranslations } from "next-intl";
 
 interface DragDropProps {
   onChangeFile: (file: File | null) => void;
@@ -59,7 +60,7 @@ const DragDrop = ({
         fireToast({
           type: "경고",
           title: "잘못된 파일 형식",
-          text: "mp3, 어쩌고 한 파일들을 올려주세요",
+          text: "mp3, wav, flac 형식의 파일들을 올려주세요",
         });
       }
     }
@@ -103,6 +104,7 @@ const DragDrop = ({
   //     onChangeFile(null);
   //   }
   // };
+  const t = useTranslations("Note");
 
   return (
     <>
@@ -121,7 +123,7 @@ const DragDrop = ({
       >
         {description}
         <div className="pointer-events-none mt-2 rounded-lg bg-pointblue  px-3 py-2 text-sm text-white hover:bg-[#052cc6] hover:shadow">
-          Or choose files to upload
+          {t("chooseFile")}
         </div>
       </label>
       <input

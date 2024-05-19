@@ -138,15 +138,15 @@ export default function UserInfo() {
     <div className="flex h-80 flex-wrap content-center justify-center bg-[#f1f609]">
       <div className="flex w-2/3 justify-evenly">
         <Image
-          width={150}
-          height={150}
+          width={170}
+          height={170}
           alt="profile image"
           src={userInfo.profileImagePath}
-          className="h-48 w-48 rounded-full"
+          className="h-56 w-56 rounded-full"
           priority
         />
-        <div className="">
-          <p className="pb-3 text-4xl">{userInfo.nickName}</p>
+        <div className="flex flex-col justify-evenly">
+          <p className="pb-3 text-4xl font-bold">{userInfo.nickName}</p>
           <p className="pb-3 text-xl">{userInfo.profileText}</p>
           <div className="flex divide-x-2 divide-solid divide-black pb-3">
             <div className="pr-5 text-center">
@@ -166,14 +166,14 @@ export default function UserInfo() {
           <div>
             {userInfo.isMyProfile ? (
               <button
-                className="rounded border-2 border-black px-2 py-1"
+                className="rounded border-2 border-black px-2 py-1 transition duration-300 hover:bg-black hover:text-pointyellow"
                 onClick={clickModal}
               >
                 {t("edit")}
               </button>
             ) : (
               <button
-                className="mr-3 rounded border-2 border-black px-2 py-1"
+                className="mr-3 rounded border-2 border-black px-2 py-1 transition duration-300 hover:bg-black hover:text-pointyellow"
                 onClick={follow}
               >
                 {userInfo.isFollower ? t("unfollow") : t("follow")}
