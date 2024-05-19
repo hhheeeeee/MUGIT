@@ -131,9 +131,13 @@ export default function RecordPage() {
   const [finalFile, setFinalFile] = useAtom(fileToRelease);
   // 있던 파일들 중 둘 파일 선정
   const [putFile, setPutFile] = useAtom(fileToPut);
+  const puttFile = useAtomValue(fileToPut);
+
   // 추가한 파일들 중 더할 파일 선정
   const [addFile, setAddFile] = useAtom(fileToAdd);
   const addedFile = useAtomValue(fileToAdd);
+
+  const mergedSources = [...addedFile.source, ...putFile.source];
   const params = useParams();
 
   // 유효한 오디오 URL인지 확인하는 함수
@@ -396,7 +400,7 @@ export default function RecordPage() {
             </div>
             <div className="m-4">
               <div className="mt-8">
-                <MultiAudioPlayer audioFiles={addedFile.source} />
+                <MultiAudioPlayer audioFiles={mergedSources} />
                 <WavesurferComp
                   musicPath={finalFile.flow}
                   musicname={""}
