@@ -1,11 +1,14 @@
 import { Popover } from "@headlessui/react";
 import { apiUrl } from "../store/atoms";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import fireToast from "../utils/fireToast";
+import { useRouter } from "next/navigation";
+import { notificationType } from "../types/notificationtype";
 
 export default function Notification() {
   const locale = useLocale();
+  const router = useRouter();
   const t = useTranslations("Notification");
 
   const [notifications, setNotifications] = useState([
@@ -107,6 +110,23 @@ export default function Notification() {
     eventSource.addEventListener("review", notiHandler);
   }, []);
 
+  const handleNotificationClick = (noti: notificationType) => {
+    const url =
+      noti.type === "FOLLOW"
+        ? `/${locale}/profile/${noti.causeEntityId}`
+        : `/${locale}/flow/${noti.causeEntityId}`;
+    router.push(url);
+    markRead(noti.id);
+  };
+
+  const handleClickRead = (
+    e: React.MouseEvent<HTMLParagraphElement, MouseEvent>,
+    noti: notificationType
+  ) => {
+    e.stopPropagation();
+    markRead(noti.id);
+  };
+
   return (
     <Popover className="relative">
       {({ open }) => (
@@ -125,8 +145,8 @@ export default function Notification() {
             </svg>
           </Popover.Button>
           <Popover.Panel className="absolute right-0 top-[120%] z-10">
-            <div className="h-64 w-56 overflow-auto rounded-lg border border-solid border-slate-500 bg-white p-3">
-              <div className="flex justify-between border-b-2 border-solid border-slate-500 text-xl">
+            <div className="h-64 w-56 overflow-auto rounded-lg border border-solid border-gray-500 bg-white">
+              <div className="flex justify-between border-b-2 border-solid border-slate-400 px-3 py-2 text-xl">
                 <h1 className="font-bold">{t("notice")}</h1>
                 <p
                   className="text-sm hover:cursor-pointer hover:font-semibold hover:text-pointblue"
@@ -138,16 +158,15 @@ export default function Notification() {
               {notifications.map((noti) => (
                 <div
                   key={noti.id}
-                  className="border-b-2 border-solid border-slate-500 py-0.5"
+                  className="cursor-pointer border-b-2 border-solid border-gray-200 p-3 py-2 hover:bg-gray-200"
+                  onClick={() => handleNotificationClick(noti)}
                 >
                   <div className="flex justify-between">
-                    <p className="text-base font-medium">{noti.type}</p>
+                    <p className="mb-1 text-base font-medium">{noti.type}</p>
                     {noti.id ? (
                       <p
                         className="text-sm hover:cursor-pointer hover:font-semibold hover:text-pointblue"
-                        onClick={() => {
-                          markRead(noti.id);
-                        }}
+                        onClick={(e) => handleClickRead(e, noti)}
                       >
                         {t("read")}
                       </p>
@@ -155,17 +174,7 @@ export default function Notification() {
                       <></>
                     )}
                   </div>
-                  <a
-                    onClick={() => markRead(noti.id)}
-                    href={
-                      noti.type == "FOLLOW"
-                        ? `/${locale}/profile/${noti.causeEntityId}`
-                        : `/${locale}/flow/${noti.causeEntityId}`
-                    }
-                    className="text-sm"
-                  >
-                    {noti.description}
-                  </a>
+                  <a className="text-sm">{noti.description}</a>
                 </div>
               ))}
             </div>

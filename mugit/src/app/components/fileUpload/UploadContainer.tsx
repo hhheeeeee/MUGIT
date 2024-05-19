@@ -1,6 +1,7 @@
 "use client";
 import DragDrop from "./DragDrop";
 import AudioSprites from "../audioSprites/audiosprites";
+import { useTranslations } from "next-intl";
 
 type UploadContainerPropsType = {
   file: File | null;
@@ -25,6 +26,8 @@ export default function UploadContainer({
   //   }
   // };
 
+  const t = useTranslations("Note");
+
   return (
     <>
       {file ? (
@@ -40,8 +43,8 @@ export default function UploadContainer({
       ) : (
         <DragDrop
           onChangeFile={handleFileSelect}
-          description="Drag and drop your file here"
-          validExtensions={["mp3"]} // 확장자 정보 추가
+          description={t("dragOrClick")}
+          validExtensions={["mp3", "wav", "flac"]} // 확장자 정보 추가
         ></DragDrop>
       )}
     </>

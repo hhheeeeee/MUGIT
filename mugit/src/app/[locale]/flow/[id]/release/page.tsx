@@ -171,7 +171,7 @@ export default function ReleasePage() {
           imagefile={imagefile}
           setImageFile={setImageFile}
         />
-        s
+
         <div className="flex w-9/12 flex-col">
           <h2 className=" text-lg">{t("note")}</h2>
           {/* <input
