@@ -71,3 +71,10 @@ export const addInitialValue = {
   source: [] as AudioFile[],
 };
 export const fileToAdd = atom(addInitialValue);
+
+// 두는 파일
+
+export const putInitialValue = {
+  source: [] as AudioFile[],
+};
+export const fileToPut = atom(putInitialValue);

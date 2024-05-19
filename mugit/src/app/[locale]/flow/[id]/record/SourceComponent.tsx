@@ -7,9 +7,10 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { useAtomValue } from "jotai";
-import { fileToRelease } from "@/app/store/atoms/editfile";
+import { useAtom, useAtomValue } from "jotai";
+import { fileToPut, fileToRelease } from "@/app/store/atoms/editfile";
 import WaveSurferComp from "./WaveSurferComp";
+import { minusCircleIcon } from "./editor/constants/icons";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -50,6 +51,15 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function Accordions() {
   const [expanded, setExpanded] = React.useState<boolean>(false);
   const toReleaseFile = useAtomValue(fileToRelease);
+  const [putFile, setPutFile] = useAtom(fileToPut);
+
+  setPutFile(toReleaseFile);
+  const handleRemoveFile = (id: string) => {
+    const updatedFiles = putFile.source.filter(
+      (audioFile) => audioFile.id !== id
+    );
+    setPutFile({ source: updatedFiles });
+  };
 
   const handleToggle = () => {
     setExpanded(!expanded);
@@ -66,6 +76,14 @@ export default function Accordions() {
             <Typography>{src.file.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
+            <button
+              onClick={() => {
+                handleRemoveFile(src.id);
+              }}
+              className="h-fit"
+            >
+              {minusCircleIcon}
+            </button>
             <WaveSurferComp
               musicPath={src.url}
               musicname={src.file.name}

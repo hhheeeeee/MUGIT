@@ -11,6 +11,7 @@ import RecordMessage from "./recordMessage";
 import {
   fileToAdd,
   fileToEdit,
+  fileToPut,
   fileToRelease,
   flowInitialValue3,
 } from "@/app/store/atoms/editfile";
@@ -126,6 +127,9 @@ export default function RecordPage() {
   // 릴리즈 전 파일 수정 과정
   const [toEditFile, setToEditFile] = useAtom(fileToEdit);
   const [finalFile, setFinalFile] = useAtom(fileToRelease);
+  // 있던 파일들 중 둘 파일 선정
+  const [putFile, setPutFile] = useAtom(fileToPut);
+  // 추가한 파일들 중 더할 파일 선정
   const [addFile, setAddFile] = useAtom(fileToAdd);
   const addedFile = useAtomValue(fileToAdd);
   const params = useParams();
@@ -166,6 +170,8 @@ export default function RecordPage() {
     fetchParent();
   }, []);
 
+  useEffect(() => console.log(">>>>>>>>>웨이브 : ", finalFile), [finalFile]);
+
   // finalFile에 계속해서 업뎃
   useEffect(() => {
     // origin이면 history
@@ -198,10 +204,19 @@ export default function RecordPage() {
     }
   }, [isOrigin]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setPutFile({
+      source: finalFile.source.map((item) => ({
+        file: item.file,
+        id: item.id,
+        url: item.url,
+      })),
+    });
+  }, []);
+
   // isOrigin은 제일 처음 레코드 후 계속 false
   useEffect(() => {
-    if (records.length > 0) {
+    if (records.length > 1) {
       setIfIsNotOrigin(false);
     }
   }, [records]);

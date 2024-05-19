@@ -70,7 +70,7 @@ export default function DragnDrop({
           handleFilesDrop(e.dataTransfer.files);
         }}
       >
-        새로운 파일을 추가하려면 네모 안으로 끌어당겨보세요 !
+        새로운 영감을 끌어당겨보세요 !
       </div>
       {audioFiles.map(({ file, id, url }) => (
         <div key={id} className="file-container relative mb-5 flex flex-col">
