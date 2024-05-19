@@ -8,6 +8,7 @@ import { userAtom } from "@/app/store/atoms/user";
 import Cookies from "js-cookie";
 import { prevpathAtom } from "@/app/store/atoms/user";
 import fireToast from "@/app/utils/fireToast";
+import Loading from "@/app/components/loading";
 
 export default function Page() {
   const locale = useLocale();
@@ -48,5 +49,5 @@ export default function Page() {
       })
       .catch((error) => console.log(error));
   });
-  return <div>로그인 중... 로딩중 화면 넣기</div>;
+  return <Loading />;
 }
