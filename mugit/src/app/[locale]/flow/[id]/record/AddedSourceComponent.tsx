@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
@@ -8,7 +8,7 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useAtom, useAtomValue } from "jotai";
-import { fileToPut, fileToRelease } from "@/app/store/atoms/editfile";
+import { fileToAdd, fileToRelease } from "@/app/store/atoms/editfile";
 import WaveSurferComp from "./WaveSurferComp";
 import { minusCircleIcon } from "./editor/constants/icons";
 
@@ -48,26 +48,27 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function Accordions() {
-  const [expanded, setExpanded] = React.useState<boolean>(false);
+export default function AddedAccordions() {
+  const [expanded, setExpanded] = useState<boolean>(false);
   const toReleaseFile = useAtomValue(fileToRelease);
-  const [putFile, setPutFile] = useAtom(fileToPut);
-
-  setPutFile(toReleaseFile);
-  const handleRemoveFile = (id: string) => {
-    const updatedFiles = putFile.source.filter(
-      (audioFile) => audioFile.id !== id
-    );
-    setPutFile({ source: updatedFiles });
-  };
+  const [addedFile, setAddFile] = useAtom(fileToAdd);
 
   const handleToggle = () => {
     setExpanded(!expanded);
   };
+  const handleRemoveFile = (id: string) => {
+    const updatedFiles = addedFile.source.filter(
+      (audioFile) => audioFile.id !== id
+    );
+    setAddFile({ source: updatedFiles });
+  };
 
+  useEffect(() => {
+    console.log(addedFile);
+  }, []);
   return (
     <div>
-      {toReleaseFile.source.map((src, index) => (
+      {addedFile.source.map((src, index) => (
         <Accordion key={index} expanded={expanded} onChange={handleToggle}>
           <AccordionSummary
             aria-controls={`panel${index}d-content`}

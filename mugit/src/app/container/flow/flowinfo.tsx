@@ -13,6 +13,7 @@ import { getFlowDetail } from "@/app/libs/flowReadApi";
 import Loading from "@/app/components/loading";
 import Error from "@/app/components/error";
 import { useLocale } from "next-intl";
+import { useEffect } from "react";
 
 const Tree = dynamic(() => import("./tree"), { ssr: false });
 interface PropType {
@@ -44,6 +45,7 @@ export default function FlowInfo({ page }: PropType) {
               className="mr-5 h-48 w-48 rounded object-cover"
               priority
             />
+
             <div className="relative w-4/5">
               <div className="mb-3 flex">
                 {flowDetail.hashtags.map((tag) => (
@@ -65,6 +67,12 @@ export default function FlowInfo({ page }: PropType) {
                 {flowDetail.user.nickName}
               </a>
               <ButtonGroup item={flowDetail} page={page} />
+              <button
+                className="my-5 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                onClick={refetch}
+              >
+                Refresh Data
+              </button>
             </div>
           </div>
           <hr className="border-2" />

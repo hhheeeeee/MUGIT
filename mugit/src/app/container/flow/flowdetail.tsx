@@ -3,6 +3,7 @@ import { Disclosure } from "@headlessui/react";
 import { FlowDetailType } from "@/app/types/flowtype";
 import { sources } from "next/dist/compiled/webpack/webpack";
 import { useEffect } from "react";
+import WaveSurferComp from "@/app/[locale]/flow/[id]/record/WaveSurferComp";
 // import Image from "next/image";
 
 export default function FlowDetail({ item }: { item: FlowDetailType }) {
@@ -49,7 +50,7 @@ export default function FlowDetail({ item }: { item: FlowDetailType }) {
                 {item.record.sources.map((source) => (
                   <div key={source.name} className="mb-5">
                     <p className="mb-2 text-xl font-medium">{source.name}</p>
-                    <WavesurferComp
+                    <WaveSurferComp
                       musicname={source.name}
                       musicPath={source.path}
                       type="source"
