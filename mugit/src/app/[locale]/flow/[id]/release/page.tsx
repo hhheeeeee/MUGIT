@@ -141,7 +141,7 @@ export default function ReleasePage() {
           message: description,
           authority: "PUBLIC",
           // files: [postPic.list[0], postAudio.list[0]],
-          files: [imagefile.list[0], postAudio.list[0]],
+          files: [postPic.list[0], postAudio.list[0]],
           hashtags: tags,
         }),
       }
