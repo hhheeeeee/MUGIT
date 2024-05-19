@@ -86,8 +86,8 @@ export default function ReleasePage() {
   };
   const getNoteName = getAncestors(params.id);
   console.log(
-    "노트이름:",
-    getNoteName.then((res) => res.json().list[res.json().list.length - 1].title)
+    "노트이름:"
+    // getNoteName.then((res) => res.json().list[res.json().list.length - 1].title)
   );
 
   // getNoteName[getNoteName.length - 1];
