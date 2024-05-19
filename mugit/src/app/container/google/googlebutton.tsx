@@ -19,7 +19,7 @@ export default function GoogleButton() {
       // 로컬에서 로그인
       // href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${flocalUrl}/${locale}/sns-login&response_type=token&scope=email profile`}
       // 서버에서 로그인
-      href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${mugitUrl}/${locale}/sns-login&response_type=token&scope=email profile`}
+      href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=1030973932319-sloqb8tnddt8e4p0gjk3vs585dlc9cgd.apps.googleusercontent.com&redirect_uri=${mugitUrl}/${locale}/sns-login&response_type=token&scope=email profile`}
       onClick={onClick}
     >
       <Image
