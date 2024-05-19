@@ -21,7 +21,7 @@ import CustomAudioBar from "@/app/components/editor/CUSTOM/audioBar/CustomAudioB
 import { useThemeSettings } from "@/app/hooks/editorThemeSetting";
 import EditorButtons from "@/app/components/editor/editorButtons/EditorButtons";
 import { useAtom } from "jotai";
-import { finishEditAtom } from "@/app/store/atoms/editfile";
+// import { finishEditAtom } from "@/app/store/atoms/editfile";
 import { fileToEdit } from "@/app/store/atoms/editfile";
 import { useParams, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -29,7 +29,7 @@ import { useLocale } from "next-intl";
 // ===========================================================>
 
 export default function Page() {
-  const [finalFile, setFinalFile] = useAtom(finishEditAtom);
+  // const [finalFile, setFinalFile] = useAtom(finishEditAtom);
   const router = useRouter();
   const locale = useLocale();
   const params = useParams();
@@ -241,10 +241,10 @@ export default function Page() {
           if (type === "wav") {
             console.log("podcast save, data", data);
             saveAs(data, `${podcast}.wav`);
-            const newFile = {
-              file: data,
-            };
-            setFinalFile(newFile);
+            // const newFile = {
+            //   file: data,
+            // };
+            // setFinalFile(newFile);
 
             router.push(`/${locale}/flow/${params.id}/record`);
           }
