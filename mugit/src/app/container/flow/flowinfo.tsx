@@ -31,7 +31,7 @@ export default function FlowInfo({ page }: PropType) {
 
   if (loading) return <Loading />;
   if (error) return <Error />;
-
+  console.log(">>>>>>>>>>>>>>>>Flow Detail:", flowDetail); // 데이터 확인
   return (
     <>
       {flowDetail && (
