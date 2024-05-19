@@ -324,10 +324,10 @@ export default function RecordPage() {
   // 편집시 라우팅
   const goEdit = async () => {
     // 파일 존재하는지 확인
-    if (audioFiles.length === 0) {
-      window.alert("편집할 파일이 없습니다");
-      return;
-    }
+    // if (audioFiles.length === 0) {
+    //   window.alert("편집할 파일이 없습니다");
+    //   return;
+    // }
 
     setToEditFile({
       preSources: finalFile.source.map((item) => ({
@@ -454,10 +454,10 @@ export default function RecordPage() {
             />
             <div className="my-6 flex w-full justify-end gap-x-4 pr-4">
               <button
-                className="h-[45px] w-[150px] rounded-full bg-black px-10 text-2xl  italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
+                className="rounded-lg bg-black  px-4 py-2 text-2xl  italic text-white transition  duration-200 hover:bg-gray-300 hover:text-black"
                 onClick={goEdit}
               >
-                Edit
+                Open Editor
               </button>
             </div>
           </div>

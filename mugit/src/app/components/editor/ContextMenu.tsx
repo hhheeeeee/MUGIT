@@ -1,6 +1,6 @@
-import { Button, ClickAwayListener, Paper, Stack } from '@mui/material';
-import { useThemeSettings } from '../hooks';
-import React from 'react';
+import { Button, ClickAwayListener, Paper, Stack } from "@mui/material";
+import { useThemeSettings } from "@/app/hooks/editorThemeSetting";
+import React from "react";
 import {
   DragIndicator,
   NearMe,
@@ -9,9 +9,15 @@ import {
   SouthWest,
   ZoomIn,
   ZoomOut,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-const ContextMenu = ({ position, closeContextMenu }) => {
+const ContextMenu = ({
+  position,
+  closeContextMenu,
+}: {
+  position: { clientX: number; clientY: number; display: boolean };
+  closeContextMenu: () => void;
+}) => {
   const { event_Emitter } = useThemeSettings();
 
   const { clientX, clientY, display } = position;
@@ -20,12 +26,12 @@ const ContextMenu = ({ position, closeContextMenu }) => {
     <ClickAwayListener onClickAway={() => closeContextMenu()}>
       <Paper
         sx={{
-          position: 'absolute',
+          position: "absolute",
           left: clientX + 2,
           top: clientY - 6,
           zIndex: 999,
-          display: display ? 'block' : 'none',
-          backgroundColor: '#121212',
+          display: display ? "block" : "none",
+          backgroundColor: "#121212",
           borderRadius: 2,
         }}
       >
@@ -34,17 +40,17 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<NearMe />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('statechange', 'cursor');
+              event_Emitter.emit("statechange", "cursor");
               closeContextMenu();
             }}
           >
             Cursor
           </Button>
           <Button
-            startIcon={<DragIndicator sx={{ rotate: '90deg' }} />}
+            startIcon={<DragIndicator sx={{ rotate: "90deg" }} />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('statechange', 'select');
+              event_Emitter.emit("statechange", "select");
               closeContextMenu();
             }}
           >
@@ -54,7 +60,7 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<SettingsEthernet />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('statechange', 'shift');
+              event_Emitter.emit("statechange", "shift");
               closeContextMenu();
             }}
           >
@@ -64,7 +70,7 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<SouthWest />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('statechange', 'fadein');
+              event_Emitter.emit("statechange", "fadein");
               closeContextMenu();
             }}
           >
@@ -74,7 +80,7 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<SouthEast />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('statechange', 'fadeout');
+              event_Emitter.emit("statechange", "fadeout");
               closeContextMenu();
             }}
           >
@@ -84,7 +90,7 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<ZoomIn />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('zoomin');
+              event_Emitter.emit("zoomin");
               closeContextMenu();
             }}
           >
@@ -94,7 +100,7 @@ const ContextMenu = ({ position, closeContextMenu }) => {
             startIcon={<ZoomOut />}
             variant="text"
             onClick={() => {
-              event_Emitter.emit('zoomout');
+              event_Emitter.emit("zoomout");
               closeContextMenu();
             }}
           >
