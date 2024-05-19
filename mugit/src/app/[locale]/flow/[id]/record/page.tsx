@@ -7,7 +7,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/app/store/atoms/user";
 import { releaseFlowAtom } from "@/app/store/atoms";
 import RecordMessage from "./recordMessage";
-import { mergeTracks } from "./mergeTracks";
+import { mergeTracks } from "./MergeTracks";
 
 import {
   addInitialValue,
