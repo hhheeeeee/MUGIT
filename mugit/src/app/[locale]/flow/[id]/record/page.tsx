@@ -22,7 +22,8 @@ import IconRecord from "@/app/assets/icon/IconRecord";
 import { noteIcon } from "./editor/constants/icons";
 import Accordions from "./SourceComponent";
 import AddedAccordions from "./AddedSourceComponent";
-
+import MultiAudioPlayer from "./MultiAudioPlayer";
+//=======================인터페이스 지역===================//
 // 주고받을 오디오파일 형식
 interface AudioFile {
   file: File;
@@ -53,7 +54,7 @@ interface ParentItem {
 }
 
 type Parent = ParentItem[];
-
+//=======================함수 지역===================//
 // 현재 새 플로우에 쌓인 레코드 기록들 가져오는 함수
 const getRecords = async (id: string | string[]) => {
   try {
@@ -110,6 +111,7 @@ const getParent = async (id: string | string[]) => {
 };
 
 export default function RecordPage() {
+  //=======================변수 지역===================//
   const router = useRouter();
   const locale = useLocale();
   const userInfo = useAtomValue(userAtom);
@@ -143,6 +145,7 @@ export default function RecordPage() {
   const [parentSource, setParentSource] = useState<Parent>([]);
   const [isOrigin, setIfIsNotOrigin] = useState(true);
 
+  //=======================useEffect 지역===================//
   // 제일 위에 띄울 것 세팅
   // 제일처음 params에 맞는 History 딱 한번붙이기
   useEffect(() => {
@@ -169,13 +172,12 @@ export default function RecordPage() {
     };
     fetchParent();
   }, []);
-
+  // finalFile을 계속 추적해서 재업
   useEffect(() => console.log(">>>>>>>>>웨이브 : ", finalFile), [finalFile]);
 
-  // finalFile에 계속해서 업뎃
+  // 레코드 추가시 finalFile 재렌더
   useEffect(() => {
-    // origin이면 history
-
+    // origin이면 history, 아니면 마지막 레코드 불러오기 + 소스 추가되면 합성
     const getWave = async () => {
       if (isOrigin) {
         setFinalFile({
@@ -187,11 +189,10 @@ export default function RecordPage() {
           })),
         });
       } else {
-        // 아니면 마지막 레코드 불러오기 + 합성
         setFinalFile({
           // 마지막 레코드 다 합친 파일
           flow: ancestorList[0]?.musicPath,
-          // 마지막 레코드 소스들
+          // 마지막 레코드 소스들로 시작해, 빼고 넣기 가능 (뻬고 넣을 때마다 재렌더)
           source: records.list[records.list.length - 1]?.sources.map(
             (item: { name: string; id: any; path: any }) => ({
               file: new File([], item.name),
@@ -199,17 +200,15 @@ export default function RecordPage() {
               url: item.path,
             })
           ),
-
-          // source: parentSource.map((item) => ({
-          //   file: new File([], item.name),
-          //   id: item.id.toString(),
-          //   url: item.path,
-          // })),
         });
       }
     };
     getWave();
-    // console.log("ㄹㅋㄷ:", records, records.list[records.list.length - 1]);
+    // console.log(
+    //   "!!!!!!!!!!!!!!!!!!!!!!마지막 레코드:",
+    //   records.list,
+    //   records.list[records.list.length - 1]
+    // );
   }, [ancestorList, parentSource, isOrigin, records]);
 
   useEffect(() => {
@@ -227,6 +226,7 @@ export default function RecordPage() {
     if (records.list && records.list.length > 1) {
       setIfIsNotOrigin(false);
     }
+    // console.log("레코드 개수 : ", records.list.length);
   }, [records]);
 
   // 추가해보며 비교할 파일
@@ -234,12 +234,13 @@ export default function RecordPage() {
     // 컴포넌트에서 버튼 누르면 같이 재생하는 모임에 끼워줌
     // 누른애들 = addFile
     // setFinalFile(원래+addFile)
+    // 빼면 같이 재생하는 모임에서 뺌
   }, [addFile]);
 
   useEffect(() => {
     console.log("레코드들", records);
   }, [records]);
-
+  //=======================내부 함수 지역===================//
   // 레코드 메시지 세팅하는 함수
   const handleChangeMessage = (event: {
     target: { value: SetStateAction<string> };
@@ -310,7 +311,7 @@ export default function RecordPage() {
     const fetchedRecords = await getRecords(params.id);
     setRecords(fetchedRecords);
   };
-
+  //=======================라우팅 지역===================//
   // 취소 시 라우팅
   async function goBack() {
     router.push(`/${locale}/profile/${userInfo.id}`);
@@ -342,6 +343,7 @@ export default function RecordPage() {
 
   useEffect(() => {
     console.log("드래그앤드롭으로 들어온 파일: ", audioFiles);
+    console.log("목록에 올린 파일: ", addedFile);
     console.log("에디터로 보내는 파일:", toEditFile);
     console.log("파일 서버 업로드 응답: ", fileResponse);
     console.log("레코드 서버 업로드 응답: ", recordResponse);
@@ -366,6 +368,7 @@ export default function RecordPage() {
     recordResponse,
     toEditFile,
     finalFile,
+    addedFile,
   ]);
 
   // 릴리즈 페이지로 라우팅
@@ -377,7 +380,7 @@ export default function RecordPage() {
     <main className="relative flex min-h-[90%] w-full flex-col bg-gray-100 px-8 py-10">
       <div className="w-full flex-row">
         <h1 className="pb-10 pt-20 text-6xl font-bold italic text-gray-800">
-          Record
+          Original Flow
         </h1>
       </div>
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
@@ -393,6 +396,7 @@ export default function RecordPage() {
             </div>
             <div className="m-4">
               <div className="mt-8">
+                <MultiAudioPlayer audioFiles={addedFile.source} />
                 <WavesurferComp
                   musicPath={finalFile.flow}
                   musicname={""}
