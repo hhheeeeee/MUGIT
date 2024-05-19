@@ -224,7 +224,7 @@ export default function RecordPage() {
 
   // isOrigin은 제일 처음 레코드 후 계속 false
   useEffect(() => {
-    if (records.length > 1) {
+    if (records.list && records.list.length > 1) {
       setIfIsNotOrigin(false);
     }
   }, [records]);

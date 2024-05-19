@@ -15,6 +15,39 @@ import { fileToRelease } from "@/app/store/atoms/editfile";
 const WavesurferComp = dynamic(() => import("@/app/components/wavesurfer"), {
   ssr: false,
 });
+interface User {
+  id: number;
+  nickName: string;
+  profileImagePath: string;
+}
+interface Ancestor {
+  id: number;
+  user: User;
+  title: string;
+  authority: "PUBLIC";
+  musicPath: string;
+  coverPath: string;
+  createdAt: string;
+  hashtags: string[];
+}
+const getAncestors = async (id: string | string[]) => {
+  try {
+    const response = await fetch(
+      `https://mugit.site/api/flows/${id}/ancestors`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Failed to fetch records:", error);
+    return [];
+  }
+};
 
 export default function ReleasePage() {
   const t = useTranslations("Form");
@@ -32,7 +65,7 @@ export default function ReleasePage() {
   const params = useParams();
   const [flowFile, setFlowFile] = useState(null);
   const toReleaseFile = useAtomValue(fileToRelease);
-
+  const [ancestorList, setAncestorList] = useState<Ancestor[]>([]);
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -51,7 +84,14 @@ export default function ReleasePage() {
       return [];
     }
   };
+  const getNoteName = getAncestors(params.id);
+  console.log(
+    "노트이름:",
+    getNoteName.then((res) => res.json().list[res.json().list.length - 1].title)
+  );
 
+  // getNoteName[getNoteName.length - 1];
+  console.log("노트이름:", getNoteName);
   useEffect(() => {
     if (params.id) {
       getRecords(params.id).then((fetchedRecords) =>
@@ -104,13 +144,9 @@ export default function ReleasePage() {
       console.log("반응?:", res);
     });
 
-    console.log(
-      "%%%%%%%%%%%%%%%%%%%%%%%%%%%postrelease : ",
-      postPic,
-      postAudio,
-      postRelease
-    );
-
+    if (postPic) {
+      setImageSrc(imagefile.path);
+    }
     router.push(`/${locale}/flow/${params.id}`);
   };
 
@@ -132,11 +168,11 @@ export default function ReleasePage() {
         s
         <div className="flex w-9/12 flex-col">
           <h2 className=" text-lg">{t("note")}</h2>
-          <input
+          {/* <input
             type="text"
             className="h-8 w-full rounded-lg border-2 border-solid border-gray-300 border-b-gray-200 px-4"
-          />
-
+          /> */}
+          <h2 className="mt-4 text-lg">{}</h2>
           <h2 className="mt-4 text-lg">{t("flow")}</h2>
           <input
             value={name}
