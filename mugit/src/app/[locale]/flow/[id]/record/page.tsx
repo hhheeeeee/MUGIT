@@ -390,7 +390,6 @@ export default function RecordPage() {
       <div className="mt-4 flex w-full rounded-lg bg-white p-6 shadow-md sm:flex-col md:flex-col lg:flex-row">
         <div className="flex w-full flex-col ">
           {/* 릴리즈 전 최종 버전의 레코드 */}
-
           <div className="latest-version rounded-md border-2 border-solid border-gray-300 bg-gray-100">
             <div className="latest-version-title m-8 flex">
               {noteIcon}
@@ -462,18 +461,21 @@ export default function RecordPage() {
               </button>
             </div>
           </div>
-
           {/* 그동안의 레코드 */}
-          <div className="record-history">
-            <div className="record-history-title ml-8 mt-16 flex">
-              {noteIcon}
+          {isOrigin ? (
+            <></>
+          ) : (
+            <div className="record-history">
+              <div className="record-history-title ml-8 mt-16 flex">
+                {noteIcon}
 
-              <p className="mb-4 px-4 text-2xl font-bold text-gray-700">
-                Record History
-              </p>
+                <p className="mb-4 px-4 text-2xl font-bold text-gray-700">
+                  Record History
+                </p>
+              </div>
+              <RecordMessage records={records} />
             </div>
-            <RecordMessage records={records} />
-          </div>
+          )}
 
           {/* 레코드 메시지*/}
           <div className="record-message">

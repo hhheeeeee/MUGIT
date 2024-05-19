@@ -1,4 +1,5 @@
 "use client";
+import { useCookies } from "react-cookie";
 import Description from "@/app/components/Description";
 import UploadPicture from "@/app/components/fileUpload/UploadPicture";
 import RecordMessage from "../record/recordMessage";
@@ -66,6 +67,7 @@ export default function ReleasePage() {
   const [flowFile, setFlowFile] = useState(null);
   const toReleaseFile = useAtomValue(fileToRelease);
   const [ancestorList, setAncestorList] = useState<Ancestor[]>([]);
+  const [cookies] = useCookies(["session"]);
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -122,6 +124,8 @@ export default function ReleasePage() {
         body: audioFormData,
       }).then((response) => response.json()),
     ]);
+    console.log("$$$$$$$$$$$@@@@@@@@@@@@@!: ", postPic, postAudio);
+    const sessionToken = cookies.session;
 
     const postRelease = await fetch(
       `https://mugit.site/api/flows/${params.id}`,
@@ -129,21 +133,23 @@ export default function ReleasePage() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionToken}`,
         },
-        // credentials: "include",
+        credentials: "include",
         body: JSON.stringify({
           title: name,
           message: description,
           authority: "PUBLIC",
           // files: [postPic.list[0], postAudio.list[0]],
-          files: [imagefile, toReleaseFile.flow, ...toReleaseFile.source],
+          files: [imagefile[0], postAudio[0]],
           hashtags: tags,
         }),
       }
     ).then((res) => {
       console.log("반응?:", res);
     });
-
+    console.log("일단 전부 :", imagefile);
+    console.log("굿:", toReleaseFile.flow);
     if (postPic) {
       setImageSrc(imagefile.path);
     }
