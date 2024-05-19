@@ -141,14 +141,15 @@ export default function ReleasePage() {
           message: description,
           authority: "PUBLIC",
           // files: [postPic.list[0], postAudio.list[0]],
-          files: [imagefile, toReleaseFile.flow],
+          files: [imagefile[0], postAudio[0]],
           hashtags: tags,
         }),
       }
     ).then((res) => {
       console.log("반응?:", res);
     });
-
+    console.log("일단 전부 :", imagefile);
+    console.log("굿:", toReleaseFile.flow);
     if (postPic) {
       setImageSrc(imagefile.path);
     }
