@@ -91,14 +91,14 @@ export default function ReleasePage() {
   );
 
   // getNoteName[getNoteName.length - 1];
-  console.log("노트이름:", getNoteName);
-  useEffect(() => {
-    if (params.id) {
-      getRecords(params.id).then((fetchedRecords) =>
-        setRecords(fetchedRecords)
-      );
-    }
-  }, []);
+  // console.log("노트이름:", getNoteName);
+  // useEffect(() => {
+  //   if (params.id) {
+  //     getRecords(params.id).then((fetchedRecords) =>
+  //       setRecords(fetchedRecords)
+  //     );
+  //   }
+  // }, []);
 
   const releaseFlow = async () => {
     let imageFormData = new FormData();
