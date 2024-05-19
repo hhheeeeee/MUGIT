@@ -67,12 +67,6 @@ export default function FlowInfo({ page }: PropType) {
                 {flowDetail.user.nickName}
               </a>
               <ButtonGroup item={flowDetail} page={page} />
-              <button
-                className="my-5 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                onClick={refetch}
-              >
-                Refresh Data
-              </button>
             </div>
           </div>
           <hr className="border-2" />
