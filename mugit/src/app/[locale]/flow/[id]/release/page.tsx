@@ -31,8 +31,8 @@ export default function ReleasePage() {
   const [imagefile, setImageFile] = useState<any>(null);
   const params = useParams();
   const [flowFile, setFlowFile] = useState(null);
-  const [recordFiles, setRecordFiles] = useState([]);
   const toReleaseFile = useAtomValue(fileToRelease);
+
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -48,7 +48,7 @@ export default function ReleasePage() {
       return response.json();
     } catch (error) {
       console.error("Failed to fetch records:", error);
-      return []; // 실패 시 빈 배열 반환
+      return [];
     }
   };
 
@@ -58,32 +58,7 @@ export default function ReleasePage() {
         setRecords(fetchedRecords)
       );
     }
-  }, [params.id]);
-
-  // useEffect(() => {
-  //   if (params.id) {
-  //     getRecords(params.id).then((fetchedRecords) =>
-  //       setRecords(fetchedRecords)
-  //     );
-  //   }
-
-  //   if (records.list) {
-  //     setRecordFiles(
-  //       records.list.map((file) => file.sources.map((src) => src.path))
-  //     );
-  //     console.log(
-  //       "records&&&&&&&&&&&&&&&&:",
-  //       records.list.map((file) => file.sources.map((src) => src.path))
-  //     );
-  //   }
-  // }, [params.id]);
-
-  // // 처음에 완성된 플로우 파일 가져오기
-  // useEffect(() => {
-  //   setFlowFile(
-  //     "https://mugit.site/files/efc94627-899d-4765-a10f-fda58598b1de.mp3"
-  //   );
-  // }, []);
+  }, []);
 
   const releaseFlow = async () => {
     let imageFormData = new FormData();
@@ -115,13 +90,13 @@ export default function ReleasePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify({
           title: name,
           message: description,
           authority: "PUBLIC",
           // files: [postPic.list[0], postAudio.list[0]],
-          files: [toReleaseFile.flow, ...toReleaseFile.source],
+          files: [imagefile, toReleaseFile.flow, ...toReleaseFile.source],
           hashtags: tags,
         }),
       }

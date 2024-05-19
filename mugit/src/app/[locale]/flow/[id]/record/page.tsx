@@ -175,34 +175,42 @@ export default function RecordPage() {
   // finalFile에 계속해서 업뎃
   useEffect(() => {
     // origin이면 history
-    if (ancestorList.length > 0) {
-      const getWave = async () => {
-        if (isOrigin) {
-          setFinalFile({
-            flow: ancestorList[0].musicPath,
-            source: parentSource.map((item) => ({
+
+    const getWave = async () => {
+      if (isOrigin) {
+        setFinalFile({
+          flow: ancestorList[0]?.musicPath,
+          source: parentSource.map((item) => ({
+            file: new File([], item.name),
+            id: item.id.toString(),
+            url: item.path,
+          })),
+        });
+      } else {
+        // 아니면 마지막 레코드 불러오기 + 합성
+        setFinalFile({
+          // 마지막 레코드 다 합친 파일
+          flow: ancestorList[0]?.musicPath,
+          // 마지막 레코드 소스들
+          source: records.list[records.list.length - 1]?.sources.map(
+            (item: { name: string; id: any; path: any }) => ({
               file: new File([], item.name),
-              id: item.id.toString(),
+              id: item.id,
               url: item.path,
-            })),
-          });
-        } else {
-          // 아니면 마지막 레코드 불러오기 + 합성
-          setFinalFile({
-            // 마지막 레코드 다 합친 파일
-            flow: ancestorList[0].musicPath,
-            // 마지막 레코드 소스들
-            source: parentSource.map((item) => ({
-              file: new File([], item.name),
-              id: item.id.toString(),
-              url: item.path,
-            })),
-          });
-        }
-      };
-      getWave();
-    }
-  }, [isOrigin]);
+            })
+          ),
+
+          // source: parentSource.map((item) => ({
+          //   file: new File([], item.name),
+          //   id: item.id.toString(),
+          //   url: item.path,
+          // })),
+        });
+      }
+    };
+    getWave();
+    // console.log("ㄹㅋㄷ:", records, records.list[records.list.length - 1]);
+  }, [ancestorList, parentSource, isOrigin, records]);
 
   useEffect(() => {
     setPutFile({
