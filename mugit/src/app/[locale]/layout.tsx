@@ -7,6 +7,7 @@ import "./globals.css";
 import Navbar from "../components/navbar";
 import BottomPlaybar from "../components/bottomPlaybar/BottomPlaybar";
 import localFont from "next/font/local";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",

@@ -241,9 +241,9 @@ export default function Page() {
           if (type === "wav") {
             console.log("podcast save, data", data);
             saveAs(data, `${podcast}.wav`);
-            const newFile = {
-              file: data,
-            };
+            // const newFile = {
+            //   file: data,
+            // };
             // setFinalFile(newFile);
 
             router.push(`/${locale}/flow/${params.id}/record`);
