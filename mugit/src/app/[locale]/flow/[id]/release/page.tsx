@@ -101,7 +101,7 @@ export default function ReleasePage() {
         setRecords(fetchedRecords)
       );
     }
-  }, []);
+  }, [params.id]);
 
   const releaseFlow = async () => {
     let imageFormData = new FormData();

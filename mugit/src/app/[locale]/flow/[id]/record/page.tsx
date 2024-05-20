@@ -422,10 +422,17 @@ export default function RecordPage() {
                   musicname={""}
                   type="source"
                 /> */}
+
                 <WavesurferComp2
                   musicname=""
                   musicPath={
+<<<<<<< HEAD
+                    mergedSources.length > 0
+                      ? mergedSources[0].url
+                      : ancestorList[0]?.musicPath
+=======
                     isOrigin ? ancestorList[0]?.musicPath : mergedTrackUrl
+>>>>>>> bcf9a1eef0febf66a58b09ba776c27b3feb90d74
                   }
                   type="source"
                   onPlay={() => multiAudioPlayerRef.current.handlePlay()}
