@@ -424,7 +424,9 @@ export default function RecordPage() {
                 /> */}
                 <WavesurferComp2
                   musicname=""
-                  musicPath={mergedTrackUrl ? mergedTrackUrl : ""}
+                  musicPath={
+                    isOrigin ? ancestorList[0]?.musicPath : mergedTrackUrl
+                  }
                   type="source"
                   onPlay={() => multiAudioPlayerRef.current.handlePlay()}
                   onStop={() => multiAudioPlayerRef.current.handleStop()}
