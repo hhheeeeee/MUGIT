@@ -166,7 +166,7 @@ export default function RecordPage() {
           )
         : [],
     });
-  }, []);
+  }, [params.id]);
   // finalFile을 계속 추적해서 재업
   useEffect(() => console.log(">>>>>>>>>웨이브 : ", finalFile), [finalFile]);
 
@@ -186,7 +186,7 @@ export default function RecordPage() {
       } else {
         setFinalFile({
           // 마지막 레코드 다 합친 파일
-          flow: ancestorList[0]?.musicPath,
+          flow: mergedTrackUrl,
           // 마지막 레코드 소스들로 시작해, 빼고 넣기 가능 (뻬고 넣을 때마다 재렌더)
           source: records.list[records.list.length - 1]?.sources.map(
             (item: { name: string; id: any; path: any }) => ({
@@ -204,7 +204,7 @@ export default function RecordPage() {
     //   records.list,
     //   records.list[records.list.length - 1]
     // );
-  }, [ancestorList, parentSource, isOrigin, records]);
+  }, [records]);
 
   useEffect(() => {
     setPutFile({
@@ -225,9 +225,6 @@ export default function RecordPage() {
     // console.log("레코드 개수 : ", records.list.length);
   }, [records]);
 
-  useEffect(() => {
-    console.log("레코드들", records);
-  }, [records]);
   //=======================내부 함수 지역===================//
   // 레코드 메시지 세팅하는 함수
   const handleChangeMessage = (event: {
@@ -427,9 +424,7 @@ export default function RecordPage() {
                 /> */}
                 <WavesurferComp2
                   musicname=""
-                  musicPath={
-                    mergedSources.length > 0 ? mergedSources[0].url : ""
-                  }
+                  musicPath={mergedTrackUrl ? mergedTrackUrl : ""}
                   type="source"
                   onPlay={() => multiAudioPlayerRef.current.handlePlay()}
                   onStop={() => multiAudioPlayerRef.current.handleStop()}
