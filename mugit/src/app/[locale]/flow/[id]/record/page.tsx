@@ -166,7 +166,7 @@ export default function RecordPage() {
           )
         : [],
     });
-  }, []);
+  }, [params.id]);
   // finalFile을 계속 추적해서 재업
   useEffect(() => console.log(">>>>>>>>>웨이브 : ", finalFile), [finalFile]);
 
@@ -425,9 +425,14 @@ export default function RecordPage() {
                   musicname={""}
                   type="source"
                 /> */}
+
                 <WavesurferComp2
                   musicname=""
-                  musicPath={mergedSources.length > 0 ? mergedTrackUrl : ""}
+                  musicPath={
+                    mergedSources.length > 0
+                      ? mergedSources[0].url
+                      : ancestorList[0]?.musicPath
+                  }
                   type="source"
                   onPlay={() => multiAudioPlayerRef.current.handlePlay()}
                   onStop={() => multiAudioPlayerRef.current.handleStop()}
