@@ -79,6 +79,9 @@ export default function Accordions() {
       setRecords(fetchedRecords);
     };
     fetchUpdatedRecords();
+  }, [params.id]);
+
+  useEffect(() => {
     const latestRecord =
       records.list && records.list.length > 0
         ? records.list[records.list.length - 1]
@@ -94,7 +97,7 @@ export default function Accordions() {
           )
         : [],
     });
-  }, [records]);
+  }, []);
 
   const handleRemoveFile = (id: string) => {
     const updatedFiles = putFile.source.filter(
