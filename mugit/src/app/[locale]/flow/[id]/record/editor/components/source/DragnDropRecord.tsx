@@ -74,7 +74,7 @@ export default function DragnDrop({
       </div>
       {audioFiles.map(({ file, id, url }) => (
         <div key={id} className="file-container relative mb-5 flex flex-col">
-          <div className="controls flex justify-between">
+          <div className="flex justify-between">
             {/* <button
               onClick={() => handlePlayPause(id)}
               className="border-zz h-fit border-solid border-black bg-pointyellow text-black"
