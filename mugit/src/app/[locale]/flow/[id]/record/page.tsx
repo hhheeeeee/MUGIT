@@ -224,7 +224,7 @@ export default function RecordPage() {
   const addRecord = async () => {
     // 레코드 메시지와 파일 모두 확인
     console.log("clicked");
-    if (message.length === 0 || addFile.source.length === 0) {
+    if (message.length === 0 || mergedSources.length === 0) {
       window.alert("빈 항목이 있습니다");
       return;
     }
