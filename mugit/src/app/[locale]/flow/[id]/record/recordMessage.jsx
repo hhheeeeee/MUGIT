@@ -3,9 +3,7 @@ import React from "react";
 
 // Props 타입 적용
 const RecordMessage = ({ records }) => {
-  console.log(">>>>>>>>>레코드요소들:", records.list);
   const recordList = records.list || [];
-
   return (
     <div>
       <div className="my-2 flex max-h-60 w-full flex-col gap-2 overflow-y-scroll rounded-lg border-2 border-solid border-gray-300 p-4">
