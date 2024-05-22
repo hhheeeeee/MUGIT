@@ -37,7 +37,6 @@ interface User {
   nickName: string;
   profileImagePath: string;
 }
-
 interface Ancestor {
   id: number;
   user: User;
@@ -49,6 +48,9 @@ interface Ancestor {
   hashtags: string[];
 }
 
+interface AncestorResponse {
+  list: Ancestor[];
+}
 interface ParentItem {
   id: number;
   name: string;
@@ -75,7 +77,9 @@ const getRecords = async (id: string | string[]) => {
 };
 
 // 현재 플로우의 조상을 불러오는 함수
-const getAncestors = async (id: string | string[]) => {
+const getAncestors = async (
+  id: string | string[]
+): Promise<AncestorResponse> => {
   try {
     const response = await fetch(
       `https://mugit.site/api/flows/${id}/ancestors`,
@@ -90,7 +94,7 @@ const getAncestors = async (id: string | string[]) => {
     return response.json();
   } catch (error) {
     console.error("Failed to fetch records:", error);
-    return [];
+    return { list: [] };
   }
 };
 
@@ -162,7 +166,7 @@ export default function RecordPage() {
   };
   const fetchAncestors = async () => {
     const fetchedAncestor = await getAncestors(params.id);
-    setAncestorList(fetchedAncestor);
+    setAncestorList(fetchedAncestor.list);
   };
   const fetchParent = async () => {
     const fetchedData = await getFlowData(params.id);
@@ -170,13 +174,14 @@ export default function RecordPage() {
     setParentSource(fetchedParent);
   };
   const fetchOrigin = async () => {
-    if (latestRecord) {
+    if (records.list && records.list.length > 1) {
       setIfIsNotOrigin(false);
     }
   };
-  const latestRecord = records.list
-    ? records.list[records.list.length - 1]
-    : null;
+  const latestRecord =
+    records.list && records.list.length > 1
+      ? records.list[records.list.length - 1]
+      : null;
 
   const fetchData = async () => {
     await fetchRecords();
@@ -187,12 +192,13 @@ export default function RecordPage() {
 
   const setWave = async () => {
     await fetchData(); // 공통 비동기 작업 호출
-
+    console.log("조상???", ancestorList);
     if (isOrigin) {
+      await fetchAncestors();
       setFinalFile({
-        flow: ancestorList[0]?.musicPath,
+        flow: ancestorList[0].musicPath,
         source: parentSource.map((item) => ({
-          file: new File([], item.name),
+          file: new File([], `demo${item.name}`),
           id: item.id.toString(),
           url: item.path,
         })),
@@ -217,6 +223,7 @@ export default function RecordPage() {
   // 레코드 추가하는 함수
   const addRecord = async () => {
     // 레코드 메시지와 파일 모두 확인
+    console.log("clicked");
     if (message.length === 0 || addFile.source.length === 0) {
       window.alert("빈 항목이 있습니다");
       return;
@@ -239,18 +246,16 @@ export default function RecordPage() {
     const filePost = await filePostResponse.json();
     setFileResponse(filePost);
 
-    const preSources = puttFile.source.map((item) => ({
+    const ps = puttFile.source.map((item) => ({
       name: item.file.name,
       path: item.url,
     }));
 
     // response에서 파일 이름과 경로 추출
-    const newSources = filePost.list.map(
-      (item: { name: string; path: string }) => ({
-        name: item.name,
-        path: item.path,
-      })
-    );
+    const ns = addedFile.source.map((item) => ({
+      name: item.file.name,
+      path: item.url,
+    }));
 
     // record 서버에 저장
     const recordPostResponse = await fetch(
@@ -263,8 +268,8 @@ export default function RecordPage() {
         credentials: "include",
         body: JSON.stringify({
           message,
-          preSources,
-          newSources,
+          preSources: [],
+          newSources: [...ps, ...ns],
         }),
       }
     );
@@ -301,13 +306,17 @@ export default function RecordPage() {
       "parentSource : ",
       parentSource,
       "origin : ",
-      isOrigin
+      isOrigin,
+      "records.list.length : ",
+      records.list && records.list.length > 0
+        ? records.list.length
+        : "레코드없음"
     );
-  }, [finalFile]);
+  }, [finalFile, params.id]);
 
   useEffect(() => {
-    records;
-  }, [isOrigin]);
+    setWave();
+  }, []);
 
   useEffect(() => {
     // 플로우 변화 감지시 레코드 새로 불러오기
@@ -315,9 +324,10 @@ export default function RecordPage() {
     setAudioFiles([]);
     setAddFile(addInitialValue);
     // 마지막 레코드 정보
-    const latestRecord = records.list
-      ? records.list[records.list.length - 1]
-      : null;
+    const latestRecord =
+      records.list && records.list.length > 1
+        ? records.list[records.list.length - 1]
+        : null;
 
     // 마지막 레코드 정보를 남길 파일의 default 값으로 설정
     setPutFile({
@@ -422,8 +432,10 @@ export default function RecordPage() {
             </div>
             <div className="m-4">
               <div className="mt-8">
-                {/* {finalFile.flow}
-                {finalFile.source.map((item) => item.file.name)} */}
+                <div className="hidden">
+                  {finalFile.flow}
+                  {finalFile.source.map((item) => item.file.name)}
+                </div>
                 <WavesurferComp2
                   musicname={finalFile.flow}
                   musicPath={finalFile.flow}

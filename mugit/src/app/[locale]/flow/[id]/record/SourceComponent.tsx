@@ -12,6 +12,22 @@ import { fileToPut, fileToRelease } from "@/app/store/atoms/editfile";
 import WaveSurferComp from "./WaveSurferComp";
 import { minusCircleIcon } from "./editor/constants/icons";
 import { useParams } from "next/navigation";
+interface User {
+  id: number;
+  nickName: string;
+  profileImagePath: string;
+}
+
+interface Ancestor {
+  id: number;
+  user: User;
+  title: string;
+  authority: "PUBLIC";
+  musicPath: string;
+  coverPath: string;
+  createdAt: string;
+  hashtags: string[];
+}
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -92,7 +108,6 @@ export default function Accordions() {
   const handleToggle = () => {
     setExpanded(!expanded);
   };
-
   return (
     <div>
       {puttFile &&
@@ -102,7 +117,7 @@ export default function Accordions() {
               aria-controls={`panel${index}d-content`}
               id={`panel${index}d-header`}
             >
-              <Typography>{src.file.name}</Typography>
+              <Typography>{`demo${src.id}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <button
@@ -120,7 +135,7 @@ export default function Accordions() {
                     musicname={src.file.name}
                     type="source"
                   />
-                  <p>{src.file.name}</p>
+                  {/* <p>{src.file.name}</p> */}
                 </div>
               ) : (
                 <></>
