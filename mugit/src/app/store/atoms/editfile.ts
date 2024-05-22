@@ -78,3 +78,5 @@ export const putInitialValue = {
   source: [] as AudioFile[],
 };
 export const fileToPut = atom(putInitialValue);
+
+export const mergedList = atom([]);

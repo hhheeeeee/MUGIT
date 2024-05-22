@@ -51,8 +51,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function Accordions() {
   const [expanded, setExpanded] = useState<boolean>(false);
-
   const [putFile, setPutFile] = useAtom(fileToPut);
+  const puttFile = useAtomValue(fileToPut);
   const getRecords = async (id: string | string[]) => {
     try {
       const response = await fetch(
@@ -79,25 +79,8 @@ export default function Accordions() {
       setRecords(fetchedRecords);
     };
     fetchUpdatedRecords();
+    console.log();
   }, [params.id]);
-
-  useEffect(() => {
-    const latestRecord =
-      records.list && records.list.length > 0
-        ? records.list[records.list.length - 1]
-        : null;
-    setPutFile({
-      source: latestRecord
-        ? latestRecord.sources.map(
-            (item: { name: string; id: any; path: any }) => ({
-              file: new File([], item.name),
-              id: item.id,
-              path: item.path,
-            })
-          )
-        : [],
-    });
-  }, []);
 
   const handleRemoveFile = (id: string) => {
     const updatedFiles = putFile.source.filter(
@@ -112,31 +95,39 @@ export default function Accordions() {
 
   return (
     <div>
-      {putFile.source.map((src, index) => (
-        <Accordion key={index} expanded={expanded} onChange={handleToggle}>
-          <AccordionSummary
-            aria-controls={`panel${index}d-content`}
-            id={`panel${index}d-header`}
-          >
-            <Typography>{src.file.name}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <button
-              onClick={() => {
-                handleRemoveFile(src.id);
-              }}
-              className="h-fit"
+      {puttFile &&
+        puttFile.source.map((src, index) => (
+          <Accordion key={index} expanded={expanded} onChange={handleToggle}>
+            <AccordionSummary
+              aria-controls={`panel${index}d-content`}
+              id={`panel${index}d-header`}
             >
-              {minusCircleIcon}
-            </button>
-            <WaveSurferComp
-              musicPath={src.url}
-              musicname={src.file.name}
-              type="source"
-            />
-          </AccordionDetails>
-        </Accordion>
-      ))}
+              <Typography>{src.file.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <button
+                onClick={() => {
+                  handleRemoveFile(src.id);
+                }}
+                className="h-fit"
+              >
+                {minusCircleIcon}
+              </button>
+              {puttFile ? (
+                <div>
+                  <WaveSurferComp
+                    musicPath={src.url}
+                    musicname={src.file.name}
+                    type="source"
+                  />
+                  <p>{src.file.name}</p>
+                </div>
+              ) : (
+                <></>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        ))}
     </div>
   );
 }
