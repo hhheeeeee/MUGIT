@@ -117,7 +117,7 @@ export default function Accordions() {
               aria-controls={`panel${index}d-content`}
               id={`panel${index}d-header`}
             >
-              <Typography>{`demo${src.id}`}</Typography>
+              <Typography>{src.file.name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <button
